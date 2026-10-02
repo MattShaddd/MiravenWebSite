@@ -75,7 +75,6 @@ button[onclick*="CloseModal"] line{stroke:var(--m-ink)!important;stroke-width:1.
 
 /* отдельная страница: карточка по центру, слоган под формой */
 .tlk-form__container-wrap{min-width:min(420px,100vw - 32px)}
-.tlk-form__container-wrap::after{content:"открытки рассказывают сказки";display:block;text-align:center;font-family:"Lora",Georgia,serif;font-style:italic;font-size:13px;color:var(--m-gold-text);padding:0 0 14px}
 .tlk-input-title{margin-bottom:4px}
 .tlk-form__item{margin-bottom:6px}
 
@@ -134,8 +133,6 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 /* исправление: карточка не должна быть flex-рядом (иначе слоган уезжает вправо, а форма сужается) */
 .tlk-form__container-wrap{display:block!important;box-sizing:border-box}
 .tlk-form__container{display:block!important;width:100%!important;max-width:none!important;box-sizing:border-box}
-.tlk-form__container-wrap::after{text-align:center;width:100%}
-.tlk-form__simplified .tlk-form__container-wrap::after{display:none}
 @media (max-width:480px){.tlk-form__container-wrap{min-width:0!important;width:100%!important}}
 
 /* ===== профиль и смена пароля (/members/profile, /members/profile/password) ===== */
@@ -242,3 +239,6 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
   #allrecords .tlk-input-error.tlk-input-error_all,.tlk-input-error_all{color:#9A2F26!important}
   .tlk-form .tlk-input-error:not(.tlk-input-error_all){color:#9A2F26!important}
 }
+
+/* слоган под формой убран */
+.tlk-form__container-wrap::after{content:none!important;display:none!important}
