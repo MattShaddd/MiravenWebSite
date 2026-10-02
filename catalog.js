@@ -609,9 +609,23 @@
   if($('sortBtn'))$('sortBtn').addEventListener('click',function(){sortOpen(true)});
 
   /* ---------- оболочка: шапка, меню, вход, тема ---------- */
+  // плавное сжатие/разворот панели категорий (высота + перелёт каждой плашки)
+  function setCompact(on){
+    if(bar.classList.contains('compact')===on)return;
+    var inner=bar.querySelector('.cat-bar-in'),btns=[].slice.call(tabs.children).filter(function(b){return b.tagName==='BUTTON'});
+    var h0=inner.offsetHeight,r0=btns.map(function(b){return b.getBoundingClientRect()});
+    bar.classList.toggle('compact',on);
+    if(reduce||!inner.animate||!window.matchMedia('(max-width:760px)').matches)return;
+    var h1=inner.offsetHeight;
+    if(h0!==h1){inner.style.overflow='hidden';var a=inner.animate([{height:h0+'px'},{height:h1+'px'}],{duration:440,easing:'cubic-bezier(.2,.8,.2,1)'});a.onfinish=a.oncancel=function(){inner.style.overflow=''}}
+    btns.forEach(function(b,i){
+      var r1=b.getBoundingClientRect(),dx=r0[i].left-r1.left,dy=r0[i].top-r1.top;
+      if(Math.abs(dx)>1||Math.abs(dy)>1)b.animate([{transform:'translate('+dx+'px,'+dy+'px)',opacity:Math.abs(dy)>60?0:1},{transform:'none',opacity:1}],{duration:480,easing:'cubic-bezier(.2,.8,.2,1)'});
+    });
+  }
   var topEl=document.querySelector('.top'),bar=$('catBar');
   function hdr(){var h=topEl?topEl.offsetHeight:68;document.documentElement.style.setProperty('--hdr',h+'px')}
-  function onScroll(){topEl.classList.toggle('scrolled',window.scrollY>8);hdr();var sn=$('barSent');if(sn&&bar)bar.classList.toggle('compact',sn.getBoundingClientRect().top<=topEl.offsetHeight);if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
+  function onScroll(){topEl.classList.toggle('scrolled',window.scrollY>8);hdr();var sn=$('barSent');if(sn&&bar)setCompact(sn.getBoundingClientRect().top<=topEl.offsetHeight);if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
   window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
   var mn=$('mnav'),bg=$('burger');if(mn&&bg){bg.addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true})}
   function searchOpen(on){
