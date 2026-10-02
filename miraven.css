@@ -853,3 +853,6 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 .t706__cartpage-top{position:sticky!important;top:0;z-index:8;background:var(--white)!important;margin-bottom:4px!important}
 .t706__cartwin-top{position:sticky!important;top:0;z-index:8;background:var(--white)!important}
 .mv-cp,.t706__cartwin-content{overscroll-behavior:contain}
+
+/* шаг «Оформить заказ» для телефона не нужен: форма всегда раскрыта */
+.t706__cartpage-open-form-wrap{display:none!important}

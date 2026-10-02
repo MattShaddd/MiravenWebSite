@@ -671,6 +671,25 @@
       };
       window.tcart__openCart.__mv=1;return true;
     }
+    // форма заказа всегда раскрыта: в нашей шторке один столбец на любом экране (двухшаговый режим Тильды для телефона не нужен,
+    // иначе при смене размера окна часть полей оставалась скрытой)
+    var fobs=null;
+    function showForm(){
+      var pg=document.querySelector('.t706__cartpage');
+      if(!pg||!pg.classList.contains('t706__cartpage_showed'))return;
+      var f=pg.querySelector('.t706__cartpage-form'),ow=pg.querySelector('.t706__cartpage-open-form-wrap');
+      if(f&&(f.style.display==='none'||f.style.opacity==='0')){f.style.display='block';f.style.opacity='1';f.style.transform='none'}
+      if(ow&&ow.style.display!=='none')ow.style.display='none';
+      if(f&&!fobs&&window.MutationObserver){fobs=new MutationObserver(function(){showForm()});fobs.observe(f,{attributes:true,attributeFilter:['style']})}
+    }
+    window.addEventListener('resize',function(){showForm();setTimeout(showForm,300)});
+    window.addEventListener('hashchange',function(){setTimeout(showForm,100)});
+    var obs0=null;
+    (function watch(){
+      var pg=document.querySelector('.t706__cartpage');
+      if(!pg){setTimeout(watch,500);return}
+      new MutationObserver(function(){setTimeout(showForm,0);setTimeout(showForm,400)}).observe(pg,{attributes:true,attributeFilter:['class']});
+    })();
     prep();if(!hook()){var n=0,t=setInterval(function(){prep();if(hook()||++n>80)clearInterval(t)},150)}
     window.addEventListener('load',function(){prep();hook();setTimeout(function(){prep();hook()},1200)});
   })();
@@ -970,6 +989,25 @@
       };
       window.tcart__openCart.__mv=1;return true;
     }
+    // форма заказа всегда раскрыта: в нашей шторке один столбец на любом экране (двухшаговый режим Тильды для телефона не нужен,
+    // иначе при смене размера окна часть полей оставалась скрытой)
+    var fobs=null;
+    function showForm(){
+      var pg=document.querySelector('.t706__cartpage');
+      if(!pg||!pg.classList.contains('t706__cartpage_showed'))return;
+      var f=pg.querySelector('.t706__cartpage-form'),ow=pg.querySelector('.t706__cartpage-open-form-wrap');
+      if(f&&(f.style.display==='none'||f.style.opacity==='0')){f.style.display='block';f.style.opacity='1';f.style.transform='none'}
+      if(ow&&ow.style.display!=='none')ow.style.display='none';
+      if(f&&!fobs&&window.MutationObserver){fobs=new MutationObserver(function(){showForm()});fobs.observe(f,{attributes:true,attributeFilter:['style']})}
+    }
+    window.addEventListener('resize',function(){showForm();setTimeout(showForm,300)});
+    window.addEventListener('hashchange',function(){setTimeout(showForm,100)});
+    var obs0=null;
+    (function watch(){
+      var pg=document.querySelector('.t706__cartpage');
+      if(!pg){setTimeout(watch,500);return}
+      new MutationObserver(function(){setTimeout(showForm,0);setTimeout(showForm,400)}).observe(pg,{attributes:true,attributeFilter:['class']});
+    })();
     prep();if(!hook()){var n=0,t=setInterval(function(){prep();if(hook()||++n>80)clearInterval(t)},150)}
     window.addEventListener('load',function(){prep();hook();setTimeout(function(){prep();hook()},1200)});
   })();
