@@ -856,3 +856,28 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 
 /* шаг «Оформить заказ» для телефона не нужен: форма всегда раскрыта */
 .t706__cartpage-open-form-wrap{display:none!important}
+
+/* ===== окно заказа: выпадающие списки, промокод, галочка, отступы полей ===== */
+.t706__cartpage .t-input,.t706__cartpage .t-input-phonemask__wrap{padding-left:14px!important;padding-right:14px!important}
+.t706__cartpage .t-input-phonemask__wrap{padding-left:6px!important}
+.t706__cartpage .t-input-phonemask__wrap .t-input{padding-left:6px!important}
+/* списки подсказок: город, пункты выдачи, адреса */
+.t706__cartpage .searchbox-wrapper{position:relative}
+.t706__cartpage .searchbox-list{background:var(--white)!important;color:var(--ink)!important;border:1px solid var(--stone)!important;border-radius:14px!important;box-shadow:0 22px 44px -22px rgba(0,0,0,.55)!important;margin-top:6px!important;padding:6px!important;max-height:min(280px,40dvh)!important;overflow:auto!important;scrollbar-width:thin;z-index:20}
+.t706__cartpage .searchbox-list-item{background:transparent!important;border:0!important;border-radius:10px!important;padding:10px 12px!important;margin:0!important;color:var(--ink)!important;transition:background .15s}
+.t706__cartpage .searchbox-list-item:hover,.t706__cartpage .searchbox-list-item.active,.t706__cartpage .searchbox-list-item.selected,.t706__cartpage .searchbox-list-item:focus{background:var(--mist)!important}
+.t706__cartpage .searchbox-list-item-text{color:var(--ink)!important;font-size:14px!important;font-weight:500!important;line-height:1.3!important}
+.t706__cartpage .searchbox-list-item-description{color:var(--muted)!important;font-size:12px!important;line-height:1.3!important;margin-top:2px}
+.t706__cartpage .searchbox-list-item-text *,.t706__cartpage .searchbox-list-item-description *{color:inherit!important}
+.t706__cartpage [class*="select__list"],.t706__cartpage [class*="select-list"],.t706__cartpage [class*="selectbox"] ul{background:var(--white)!important;color:var(--ink)!important;border:1px solid var(--stone)!important;border-radius:14px!important}
+/* промокод */
+.t706__cartpage .t-inputpromocode__wrapper{display:flex!important;gap:8px;align-items:stretch;width:100%!important}
+.t706__cartpage .t-inputpromocode__wrapper .t-input{flex:1 1 auto;min-width:0;display:block!important;width:auto!important}
+.t706__cartpage .t-inputpromocode__btn{flex:none;width:auto!important;min-width:110px;height:auto!important;min-height:46px!important;margin:0!important;padding:0 18px!important;border-radius:14px!important;background:var(--ink)!important;color:var(--white)!important;font-size:14px!important;font-weight:500!important;align-items:center;justify-content:center;border:0!important}
+.t706__cartpage .t-inputpromocode__wrapper .t-text{color:var(--muted)!important;font-size:13px!important}
+/* согласие и галочки */
+.t706__cartpage .t-checkbox__control{display:flex!important;align-items:flex-start;gap:10px}
+.t706__cartpage .t-checkbox__indicator{flex:none;width:20px!important;height:20px!important;border:1.5px solid var(--muted)!important;background:transparent!important;border-radius:6px!important;transition:background .2s,border-color .2s}
+.t706__cartpage .t-checkbox:checked + .t-checkbox__indicator{background:var(--gold)!important;border-color:var(--gold)!important}
+.t706__cartpage .t-checkbox:checked + .t-checkbox__indicator::after{border-color:#17151B!important;border-width:0 2px 2px 0!important}
+.t706__cartpage .t-checkbox__indicator::after{border-color:transparent!important}

@@ -675,6 +675,7 @@
     // иначе при смене размера окна часть полей оставалась скрытой)
     var fobs=null;
     function showForm(){
+      var pb=document.querySelector('.t706__cartpage .t-inputpromocode__btn');if(pb&&/^\s*Activate\s*$/i.test(pb.textContent))pb.textContent='Применить';
       var pg=document.querySelector('.t706__cartpage');
       if(!pg||!pg.classList.contains('t706__cartpage_showed'))return;
       var f=pg.querySelector('.t706__cartpage-form'),ow=pg.querySelector('.t706__cartpage-open-form-wrap');
@@ -993,6 +994,7 @@
     // иначе при смене размера окна часть полей оставалась скрытой)
     var fobs=null;
     function showForm(){
+      var pb=document.querySelector('.t706__cartpage .t-inputpromocode__btn');if(pb&&/^\s*Activate\s*$/i.test(pb.textContent))pb.textContent='Применить';
       var pg=document.querySelector('.t706__cartpage');
       if(!pg||!pg.classList.contains('t706__cartpage_showed'))return;
       var f=pg.querySelector('.t706__cartpage-form'),ow=pg.querySelector('.t706__cartpage-open-form-wrap');
