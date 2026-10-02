@@ -6,7 +6,7 @@
   var track=document.getElementById('products'),cart=document.getElementById('cart'),count=0,busy=false;
   var PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-  function thumb(u){var m=/^https?:\/\/static\.tildacdn\.com\/(.+)\/([^\/]+)$/.exec(u||'');return m?'https://thb.tildacdn.com/'+m[1]+'/-/resize/480x/'+m[2]:u}
+  function thumb(u,w){var m=/^https?:\/\/static\.tildacdn\.com\/(.+)\/([^\/]+)$/.exec(u||'');return m?'https://thb.tildacdn.com/'+m[1]+'/-/resize/'+(w||480)+'x/'+m[2]:u}
   function fmt(n){return Math.round(n).toLocaleString('ru-RU').replace(/ /g,' ')}
   function norm(p){
     var g=[];try{g=JSON.parse(p.gallery||'[]')}catch(e){}
@@ -33,6 +33,23 @@
     busy=true;
     old.forEach(function(el,k){el.style.setProperty('--i',Math.min(k,6));el.classList.add('out')});
     setTimeout(function(){track.innerHTML=cards();track.scrollLeft=0;busy=false;update()},260+Math.min(old.length,6)*25);
+  }
+  function initHeroCards(){
+    var hero=document.querySelector('.hero'),stage=document.getElementById('heroCards');
+    if(!hero||!stage||stage.children.length)return;
+    var pool=items.filter(function(i){return i.img&&!i.sold}).slice();
+    for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=pool[i];pool[i]=pool[j];pool[j]=x}
+    pool.slice(0,5).forEach(function(it){
+      var a=document.createElement('a');a.className='hero-card';a.href='/newstore#p-'+it.uid;a.setAttribute('aria-label','Открыть товар: '+it.title);
+      a.innerHTML='<span class="hero-card-in"><img src="'+esc(thumb(it.img,560))+'" data-full="'+esc(it.img)+'" alt="'+esc(it.title)+'" draggable="false" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full"></span>';
+      stage.appendChild(a);
+    });
+    if(reduce||!window.matchMedia||matchMedia('(pointer:coarse)').matches)return;
+    var cards=[].slice.call(stage.querySelectorAll('.hero-card')),raf=0,tx=0,ty=0,cx=0,cy=0;
+    function paint(){cx+=(tx-cx)*.1;cy+=(ty-cy)*.1;cards.forEach(function(c){var d=parseFloat(getComputedStyle(c).getPropertyValue('--depth'))||1;c.style.setProperty('--mx',(cx*34*d).toFixed(2)+'px');c.style.setProperty('--my',(cy*24*d).toFixed(2)+'px');c.style.setProperty('--rx',(-cy*6*d).toFixed(2)+'deg');c.style.setProperty('--ry',(cx*8*d).toFixed(2)+'deg');c.classList.add('parallax')});if(Math.abs(tx-cx)>.002||Math.abs(ty-cy)>.002)raf=requestAnimationFrame(paint);else raf=0}
+    function aim(x,y){tx=x;ty=y;if(!raf)raf=requestAnimationFrame(paint)}
+    hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();aim((e.clientX-r.left)/r.width-.5,(e.clientY-r.top)/r.height-.5)},{passive:true});
+    hero.addEventListener('pointerleave',function(){aim(0,0)},{passive:true});
   }
   // стрелки и прогресс
   var prev=document.getElementById('prev'),next=document.getElementById('next'),prog=document.getElementById('prog');
@@ -121,7 +138,7 @@
       fetch('https://store.tildacdn.com/api/getproductslist/?storepartuid='+API.part+'&recid='+API.rec+'&c='+Date.now()+'&getparts=true&getoptions=true&slice='+slice+'&size=100').then(function(r){return r.json()}).then(function(d){
         (d.parts||[]).forEach(function(p){parts[p.uid]=p.title});
         all=all.concat(d.products||[]);
-        if(d.nextslice&&slice<10){slice=d.nextslice;next()}else{items=all.map(norm);buildTabs();render()}
+        if(d.nextslice&&slice<10){slice=d.nextslice;next()}else{items=all.map(norm);buildTabs();render();initHeroCards()}
       }).catch(function(){track.innerHTML='<p class="empty">Не удалось загрузить каталог. <a href="/newstore">Открыть каталог</a></p>'});
     })();
   }
