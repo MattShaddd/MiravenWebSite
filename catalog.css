@@ -418,3 +418,15 @@ body.qv-lock{overflow:hidden}
 .lb.single .lb-nav{display:none}
 @media (hover:none){.lb-nav{display:none}}
 @media (prefers-reduced-motion:reduce){.lb,.lb-slide img{transition:none}}
+
+/* ровные отступы в блоке «название — цена — описание» */
+.qv-scroll{gap:14px}
+.qv-head{display:grid;gap:6px}
+.qv-head .qv-sub{margin:0;font-size:14px;line-height:1.2}
+.qv-title{margin:0;line-height:1.1}
+.qv-priceRow{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-top:6px;line-height:1.1}
+.qv-price{line-height:1.1}
+.qv-old,.qv-off,.qv-stock{line-height:1.1}
+.qv-short{margin:0;font-size:15px;line-height:1.4}
+.qv-crumb{line-height:1.2}
+.qv-head{gap:6px}.qv-priceRow{margin-top:2px}
