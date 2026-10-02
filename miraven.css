@@ -539,10 +539,8 @@ html[data-mv-theme="dark"] .st-bad{color:#E58B82}
 html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 .co-chev svg{width:18px;height:18px;color:var(--muted);transition:transform .3s}
 .co.open .co-chev svg{transform:rotate(180deg)}
-.co-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}
-.co.open .co-body{grid-template-rows:1fr}
-.co-in{overflow:hidden;min-height:0;display:grid;gap:10px;padding:0 14px}
-.co.open .co-in{padding-bottom:14px}
+.co-body{display:block;max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.8,.2,1)}
+.co-in{display:grid;gap:10px;padding:2px 14px 14px}
 .co-p{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;padding:6px;border-radius:12px;transition:background .2s}
 .co-p:hover{background:var(--mist)}
 .co-p img{width:52px;height:52px;border-radius:12px;object-fit:cover;background:var(--stone);flex:none}

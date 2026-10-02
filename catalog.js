@@ -762,7 +762,12 @@
           switch(a.dataset.cab){
             case 'x':cabClose();break;
             case 'tab':cs.tab=a.dataset.t;cabRender();break;
-            case 'ord':{var art=a.closest('.co'),on=!art.classList.contains('open');art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));break}
+            case 'ord':{
+              var art=a.closest('.co'),bd=art.querySelector('.co-body'),on=!art.classList.contains('open');
+              art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));
+              if(on){bd.style.maxHeight=bd.scrollHeight+'px';clearTimeout(bd._t);bd._t=setTimeout(function(){if(art.classList.contains('open'))bd.style.maxHeight='none'},450)}
+              else{bd.style.maxHeight=bd.scrollHeight+'px';void bd.offsetHeight;bd.style.maxHeight='0px';clearTimeout(bd._t)}
+              break}
             case 'more':cabLoad(true);break;
             case 'out':{
               var fin=false,after=function(){if(fin)return;fin=true;location.reload()};
