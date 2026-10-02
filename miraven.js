@@ -258,6 +258,27 @@
     new MutationObserver(scan).observe(site,{attributes:true,attributeFilter:['data-theme']});
     new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});scan();
   })();
+  // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
+  (function(){
+    var site=document.querySelector('.site');if(!site)return;
+    var fab=document.createElement('button');fab.type='button';fab.className='fab';fab.setAttribute('aria-label','Открыть корзину');
+    fab.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-.8.8H7.200a1 1 0 0 1-.8-.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="fab-sum"></span><i class="fab-n"></i>';
+    site.appendChild(fab);
+    var last='';
+    function read(){var n=0,s=0;try{var t=window.tcart;if(!(t&&t.products)){t=JSON.parse(localStorage.getItem('tcart')||'{}')}n=+t.total||0;s=+t.prodamount||+t.amount||0}catch(e){}return{n:n,s:s}}
+    function paint(){
+      var d=read(),key=d.n+'|'+d.s;
+      fab.classList.toggle('on',d.n>0);
+      if(key===last)return;
+      var first=last==='';last=key;
+      fab.querySelector('.fab-sum').textContent=Math.round(d.s).toLocaleString('ru-RU').replace(/ /g,' ')+' ₽';
+      fab.querySelector('.fab-n').textContent=d.n;
+      if(!first){fab.classList.remove('bump');void fab.offsetWidth;fab.classList.add('bump')}
+    }
+    fab.addEventListener('click',function(){if(window.tcart__openCart)tcart__openCart();else{var i=document.querySelector('.t706__carticon');i&&i.click()}});
+    paint();setInterval(paint,700);
+  })();
+  // КОНЕЦ ПЛАВАЮЩЕЙ КОРЗИНЫ
   // поиск и мобильное меню
   var sf=document.getElementById('srch'),si=document.getElementById('srchIn');
   document.getElementById('searchBtn').addEventListener('click',function(){sf.hidden=false;si.focus();var c=document.getElementById('catalog');if(c)c.scrollIntoView({behavior:reduce?'auto':'smooth'})});

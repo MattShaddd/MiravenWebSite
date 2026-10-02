@@ -51,7 +51,9 @@ a = home_js.index('  // вход / регистрация'); b = home_js.index('
 auth = home_js[a:b]
 t = home_js.index("  var site=document.querySelector('.site'),tbtn")
 theme = home_js[t:home_js.rindex('})();')]
-cjs = rd('catalog.src.js').replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
+fa = home_js.index('  // ПЛАВАЮЩАЯ КОРЗИНА'); fb = home_js.index('  // КОНЕЦ ПЛАВАЮЩЕЙ КОРЗИНЫ')
+fab = home_js[fa:fb]
+cjs = rd('catalog.src.js').replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
 # ---------- готовые блоки T123 ----------

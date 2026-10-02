@@ -460,6 +460,7 @@
   $('searchBtn').addEventListener('click',function(){var q=$('q');q.focus({preventScroll:true});window.scrollTo({top:Math.max(0,bar.getBoundingClientRect().top+scrollY-topEl.offsetHeight-8),behavior:reduce?'auto':'smooth'})});
   document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in')});
 
+  /*@FAB@*/
   /*@AUTH@*/
   /*@THEME@*/
 
