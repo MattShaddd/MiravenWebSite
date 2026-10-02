@@ -142,9 +142,12 @@
     }
     function skin(f){
       var d;try{d=f.contentDocument;if(!d||!d.head||!d.body||!d.body.firstChild)return false}catch(e){return false}
-      if(d.getElementById('miraven-skin'))return true;
-      var l=d.createElement('link');l.rel='stylesheet';l.href=CSS_URL;d.head.appendChild(l);
-      var s=d.createElement('style');s.id='miraven-skin';s.textContent=vars();d.head.appendChild(s);
+      var s=d.getElementById('miraven-skin');
+      if(!s){
+        var l=d.createElement('link');l.rel='stylesheet';l.href=CSS_URL;d.head.appendChild(l);
+        s=d.createElement('style');s.id='miraven-skin';d.head.appendChild(s);
+      }
+      var v=vars();if(s.textContent!==v)s.textContent=v; // цвета всегда как у текущей темы сайта
       return true;
     }
     function watch(f){
@@ -152,7 +155,8 @@
       f.addEventListener('load',function(){skin(f)});
       var n=0,t=setInterval(function(){if(skin(f)||++n>40)clearInterval(t)},100);
     }
-    function scan(){document.querySelectorAll('iframe.tlk-authModal-content').forEach(watch)}
+    function scan(){document.querySelectorAll('iframe.tlk-authModal-content').forEach(function(f){watch(f);skin(f)})}
+    new MutationObserver(scan).observe(site,{attributes:true,attributeFilter:['data-theme']});
     new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});scan();
   })();
   // поиск и мобильное меню

@@ -62,3 +62,9 @@ body,.tlk-form,.tlk-userbar,.tlk-userbar__popup,.tlk-menu,.tlk-popup,.tlk-switch
 /* плавающая панель профиля после входа */
 .tlk-userbar,.tlk-userbar__popup,.tlk-popup{border-radius:18px!important}
 .tlk-userbar__popup,.tlk-popup{background:var(--m-bg)!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)}
+
+/* крестик закрытия в попапе */
+button[onclick*="CloseModal"]{top:14px!important;right:14px!important;width:34px;height:34px;display:grid;place-items:center;border-radius:50%!important;color:var(--m-ink)!important;opacity:.75!important;transition:opacity .2s,background .2s}
+button[onclick*="CloseModal"]:hover{opacity:1!important;background:var(--m-stone)!important}
+button[onclick*="CloseModal"] svg{width:16px;height:16px}
+button[onclick*="CloseModal"] line{stroke:var(--m-ink)!important;stroke-width:1.4}
