@@ -170,6 +170,13 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 .tlk-select-custom__options li{border-radius:10px;color:var(--m-ink)}
 .tlk-select-custom__options li:hover{background:var(--m-mist)!important}
 .tlk-select-custom__options li.selected{background:var(--m-mist)!important;color:var(--m-gold-text)!important}
+
+/* единый нативный скролл внутри Members-попапов и длинных панелей */
+.tlk-userbar__popup-content,.tlk-popup__container,.tlk-select-custom__options,.tlk-profile-dropdown-list,.tmst-profile-content-wrapper,.tlk-resources__wrap{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--m-muted) 72%,transparent) transparent}
+.tlk-userbar__popup-content::-webkit-scrollbar,.tlk-popup__container::-webkit-scrollbar,.tlk-select-custom__options::-webkit-scrollbar,.tlk-profile-dropdown-list::-webkit-scrollbar,.tmst-profile-content-wrapper::-webkit-scrollbar,.tlk-resources__wrap::-webkit-scrollbar{width:10px;height:10px}
+.tlk-userbar__popup-content::-webkit-scrollbar-track,.tlk-popup__container::-webkit-scrollbar-track,.tlk-select-custom__options::-webkit-scrollbar-track,.tlk-profile-dropdown-list::-webkit-scrollbar-track,.tmst-profile-content-wrapper::-webkit-scrollbar-track,.tlk-resources__wrap::-webkit-scrollbar-track{background:transparent}
+.tlk-userbar__popup-content::-webkit-scrollbar-thumb,.tlk-popup__container::-webkit-scrollbar-thumb,.tlk-select-custom__options::-webkit-scrollbar-thumb,.tlk-profile-dropdown-list::-webkit-scrollbar-thumb,.tmst-profile-content-wrapper::-webkit-scrollbar-thumb,.tlk-resources__wrap::-webkit-scrollbar-thumb{min-height:44px;border:3px solid transparent;border-radius:999px;background:color-mix(in srgb,var(--m-muted) 72%,transparent);background-clip:content-box}
+.tlk-userbar__popup-content::-webkit-scrollbar-thumb:hover,.tlk-popup__container::-webkit-scrollbar-thumb:hover,.tlk-select-custom__options::-webkit-scrollbar-thumb:hover,.tlk-profile-dropdown-list::-webkit-scrollbar-thumb:hover,.tmst-profile-content-wrapper::-webkit-scrollbar-thumb:hover,.tlk-resources__wrap::-webkit-scrollbar-thumb:hover{background:var(--m-muted);background-clip:content-box}
 .tlk-profile-dropdown-menu{background:var(--m-bg)!important;border:1px solid var(--m-stone)!important;border-radius:14px!important;box-shadow:0 22px 44px -22px rgba(0,0,0,.55)!important}
 .tlk-profile-dropdown-arrow{display:none}
 .tlk-profile-dropdown-item{color:var(--m-ink)!important;border-radius:8px;padding:2px 4px}

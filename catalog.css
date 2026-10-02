@@ -127,13 +127,7 @@
 .qv-pos{font-size:13px;color:var(--muted);padding:0 8px;font-variant-numeric:tabular-nums}
 
 /* галерея */
-.qv-gal{position:relative;display:grid;grid-template-columns:76px minmax(0,1fr);min-width:0;min-height:0;background:var(--mist)}
-.qv-thumbs{display:flex;flex-direction:column;gap:10px;padding:14px 0 14px 14px;overflow:auto;scrollbar-width:none}
-.qv-thumbs::-webkit-scrollbar{display:none}
-.qv-thumbs button{flex:none;width:62px;height:62px;border:0;border-radius:12px;padding:0;overflow:hidden;background:var(--stone);opacity:.6;box-shadow:0 0 0 2px transparent;transition:opacity .25s,box-shadow .25s}
-.qv-thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
-.qv-thumbs button:hover{opacity:1}
-.qv-thumbs button[aria-current="true"]{opacity:1;box-shadow:0 0 0 2px var(--ink)}
+.qv-gal{position:relative;display:grid;grid-template-columns:minmax(0,1fr);min-width:0;min-height:0;background:var(--mist)}
 .qv-stage{position:relative;min-width:0;min-height:0}
 .qv-slides{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain}
 .qv-slides::-webkit-scrollbar{display:none}
@@ -220,7 +214,6 @@ body.qv-lock{overflow:hidden}
   .qv{padding:0;place-items:stretch}
   .qv-box{width:100%;height:100%;border-radius:0;border:0;display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain}
   .qv-gal{display:block;flex:none;height:min(78vw,60vh);min-height:300px}
-  .qv-thumbs{display:none}
   .qv-stage{position:absolute;inset:0}
   .qv-arrows{display:none}
   .qv-count{display:none}

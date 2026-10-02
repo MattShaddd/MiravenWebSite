@@ -315,8 +315,7 @@
         '<button class="qv-btn" type="button" data-qv="pn" aria-label="Следующий товар" title="Следующий товар (Shift+→)"'+(idx<0||idx>=curList.length-1?' disabled':'')+'>'+CHEV_R+'</button>'+
         '<button class="qv-btn" type="button" data-qv="share" aria-label="Поделиться" title="Скопировать ссылку">'+SHARE+'</button>'+
         '<button class="qv-btn" type="button" data-qv="x" aria-label="Закрыть" title="Закрыть (Esc)">'+X+'</button></div>'+
-      '<div class="qv-gal"><div class="qv-thumbs">'+urls.map(function(u,k){return '<button type="button" data-g="'+k+'" aria-label="Фото '+(k+1)+'" aria-current="'+(k===0)+'"><img src="'+esc(thumb(u,140))+'" alt="" loading="lazy"></button>'}).join('')+'</div>'+
-        '<div class="qv-stage"><div class="qv-slides" id="qvSlides">'+urls.map(function(u,k){return '<div class="qv-slide"><img src="'+esc(thumb(u,1100))+'" data-full="'+esc(u)+'" alt="'+esc(it.title)+(urls.length>1?', фото '+(k+1):'')+'" draggable="false"'+(k?' loading="lazy"':'')+' onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full"></div>'}).join('')+'</div>'+
+      '<div class="qv-gal"><div class="qv-stage"><div class="qv-slides" id="qvSlides">'+urls.map(function(u,k){return '<div class="qv-slide"><img src="'+esc(thumb(u,1100))+'" data-full="'+esc(u)+'" alt="'+esc(it.title)+(urls.length>1?', фото '+(k+1):'')+'" draggable="false"'+(k?' loading="lazy"':'')+' onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full"></div>'}).join('')+'</div>'+
           (urls.length>1?'<div class="qv-arrows"><button class="qv-btn qv-prev" type="button" data-qv="gp" aria-label="Предыдущее фото">'+CHEV_L+'</button><button class="qv-btn qv-next" type="button" data-qv="gn" aria-label="Следующее фото">'+CHEV_R+'</button></div><div class="qv-count" id="qvCount">1 / '+urls.length+'</div><div class="qv-dots" id="qvDots">'+urls.map(function(_,k){return '<i'+(k===0?' class="on"':'')+'></i>'}).join('')+'</div>':'')+
         '</div></div>'+
       '<div class="qv-info"><div class="qv-scroll qv-swap">'+
@@ -352,7 +351,6 @@
   function syncGal(){
     var s=$('qvSlides');if(!s)return;var w=s.clientWidth||1,k=Math.round(s.scrollLeft/w),n=s.children.length;
     if(k===gi)return;gi=k;
-    qv.querySelectorAll('.qv-thumbs button').forEach(function(b,i){b.setAttribute('aria-current',String(i===k));if(i===k)b.scrollIntoView({block:'nearest',inline:'nearest'})});
     var c=$('qvCount');if(c)c.textContent=(k+1)+' / '+n;
     qv.querySelectorAll('#qvDots i').forEach(function(d,i){d.classList.toggle('on',i===k)});
     var gp=qv.querySelector('[data-qv="gp"]'),gn=qv.querySelector('[data-qv="gn"]');if(gp)gp.disabled=k<=0;if(gn)gn.disabled=k>=n-1;
@@ -400,7 +398,6 @@
   qv.addEventListener('click',function(e){
     if(e.target===qv){closeQV();return}
     var r=e.target.closest('[data-rel]');if(r){openQV(r.dataset.rel);return}
-    var g=e.target.closest('[data-g]');if(g){slideTo(+g.dataset.g);return}
     var o=e.target.closest('[data-o]');if(o&&!o.disabled){
       sel[o.dataset.o]=o.dataset.v;
       qv.querySelectorAll('[data-o="'+o.dataset.o+'"]').forEach(function(b){b.setAttribute('aria-pressed',String(b===o))});

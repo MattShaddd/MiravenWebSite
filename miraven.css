@@ -602,6 +602,13 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 .sh-foot[hidden]{display:none}
 .sh-foot .f-foot{display:contents}
 .sh:not(.sh-foot-has) .sh-body:last-child{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+
+/* единый нативный скролл внутри модалок, шторок и выпадающих списков */
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list){scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 72%,transparent) transparent}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list)::-webkit-scrollbar{width:10px;height:10px}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list)::-webkit-scrollbar-track{background:transparent}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list)::-webkit-scrollbar-thumb{min-height:44px;border:3px solid transparent;border-radius:999px;background:color-mix(in srgb,var(--muted) 72%,transparent);background-clip:content-box}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list)::-webkit-scrollbar-thumb:hover{background:var(--muted);background-clip:content-box}
 @media (min-width:981px){
   .sh{align-items:center}
   .sh-box{width:min(480px,calc(100vw - 48px));max-height:min(720px,86dvh);border-radius:26px;border:1px solid var(--stone);box-shadow:0 50px 100px -40px rgba(0,0,0,.6);transform:translateY(24px) scale(.985)}
