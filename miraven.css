@@ -942,3 +942,11 @@ html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!i
 .t706__cartpage .searchbox-list-item{transition:background .15s,transform .2s}
 .t706__cartpage .searchbox-list-item:hover{transform:translateX(2px)}
 @media (prefers-reduced-motion:reduce){.mv-in,.mv-pop,.mv-shake,.mv-bump,.t706__cartpage_showed,.t706__cartpage_showed .mv-cp,.t706__cartpage.mv-opening .t706__product{animation:none!important}}
+
+/* кнопка «Оформить заказ» закреплена внизу окна вместе с суммой */
+.t706__cartpage .t-form__submit{position:sticky!important;bottom:calc(-1 * (18px + env(safe-area-inset-bottom,0px)));z-index:9;background:var(--white)!important;margin:10px 0 0!important;padding:12px 0 calc(18px + env(safe-area-inset-bottom,0px))!important;border-top:1px solid var(--stone)}
+.mv-sum{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 10px;font-size:14px;color:var(--muted)}
+.mv-sum>span{display:grid;gap:2px;min-width:0}
+.mv-sum b{color:var(--head);font-size:16px;font-weight:600}
+.mv-sum small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mv-sum .mv-sum-v{font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap}

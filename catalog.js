@@ -721,6 +721,28 @@
       }
       if(!attach()){var n=0,t=setInterval(function(){if(attach()||++n>80)clearInterval(t)},200)}
     })();
+    // ---- сумма рядом с кнопкой: пользователь видит, на что соглашается ----
+    (function(){
+      var tmr=null;
+      function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function tick(){
+        var pg=document.querySelector('.t706__cartpage');
+        if(!pg||!pg.classList.contains('t706__cartpage_showed')){return}
+        var sub=pg.querySelector('.t-form__submit');if(!sub)return;
+        var bar=sub.querySelector('.mv-sum');
+        if(!bar){bar=document.createElement('div');bar.className='mv-sum';sub.insertBefore(bar,sub.firstChild)}
+        var tot=pg.querySelector('.t706__cartwin-totalamount'),cur=pg.querySelector('.t706__cartwin-prodamount-currency'),
+            amount=tot?tot.textContent.trim():'';
+        var chk=pg.querySelector('input[name="tildadelivery-type"]:checked'),line='';
+        if(chk){var lb=chk.closest('label'),nm=lb&&lb.querySelector('.delivery-checkbox-label'),pr=lb&&lb.querySelector('.delivery-minimum-price');
+          line='Доставка: '+(nm?nm.textContent.trim():'')+(pr?' · '+pr.textContent.replace(/^[\s,]+/,'').trim():'')}
+        var html='<span><b>Итого</b>'+(line?'<small>'+esc(line)+'</small>':'')+'</span><b class="mv-sum-v">'+esc(amount)+' р.</b>';
+        if(bar._h!==html){bar._h=html;bar.innerHTML=html}
+      }
+      function loop(){clearInterval(tmr);tmr=setInterval(tick,350);tick()}
+      window.addEventListener('hashchange',loop);
+      var n=0,t=setInterval(function(){var pg=document.querySelector('.t706__cartpage');if(pg||++n>60){clearInterval(t);if(pg)new MutationObserver(function(){if(pg.classList.contains('t706__cartpage_showed'))loop();else clearInterval(tmr)}).observe(pg,{attributes:true,attributeFilter:['class']})}},300);
+    })();
     // форма заказа всегда раскрыта: в нашей шторке один столбец на любом экране (двухшаговый режим Тильды для телефона не нужен,
     // иначе при смене размера окна часть полей оставалась скрытой)
     var fobs=null;
@@ -1089,6 +1111,28 @@
         return true;
       }
       if(!attach()){var n=0,t=setInterval(function(){if(attach()||++n>80)clearInterval(t)},200)}
+    })();
+    // ---- сумма рядом с кнопкой: пользователь видит, на что соглашается ----
+    (function(){
+      var tmr=null;
+      function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function tick(){
+        var pg=document.querySelector('.t706__cartpage');
+        if(!pg||!pg.classList.contains('t706__cartpage_showed')){return}
+        var sub=pg.querySelector('.t-form__submit');if(!sub)return;
+        var bar=sub.querySelector('.mv-sum');
+        if(!bar){bar=document.createElement('div');bar.className='mv-sum';sub.insertBefore(bar,sub.firstChild)}
+        var tot=pg.querySelector('.t706__cartwin-totalamount'),cur=pg.querySelector('.t706__cartwin-prodamount-currency'),
+            amount=tot?tot.textContent.trim():'';
+        var chk=pg.querySelector('input[name="tildadelivery-type"]:checked'),line='';
+        if(chk){var lb=chk.closest('label'),nm=lb&&lb.querySelector('.delivery-checkbox-label'),pr=lb&&lb.querySelector('.delivery-minimum-price');
+          line='Доставка: '+(nm?nm.textContent.trim():'')+(pr?' · '+pr.textContent.replace(/^[\s,]+/,'').trim():'')}
+        var html='<span><b>Итого</b>'+(line?'<small>'+esc(line)+'</small>':'')+'</span><b class="mv-sum-v">'+esc(amount)+' р.</b>';
+        if(bar._h!==html){bar._h=html;bar.innerHTML=html}
+      }
+      function loop(){clearInterval(tmr);tmr=setInterval(tick,350);tick()}
+      window.addEventListener('hashchange',loop);
+      var n=0,t=setInterval(function(){var pg=document.querySelector('.t706__cartpage');if(pg||++n>60){clearInterval(t);if(pg)new MutationObserver(function(){if(pg.classList.contains('t706__cartpage_showed'))loop();else clearInterval(tmr)}).observe(pg,{attributes:true,attributeFilter:['class']})}},300);
     })();
     // форма заказа всегда раскрыта: в нашей шторке один столбец на любом экране (двухшаговый режим Тильды для телефона не нужен,
     // иначе при смене размера окна часть полей оставалась скрытой)
