@@ -593,3 +593,6 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
   .fab.bump{animation:fabBump .5s cubic-bezier(.2,.8,.2,1)}
   @keyframes fabBump{30%{transform:scale(1.12)}60%{transform:scale(.96)}}
 }
+
+/* на телефоне убираем всплывающее «товар добавлен в корзину» (есть плавающая корзина) */
+@media (max-width:760px){.t706__bubble-container,.t706__bubble{display:none!important}}
