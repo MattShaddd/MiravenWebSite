@@ -133,9 +133,105 @@
     // ссылка вида /members/login: её перехватывает Тильда и открывает попап (без неё остаётся переход на страницу)
     var url='/members/login?redirecturl='+encodeURIComponent(location.pathname.replace(/^\//,'')+location.search);
     if(!signed)document.querySelectorAll('a[href="#openmembersbar"]').forEach(function(a){a.href=url});
-    // вошёл: иконка в шапке открывает меню кабинета (штатный механизм Тильды; плавающую кнопку прячем в CSS)
-    function bindUserbar(){if(signed&&typeof window.tma__userbar__useUserbarHandlers==='function'){try{window.tma__userbar__useUserbarHandlers()}catch(e){}}}
-    bindUserbar();window.addEventListener('load',function(){bindUserbar();setTimeout(bindUserbar,800);setTimeout(bindUserbar,2000)});
+    // ---- свой личный кабинет в окне (данные берём из API Тильды) ----
+    var cab,cs={tab:'orders',orders:[],total:0,next:1,dash:null,busy:false,err:false,loaded:false};
+    var ST={cancelled:['Отменён','bad'],canceled:['Отменён','bad'],completed:['Выполнен','ok'],done:['Выполнен','ok'],sent:['Отправлен','ok'],shipped:['Отправлен','ok'],paid:['Оплачен','ok'],processing:['В обработке','mid'],new:['Новый','mid'],pending:['Ожидает оплаты','mid']};
+    function eh(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+    function dec(t){var x=document.createElement('textarea');x.innerHTML=t||'';return x.value}
+    function rub(n){return Math.round(+n||0).toLocaleString('ru-RU').replace(/ /g,' ')+' ₽'}
+    function dt(s){var m=/(\d{4})-(\d\d)-(\d\d)/.exec(s||'');return m?m[3]+'.'+m[2]+'.'+m[1]:''}
+    function plr(n,f){var a=n%100,b=a%10;return a>10&&a<20?f[2]:b>1&&b<5?f[1]:b===1?f[0]:f[2]}
+    function prof(){try{return JSON.parse(localStorage.getItem('tilda_members_profile'+pid))||{}}catch(e){return{}}}
+    function pUrl(u){var m=/tproduct\/(\d+)/.exec(u||'');return m?'/store#p-'+m[1]:(u||'#')}
+    var IC_X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    var IC_CH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+    function api(){return typeof window.tmst__fetchData==='function'}
+    function cabHead(){
+      var p=prof(),n=dec(p.name||'Покупатель'),ini=n.split(/\s+/).slice(0,2).map(function(w){return w.charAt(0)}).join('').toUpperCase()||'М';
+      return '<div class="cab-top"><span class="cab-ava">'+eh(ini)+'</span><div class="cab-who"><b>'+eh(n)+'</b><span>'+eh(p.login||'')+'</span></div><button class="cab-x" type="button" data-cab="x" aria-label="Закрыть">'+IC_X+'</button></div>'
+        +'<div class="cab-tabs" role="tablist"><button type="button" role="tab" data-cab="tab" data-t="orders">Заказы'+(cs.total?'<i>'+cs.total+'</i>':'')+'</button><button type="button" role="tab" data-cab="tab" data-t="bought">Покупки'+(cs.dash&&cs.dash.purchases_count?'<i>'+cs.dash.purchases_count+'</i>':'')+'</button><button type="button" role="tab" data-cab="tab" data-t="me">Профиль</button></div>';
+    }
+    function orderHtml(o,k){
+      var s=ST[o.status&&o.status.name]||[o.status&&o.status.title||'Заказ','mid'];if(o.status&&o.status.title)s=[o.status.title,s[1]];
+      var ps=o.products||[],th=ps.slice(0,3).map(function(p){return '<img src="'+eh(p.image)+'" alt="" loading="lazy">'}).join('')+(ps.length>3?'<span class="co-more">+'+(ps.length-3)+'</span>':'');
+      var list=ps.map(function(p){
+        var op=(p.options||[]).filter(function(x){return x.variant}).map(function(x){return eh(x.option)+': '+eh(x.variant)}).join(', ');
+        return '<a class="co-p" href="'+eh(pUrl(p.url))+'"><img src="'+eh(p.image)+'" alt="" loading="lazy"><span><b>'+eh(dec(p.title))+'</b>'+(op?'<small>'+op+'</small>':'')+'</span></a>';
+      }).join('');
+      var ship=o.shipping&&o.shipping.name?'<div class="co-row"><span>Доставка</span><b>'+eh(o.shipping.name)+'</b></div>':'';
+      return '<article class="co"><button class="co-head" type="button" data-cab="ord" aria-expanded="false"><span class="co-th">'+th+'</span><span class="co-main"><b>Заказ №&nbsp;'+eh(o.formsref)+'</b><small>'+dt(o.created)+' · '+o.products_count+'&nbsp;'+plr(o.products_count,['товар','товара','товаров'])+'</small></span><span class="co-side"><span class="st st-'+s[1]+'">'+eh(s[0])+'</span><b>'+rub(o.amount_total)+'</b></span><span class="co-chev">'+IC_CH+'</span></button><div class="co-body"><div class="co-in">'+list+ship+'<div class="co-row co-sum"><span>Итого</span><b>'+rub(o.amount_total)+'</b></div></div></div></article>';
+    }
+    function cabBody(){
+      var t=cs.tab;
+      if(t==='orders'){
+        if(cs.err)return '<div class="cab-empty"><b>Не удалось загрузить заказы</b><span>Обновите страницу или откройте их на отдельной странице.</span><a class="btn btn-line" href="/members/orderlist">Мои заказы</a></div>';
+        if(!cs.loaded)return '<div class="cab-load"><i></i></div>';
+        if(!cs.orders.length)return '<div class="cab-empty"><b>Заказов пока нет</b><span>Выберите открытки в каталоге, и заказ появится здесь.</span><a class="btn btn-ink" href="/store">В каталог</a></div>';
+        return cs.orders.map(orderHtml).join('')+(cs.orders.length<cs.total?'<button class="btn btn-line cab-more" type="button" data-cab="more">'+(cs.busy?'Загружаем…':'Показать ещё')+'</button>':'');
+      }
+      if(t==='bought'){
+        var L=(cs.dash&&cs.dash.last_purchases)||[];
+        if(!cs.loaded)return '<div class="cab-load"><i></i></div>';
+        if(!L.length)return '<div class="cab-empty"><b>Покупок пока нет</b><span>Здесь появятся товары из ваших заказов.</span><a class="btn btn-ink" href="/store">В каталог</a></div>';
+        return '<div class="cab-grid">'+L.map(function(p){return '<a class="cb" href="'+eh(pUrl(p.url))+'"><span class="cb-im"><img src="'+eh(p.image)+'" alt="" loading="lazy"></span><b>'+eh(dec(p.title))+'</b></a>'}).join('')+'</div>'+(cs.dash.purchases_count>L.length?'<p class="cab-note">Показаны последние покупки. Всего: '+cs.dash.purchases_count+'.</p>':'');
+      }
+      var p=prof(),phone=p.phone?String(p.phone).replace(/^\+?7(\d{3})(\d{3})(\d{2})(\d{2})$/,'+7 ($1) $2-$3-$4'):'';
+      return '<dl class="cab-dl"><dt>Имя</dt><dd>'+eh(dec(p.name||'—'))+'</dd><dt>Эл. почта</dt><dd>'+eh(p.login||'—')+'</dd><dt>Телефон</dt><dd>'+eh(phone||'—')+'</dd></dl>'
+        +'<div class="cab-links"><a class="btn btn-line" href="/members/profile">Редактировать профиль</a><a class="btn btn-line" href="/members/addresses">Мои адреса</a><button class="btn btn-ink" type="button" data-cab="out">Выйти</button></div>';
+    }
+    function cabRender(){
+      if(!cab)return;
+      var sc=cab.querySelector('.cab-body'),pos=sc?sc.scrollTop:0;
+      cab.querySelector('.cab-box').innerHTML=cabHead()+'<div class="cab-body" role="tabpanel">'+cabBody()+'</div>';
+      cab.querySelectorAll('[data-cab="tab"]').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.t===cs.tab))});
+      var nb=cab.querySelector('.cab-body');if(nb)nb.scrollTop=pos;
+    }
+    function cabLoad(more){
+      if(cs.busy)return;
+      if(!api()){var tries=cabLoad.t=(cabLoad.t||0)+1;if(tries<40){setTimeout(function(){cabLoad(more)},150)}else{cs.err=true;cs.loaded=true;cabRender()}return}
+      cs.busy=true;if(more)cabRender();
+      var jobs=[window.tmst__fetchData('getorderslist',{body:{slice:more?cs.next:1,size:10}})];
+      if(!cs.dash)jobs.push(window.tmst__fetchData('getdashboard'));
+      Promise.all(jobs).then(function(r){
+        var o=r[0]||{};cs.orders=more?cs.orders.concat(o.orders||[]):(o.orders||[]);cs.total=o.total||cs.orders.length;cs.next=o.nextslice||cs.next+1;
+        if(r[1])cs.dash=r[1];cs.loaded=true;cs.err=false;cs.busy=false;cabRender();
+      }).catch(function(){cs.busy=false;cs.loaded=true;cs.err=!cs.orders.length;cabRender()});
+    }
+    function cabOpen(){
+      if(!cab){
+        cab=document.createElement('div');cab.className='cab';cab.setAttribute('role','dialog');cab.setAttribute('aria-modal','true');cab.setAttribute('aria-label','Личный кабинет');cab.hidden=true;
+        cab.innerHTML='<div class="cab-box"></div>';(document.querySelector('.site')||document.body).appendChild(cab);
+        cab.addEventListener('click',function(e){
+          if(e.target===cab){cabClose();return}
+          var a=e.target.closest('[data-cab]');if(!a)return;
+          switch(a.dataset.cab){
+            case 'x':cabClose();break;
+            case 'tab':cs.tab=a.dataset.t;cabRender();break;
+            case 'ord':{var art=a.closest('.co'),on=!art.classList.contains('open');art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));break}
+            case 'more':cabLoad(true);break;
+            case 'out':if(typeof window.tma__userbar__sendLogout==='function'){try{window.tma__userbar__sendLogout();break}catch(x){}}location.href='/members/login?exit=y';break;
+          }
+        });
+        document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!cab.hidden)cabClose()});
+      }
+      cab.hidden=false;document.documentElement.style.overflow='hidden';cabRender();
+      requestAnimationFrame(function(){requestAnimationFrame(function(){cab.classList.add('on')})});
+      if(!cs.loaded&&!cs.busy)cabLoad(false);
+      setTimeout(function(){var x=cab.querySelector('.cab-x');x&&x.focus({preventScroll:true})},60);
+    }
+    function cabClose(){
+      cab.classList.remove('on');document.documentElement.style.overflow='';
+      setTimeout(function(){if(!cab.classList.contains('on'))cab.hidden=true},reduce?0:350);
+      if(accBtn)try{accBtn.focus({preventScroll:true})}catch(e){}
+    }
+    // вошёл: иконка (и пункт мобильного меню) открывают наше окно, а не штатное меню Тильды
+    if(signed){
+      document.querySelectorAll('.acc-link').forEach(function(a){a.textContent='Личный кабинет'});
+      document.addEventListener('click',function(e){
+        var a=e.target.closest&&e.target.closest('#accBtn,.acc-link');if(!a)return;
+        e.preventDefault();e.stopImmediatePropagation();cabOpen();
+      },true);
+    }
 
     var site=document.querySelector('.site'),CSS_URL='https://mattshaddd.github.io/MiravenWebSite/members.css';
     function vars(){
