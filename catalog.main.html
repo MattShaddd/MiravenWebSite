@@ -1,0 +1,44 @@
+<main class="cat" id="cat">
+  <section class="wrap cat-hero">
+    <nav class="crumbs" aria-label="Навигация"><a href="{{HOME}}">Главная</a><span aria-hidden="true">/</span><span>Каталог</span></nav>
+    <div class="cat-title">
+      <h1 class="h1">Каталог</h1>
+      <p id="catSub">Авторские открытки, наборы, свечи и наклейки</p>
+    </div>
+  </section>
+
+  <div class="cat-bar" id="catBar">
+    <div class="wrap cat-bar-in">
+      <div class="tabs" role="group" aria-label="Категории" id="tabs"><i class="pill" aria-hidden="true"></i></div>
+      <div class="tools">
+        <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск по каталогу" autocomplete="off" aria-label="Поиск по каталогу"></label>
+        <label class="sort"><span class="sr">Сортировка</span><select id="sort" aria-label="Сортировка">
+          <option value="def">По умолчанию</option>
+          <option value="pa">Сначала дешевле</option>
+          <option value="pd">Сначала дороже</option>
+          <option value="az">По названию</option>
+        </select></label>
+        <button class="btn btn-line fbtn" id="fbtn" type="button" aria-expanded="false" aria-controls="filters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span>Фильтры</span><i class="fcount" id="fcount" hidden>0</i></button>
+      </div>
+    </div>
+  </div>
+
+  <section class="wrap cat-layout">
+    <div class="f-shade" id="fshade" hidden></div>
+    <aside class="filters" id="filters" aria-label="Фильтры" aria-hidden="false">
+      <div class="f-head"><b>Фильтры</b><button type="button" class="icon-btn f-close" id="fclose" aria-label="Закрыть фильтры"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="f-body" id="fbody"></div>
+      <div class="f-foot"><button type="button" class="btn btn-line" id="freset">Сбросить</button><button type="button" class="btn btn-ink" id="fdone">Показать</button></div>
+    </aside>
+
+    <div class="cat-main">
+      <div class="cat-meta"><span id="resCount" aria-live="polite"></span><div class="chips" id="chips"></div></div>
+      <div class="grid" id="grid" aria-label="Товары"></div>
+      <div class="cat-foot"><button class="btn btn-line" id="more" type="button" hidden>Показать ещё</button></div>
+      <div id="sentinel" aria-hidden="true"></div>
+    </div>
+  </section>
+</main>
+
+<div class="qv" id="qv" hidden role="dialog" aria-modal="true" aria-label="Просмотр товара"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>

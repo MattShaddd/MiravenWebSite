@@ -1,0 +1,21 @@
+<!-- Миравен: загрузчик КАТАЛОГА. Вставляется один раз в блок T123 на странице /store. Весь код живёт в репозитории. -->
+<div id="miraven-root"></div>
+<script>
+(function(){
+  // адрес, где опубликованы файлы репозитория (GitHub Pages), со слэшем на конце
+  var BASE='https://mattshaddd.github.io/MiravenWebSite/';
+  // адрес главной страницы сайта (ссылки «Главная», «Доставка», «Где купить» и т.д.). Когда новая главная станет основной, поменяйте на '/'
+  var HOME='/newmain';
+
+  window.MV_HOME=HOME;
+  function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(f);return r.text()})}
+  var root=document.getElementById('miraven-root');
+  Promise.all([get('miraven.css'),get('catalog.css'),get('catalog.html'),get('catalog.js')]).then(function(a){
+    var st=document.createElement('style');st.textContent=a[0]+'\n'+a[1];document.head.appendChild(st);
+    root.innerHTML=a[2].split('{{BASE}}').join(BASE).split('{{HOME}}').join(HOME);
+    var sc=document.createElement('script');sc.textContent=a[3];document.body.appendChild(sc);
+  }).catch(function(){
+    root.innerHTML='<p style="padding:40px 20px;text-align:center;font-family:sans-serif">Не удалось загрузить каталог. Обновите страницу.</p>';
+  });
+})();
+</script>

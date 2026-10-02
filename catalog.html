@@ -1,0 +1,72 @@
+<div class="site">
+<header class="top wrap">
+          <a class="brand" href="{{HOME}}" aria-label="Миравен, на главную"><img src="{{BASE}}logo-header.webp" width="1022" height="121" alt="Миравен"></a>
+          <nav class="nav" aria-label="Меню">
+            <a href="/store" class="on">Каталог</a><a href="{{HOME}}#delivery">Доставка</a><a href="{{HOME}}#stores">Где купить</a><a href="{{HOME}}#about">Об авторе</a><a href="{{HOME}}#reviews">Отзывы</a><a href="{{HOME}}#faq">Вопросы</a>
+          </nav>
+          <div class="top-actions">
+            <button class="icon-btn theme-btn" id="themeBtn" aria-label="Тёмная тема" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 14.6A8.5 8.5 0 0 1 9.4 3.7a8.5 8.5 0 1 0 10.9 10.9Z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></button>
+            <button class="icon-btn" id="searchBtn" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
+            <a class="icon-btn" id="accBtn" href="#openmembersbar" aria-label="Войти или зарегистрироваться" title="Войти или зарегистрироваться"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.7"/><path d="M4.8 20c.6-3.7 3.5-5.8 7.2-5.8s6.600 2.100 7.200 5.800"/></svg></a>
+            <button class="icon-btn" id="cartBtn" aria-label="Корзина"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="cart">0</span></button>
+            <button class="icon-btn burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg></button>
+          </div>
+        </header>
+<nav class="mnav" id="mnav" hidden><a href="/store">Каталог</a><a href="{{HOME}}#delivery">Доставка</a><a href="{{HOME}}#stores">Где купить</a><a href="{{HOME}}#about">Об авторе</a><a href="{{HOME}}#reviews">Отзывы</a><a href="{{HOME}}#faq">Вопросы</a><a href="#openmembersbar" class="acc-link">Войти / Регистрация</a><div class="soc soc-nav"><a href="https://t.me/miravenna" target="_blank" rel="noopener" aria-label="Telegram-канал Миравен" title="Telegram-канал"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.4 2.7 10.7c-1.3.5-1.3 1.3-.2 1.6l4.8 1.5 1.9 5.9c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.8c.3-1.3-.5-1.8-1.2-1.3zM8.3 13.6l9.3-5.9c.4-.3.8-.1.5.2l-7.7 6.9-.3 3.2z"/></svg></a><a href="https://vk.com/iamiraven" target="_blank" rel="noopener" aria-label="Миравен ВКонтакте" title="ВКонтакте"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.8 17.2C6.6 17.2 3 12.9 2.9 5.9h3.1c.1 5.1 2.4 7.3 4.2 7.7V5.9h2.9v4.4c1.8-.2 3.7-2.2 4.3-4.4h2.9c-.5 2.7-2.5 4.7-3.9 5.5 1.4.7 3.7 2.4 4.6 5.8h-3.2c-.7-2.1-2.4-3.8-4.7-4v4z"/></svg></a><a class="soc-q" href="https://t.me/arovive" target="_blank" rel="noopener" aria-label="Написать Арине в Telegram" title="Написать Арине"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.4 2.7 10.7c-1.3.5-1.3 1.3-.2 1.6l4.8 1.5 1.9 5.9c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.8c.3-1.3-.5-1.8-1.2-1.3zM8.3 13.6l9.3-5.9c.4-.3.8-.1.5.2l-7.7 6.9-.3 3.2z"/></svg><span>@arovive</span></a></div></nav>
+
+<main class="cat" id="cat">
+  <section class="wrap cat-hero">
+    <nav class="crumbs" aria-label="Навигация"><a href="{{HOME}}">Главная</a><span aria-hidden="true">/</span><span>Каталог</span></nav>
+    <div class="cat-title">
+      <h1 class="h1">Каталог</h1>
+      <p id="catSub">Авторские открытки, наборы, свечи и наклейки</p>
+    </div>
+  </section>
+
+  <div class="cat-bar" id="catBar">
+    <div class="wrap cat-bar-in">
+      <div class="tabs" role="group" aria-label="Категории" id="tabs"><i class="pill" aria-hidden="true"></i></div>
+      <div class="tools">
+        <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск по каталогу" autocomplete="off" aria-label="Поиск по каталогу"></label>
+        <label class="sort"><span class="sr">Сортировка</span><select id="sort" aria-label="Сортировка">
+          <option value="def">По умолчанию</option>
+          <option value="pa">Сначала дешевле</option>
+          <option value="pd">Сначала дороже</option>
+          <option value="az">По названию</option>
+        </select></label>
+        <button class="btn btn-line fbtn" id="fbtn" type="button" aria-expanded="false" aria-controls="filters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span>Фильтры</span><i class="fcount" id="fcount" hidden>0</i></button>
+      </div>
+    </div>
+  </div>
+
+  <section class="wrap cat-layout">
+    <div class="f-shade" id="fshade" hidden></div>
+    <aside class="filters" id="filters" aria-label="Фильтры" aria-hidden="false">
+      <div class="f-head"><b>Фильтры</b><button type="button" class="icon-btn f-close" id="fclose" aria-label="Закрыть фильтры"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="f-body" id="fbody"></div>
+      <div class="f-foot"><button type="button" class="btn btn-line" id="freset">Сбросить</button><button type="button" class="btn btn-ink" id="fdone">Показать</button></div>
+    </aside>
+
+    <div class="cat-main">
+      <div class="cat-meta"><span id="resCount" aria-live="polite"></span><div class="chips" id="chips"></div></div>
+      <div class="grid" id="grid" aria-label="Товары"></div>
+      <div class="cat-foot"><button class="btn btn-line" id="more" type="button" hidden>Показать ещё</button></div>
+      <div id="sentinel" aria-hidden="true"></div>
+    </div>
+  </section>
+</main>
+
+<div class="qv" id="qv" hidden role="dialog" aria-modal="true" aria-label="Просмотр товара"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<footer class="foot">
+          <div class="wrap">
+            <div class="foot-grid">
+              <div class="brand"><img class="wmk" src="{{BASE}}logo-hero.webp" width="2044" height="336" alt="Миравен. Открытки рассказывают сказки"><div class="soc "><a href="https://t.me/miravenna" target="_blank" rel="noopener" aria-label="Telegram-канал Миравен" title="Telegram-канал"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.4 2.7 10.7c-1.3.5-1.3 1.3-.2 1.6l4.8 1.5 1.9 5.9c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.8c.3-1.3-.5-1.8-1.2-1.3zM8.3 13.6l9.3-5.9c.4-.3.8-.1.5.2l-7.7 6.9-.3 3.2z"/></svg></a><a href="https://vk.com/iamiraven" target="_blank" rel="noopener" aria-label="Миравен ВКонтакте" title="ВКонтакте"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.8 17.2C6.6 17.2 3 12.9 2.9 5.9h3.1c.1 5.1 2.4 7.3 4.2 7.7V5.9h2.9v4.4c1.8-.2 3.7-2.2 4.3-4.4h2.9c-.5 2.7-2.5 4.7-3.9 5.5 1.4.7 3.7 2.4 4.6 5.8h-3.2c-.7-2.1-2.4-3.8-4.7-4v4z"/></svg></a><a class="soc-q" href="https://t.me/arovive" target="_blank" rel="noopener" aria-label="Написать Арине в Telegram" title="Написать Арине"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.4 2.7 10.7c-1.3.5-1.3 1.3-.2 1.6l4.8 1.5 1.9 5.9c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.8c.3-1.3-.5-1.8-1.2-1.3zM8.3 13.6l9.3-5.9c.4-.3.8-.1.5.2l-7.7 6.9-.3 3.2z"/></svg><span>@arovive</span></a></div></div>
+              <div><h4>Магазин</h4><ul><li><a href="/store">Каталог</a></li><li><a href="{{HOME}}#delivery">Доставка</a></li><li><a href="{{HOME}}#stores">Где купить</a></li><li><a href="{{HOME}}#faq">Вопросы</a></li></ul></div>
+              <div><h4>Связаться</h4><ul><li><a href="https://t.me/arovive" target="_blank" rel="noopener">Вопросы: @arovive</a></li><li><a href="https://t.me/miravenna" target="_blank" rel="noopener">Telegram-канал @miravenna</a></li><li><a href="https://vk.com/iamiraven" target="_blank" rel="noopener">vk.com/iamiraven</a></li></ul></div>
+            </div>
+            <div class="fine"><span>© Миравен, 2026</span><span><a href="/oferta">Публичная оферта</a> · <a href="/politika">Политика конфиденциальности</a></span></div>
+          </div>
+        </footer>
+</div>
