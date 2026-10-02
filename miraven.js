@@ -306,67 +306,14 @@
   })();
   // КОНЕЦ ШТОРОК
   // КОРЗИНА В ШТОРКЕ
-  // «Ваш заказ» открывается в нашей шторке (MV.sheet), а не отдельным окном Тильды: содержимое корзины (список, доставка, поля, оплата)
-  // переносится в шторку, вся логика остаётся штатной. Поддерживаются оба режима блока: всплывающее окно и полноэкранная страница.
+  // Окно «Ваш заказ» Тильды оформляется как шторка (стили в miraven.css, тот же вид, что у MV.sheet). Содержимое не переносим:
+  // скрипты Тильды ищут поля и блоки внутри своего окна, поэтому логика остаётся штатной.
   (function(){
-    var sh=null,content=null,home=null,empty=null,obs=null,pobs=null,cur=null;
-    var MODES={
-      page:{win:'.t706__cartpage',content:'.t706__cartpage-content',shown:'t706__cartpage_showed',products:'.t706__cartpage-products',close:'tcart__closeCartFullscreen'},
-      win:{win:'.t706__cartwin',content:'.t706__cartwin-content',shown:'t706__cartwin_showed',products:'.t706__cartwin-products',close:'tcart__closeCart'}
-    };
-    function mode(){return window.tcart_fullscreen&&document.querySelector(MODES.page.win)?MODES.page:MODES.win}
-    function isEmpty(){var t=window.tcart;return !(t&&t.products&&t.products.length)}
-    function restore(){
-      if(content&&home){home.appendChild(content)}
-      if(obs){obs.disconnect();obs=null}
-      if(pobs){pobs.disconnect();pobs=null}
-      document.documentElement.classList.remove('mv-cartsheet');
+    function prep(){
+      var top=document.querySelector('.t706__cartwin-top'),cl=document.querySelector('.t706__cartwin-close');
+      if(top&&cl&&cl.parentNode!==top)top.appendChild(cl); // крестик в шапку шторки
     }
-    function build(){
-      if(sh||!window.MV||!MV.sheet)return !!sh;
-      sh=MV.sheet({title:'Ваш заказ',className:'sh-cart',
-        onClose:function(){
-          var m=cur||mode(),w=document.querySelector(m.win),fn=window[m.close];
-          if(w&&w.classList.contains(m.shown)&&typeof fn==='function'){try{fn()}catch(e){}}
-          restore();
-        }});
-      empty=document.createElement('div');empty.className='cart-empty';
-      empty.innerHTML='<b>Корзина пуста</b><span>Добавьте открытки из каталога, и они появятся здесь.</span><a class="btn btn-ink" href="/store">В каталог</a>';
-      return true;
-    }
-    function show(){
-      var m=mode(),w=document.querySelector(m.win);content=w&&w.querySelector(m.content);
-      if(!content||!build())return;
-      cur=m;home=content.parentNode;
-      document.documentElement.classList.add('mv-cartsheet');
-      sh.el.classList.toggle('sh-cart-page',m===MODES.page);
-      sh.body.innerHTML='';sh.body.appendChild(empty);sh.body.appendChild(content);
-      sh.el.classList.toggle('is-empty',isEmpty());
-      if(!sh.isOpen)sh.open();
-      // если Тильда сама закрыла корзину (например, после оформления), закрываем и шторку
-      if(obs)obs.disconnect();
-      obs=new MutationObserver(function(){if(!w.classList.contains(m.shown)&&sh.isOpen)sh.close()});
-      obs.observe(w,{attributes:true,attributeFilter:['class']});
-      // состав корзины меняется внутри: следим за пустотой
-      var pr=content.querySelector(m.products);
-      if(pobs)pobs.disconnect();
-      if(pr){pobs=new MutationObserver(function(){sh.el.classList.toggle('is-empty',isEmpty())});pobs.observe(pr,{childList:true})}
-    }
-    function hook(){
-      if(typeof window.tcart__openCart!=='function'||window.tcart__openCart.__mv)return false;
-      var o=window.tcart__openCart,f=window.tcart__openCartFullscreen;
-      if(typeof f==='function'&&!f.__mv){
-        window.tcart__openCartFullscreen=function(){var r=f.apply(this,arguments);setTimeout(show,30);return r};
-        window.tcart__openCartFullscreen.__mv=1;
-      }
-      window.tcart__openCart=function(){
-        if(window.tcart_fullscreen&&typeof window.tcart__openCartFullscreen==='function'&&document.querySelector(MODES.page.win)){return window.tcart__openCartFullscreen()} // сразу страница заказа, без боковой панели
-        var r=o.apply(this,arguments);setTimeout(show,30);return r;
-      };
-      window.tcart__openCart.__mv=1;return true;
-    }
-    if(!hook()){var n=0,t=setInterval(function(){if(hook()||++n>80)clearInterval(t)},150)}
-    window.addEventListener('load',function(){hook();setTimeout(hook,800)});
+    prep();window.addEventListener('load',function(){prep();setTimeout(prep,1200)});
   })();
   // КОНЕЦ КОРЗИНЫ В ШТОРКЕ
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
