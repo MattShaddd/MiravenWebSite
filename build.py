@@ -60,6 +60,40 @@ cartsheet = home_js[ca:cb]
 cjs = rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
+
+# ---------- members.css: стили кабинета и входа, действуют только на страницах Members ----------
+SCOPE = ':where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap))'
+def scope_selector(sel):
+    sel = sel.strip()
+    if sel in ('html',':root'): return SCOPE
+    if sel == 'body': return SCOPE + ' body'
+    return SCOPE + ' ' + sel
+def scope_css(css):
+    out = []; i = 0; n = len(css)
+    while i < n:
+        # пропускаем пробелы и комментарии
+        if css[i].isspace(): out.append(css[i]); i += 1; continue
+        if css.startswith('/*', i):
+            j = css.index('*/', i) + 2; out.append(css[i:j]); i = j; continue
+        if css.startswith('@import', i):
+            m = re.compile(r'@import\s+url\("[^"]*"\)[^;]*;').match(css, i)
+            j = m.end(); out.append(css[i:j]); i = j; continue
+        j = css.index('{', i); head = css[i:j]; depth = 1; k = j + 1
+        while depth:
+            c = css[k]
+            if c == '{': depth += 1
+            elif c == '}': depth -= 1
+            k += 1
+        body = css[j+1:k-1]
+        if head.strip().startswith('@'):
+            out.append(head + '{' + scope_css(body) + '}')
+        else:
+            sels = [s for s in head.split(',') if s.strip()]
+            out.append(', '.join(scope_selector(s) for s in sels) + '{' + body + '}')
+        i = k
+    return ''.join(out)
+wr('members.css', scope_css(rd('members.src.css')))
+
 # ---------- готовые блоки T123 ----------
 def inline(css_files, html, js, extra_head=''):
     css = ''
