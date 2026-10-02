@@ -144,7 +144,7 @@
       var d;try{d=f.contentDocument;if(!d||!d.head||!d.body||!d.body.firstChild)return false}catch(e){return false}
       var s=d.getElementById('miraven-skin');
       if(!s){
-        var l=d.createElement('link');l.rel='stylesheet';l.href=CSS_URL;d.head.appendChild(l);
+        var l=d.createElement('link');l.rel='stylesheet';l.href=CSS_URL+'?v='+Math.floor(Date.now()/60000);d.head.appendChild(l);
         s=d.createElement('style');s.id='miraven-skin';d.head.appendChild(s);
       }
       var v=vars();if(s.textContent!==v)s.textContent=v; // цвета всегда как у текущей темы сайта
