@@ -711,3 +711,10 @@ html[data-mv-theme="dark"] .t706__cartwin .t-form__errorbox-middle .t-form__erro
 .t706__cartwin .t706__product{margin:0!important;padding:12px 0!important}
 .t706__cartwin .t706__cartwin-products{margin:0!important;padding:0!important}
 .t706__cartwin .t706__cartwin-bottom{margin-top:0!important}
+
+/* подтверждение заказа */
+.sh-confirm .sh-foot{grid-template-columns:1fr 1fr}
+.cf-dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;margin:0;font-size:14px}
+.cf-dl dt{color:var(--muted)}
+.cf-dl dd{margin:0;word-break:break-word}
+.cf-dl b{font-weight:600}

@@ -652,6 +652,60 @@
     }
     prep();window.addEventListener('load',function(){prep();setTimeout(prep,1200)});
   })();
+  // Подтверждение заказа: Тильда подставляет сохранённые данные (адрес, ФИО, телефон) и сразу уводит на оплату.
+  // Перед отправкой показываем сводку «Проверьте заказ», где можно поправить данные или подтвердить.
+  (function(){
+    var confirmed=false,csh=null;
+    function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+    function val(f,n){var i=f.querySelector('[name="'+n+'"]');return i?String(i.value||'').trim():''}
+    function complete(f){
+      var ok=true,radios={};
+      f.querySelectorAll('.js-tilda-rule').forEach(function(i){
+        if(i.type==='radio'){radios[i.name]=radios[i.name]||i.checked;return}
+        if(i.type==='checkbox'){if(!i.checked)ok=false;return}
+        if(i.type==='hidden'&&!i.value)ok=false;
+        else if(!String(i.value||'').trim()&&i.name!=='Промокод'&&!/comment|promo|Промокод/i.test(i.name))ok=false;
+      });
+      for(var k in radios)if(!radios[k])ok=false;
+      return ok;
+    }
+    function summary(f){
+      var rows=[],sel=f.querySelector('input[name="tildadelivery-type"]:checked'),dl='';
+      if(sel){var lb=sel.closest('label'),t=lb&&lb.innerText.replace(/\s+/g,' ').trim();dl=t||''}
+      var who=val(f,'tildadelivery-userinitials')||val(f,'Имя')||val(f,'Name');
+      var addr=[val(f,'tildadelivery-city'),val(f,'tildadelivery-street'),val(f,'tildadelivery-house'),val(f,'tildadelivery-aptoffice'),val(f,'tildadelivery-pickup-name'),val(f,'tildadelivery-pickup-address')].filter(Boolean).join(', ');
+      if(dl)rows.push(['Доставка',dl]);
+      if(addr)rows.push(['Куда',addr]);
+      if(who)rows.push(['Получатель',who]);
+      var ph=val(f,'Phone')||val(f,'tildaspec-phone-part[]');if(ph)rows.push(['Телефон',ph]);
+      var em=val(f,'Email');if(em)rows.push(['Эл. почта',em]);
+      var cm=val(f,'tildadelivery-comment');if(cm)rows.push(['Комментарий',cm]);
+      var tot=document.querySelector('.t706__cartwin-totalamount, .t706__cartpage-totals .t706__cartwin-totalamount');
+      var items=(window.tcart&&window.tcart.products||[]).map(function(p){return esc(p.name)+(p.quantity>1?' × '+p.quantity:'')}).join('<br>');
+      return '<dl class="cf-dl">'+rows.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'}).join('')+(items?'<dt>Товары</dt><dd>'+items+'</dd>':'')+(tot?'<dt>Итого</dt><dd><b>'+esc(tot.innerText.trim())+' р.</b></dd>':'')+'</dl>';
+    }
+    function ask(btn,f){
+      if(!window.MV||!MV.sheet){return false}
+      if(!csh){
+        csh=MV.sheet({title:'Проверьте заказ',className:'sh-confirm',
+          footer:'<button type="button" class="btn btn-line" data-cf="back">Изменить</button><button type="button" class="btn btn-ink" data-cf="ok">Подтвердить</button>'});
+        csh.el.addEventListener('click',function(e){
+          var b=e.target.closest('[data-cf]');if(!b)return;
+          if(b.dataset.cf==='back'){csh.close();return}
+          if(b.dataset.cf==='ok'){csh.close();confirmed=true;setTimeout(function(){csh._btn&&csh._btn.click()},60)}
+        });
+      }
+      csh._btn=btn;csh.setBody(summary(f));csh.open();return true;
+    }
+    function gate(e){
+      var btn=e.target&&e.target.closest&&e.target.closest('.t706 .t-form__submit .t-submit, .t706 button[type=submit].t-submit');
+      if(!btn)return;
+      if(confirmed){confirmed=false;return}
+      var f=btn.closest('form');if(!f||!complete(f))return; // поля не заполнены: пусть Тильда сама покажет ошибки
+      if(ask(btn,f)){e.preventDefault();e.stopImmediatePropagation()}
+    }
+    document.addEventListener('click',gate,true);
+  })();
 
     // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
@@ -874,6 +928,60 @@
       if(top&&cl&&cl.parentNode!==top)top.appendChild(cl); // крестик в шапку шторки
     }
     prep();window.addEventListener('load',function(){prep();setTimeout(prep,1200)});
+  })();
+  // Подтверждение заказа: Тильда подставляет сохранённые данные (адрес, ФИО, телефон) и сразу уводит на оплату.
+  // Перед отправкой показываем сводку «Проверьте заказ», где можно поправить данные или подтвердить.
+  (function(){
+    var confirmed=false,csh=null;
+    function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+    function val(f,n){var i=f.querySelector('[name="'+n+'"]');return i?String(i.value||'').trim():''}
+    function complete(f){
+      var ok=true,radios={};
+      f.querySelectorAll('.js-tilda-rule').forEach(function(i){
+        if(i.type==='radio'){radios[i.name]=radios[i.name]||i.checked;return}
+        if(i.type==='checkbox'){if(!i.checked)ok=false;return}
+        if(i.type==='hidden'&&!i.value)ok=false;
+        else if(!String(i.value||'').trim()&&i.name!=='Промокод'&&!/comment|promo|Промокод/i.test(i.name))ok=false;
+      });
+      for(var k in radios)if(!radios[k])ok=false;
+      return ok;
+    }
+    function summary(f){
+      var rows=[],sel=f.querySelector('input[name="tildadelivery-type"]:checked'),dl='';
+      if(sel){var lb=sel.closest('label'),t=lb&&lb.innerText.replace(/\s+/g,' ').trim();dl=t||''}
+      var who=val(f,'tildadelivery-userinitials')||val(f,'Имя')||val(f,'Name');
+      var addr=[val(f,'tildadelivery-city'),val(f,'tildadelivery-street'),val(f,'tildadelivery-house'),val(f,'tildadelivery-aptoffice'),val(f,'tildadelivery-pickup-name'),val(f,'tildadelivery-pickup-address')].filter(Boolean).join(', ');
+      if(dl)rows.push(['Доставка',dl]);
+      if(addr)rows.push(['Куда',addr]);
+      if(who)rows.push(['Получатель',who]);
+      var ph=val(f,'Phone')||val(f,'tildaspec-phone-part[]');if(ph)rows.push(['Телефон',ph]);
+      var em=val(f,'Email');if(em)rows.push(['Эл. почта',em]);
+      var cm=val(f,'tildadelivery-comment');if(cm)rows.push(['Комментарий',cm]);
+      var tot=document.querySelector('.t706__cartwin-totalamount, .t706__cartpage-totals .t706__cartwin-totalamount');
+      var items=(window.tcart&&window.tcart.products||[]).map(function(p){return esc(p.name)+(p.quantity>1?' × '+p.quantity:'')}).join('<br>');
+      return '<dl class="cf-dl">'+rows.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'}).join('')+(items?'<dt>Товары</dt><dd>'+items+'</dd>':'')+(tot?'<dt>Итого</dt><dd><b>'+esc(tot.innerText.trim())+' р.</b></dd>':'')+'</dl>';
+    }
+    function ask(btn,f){
+      if(!window.MV||!MV.sheet){return false}
+      if(!csh){
+        csh=MV.sheet({title:'Проверьте заказ',className:'sh-confirm',
+          footer:'<button type="button" class="btn btn-line" data-cf="back">Изменить</button><button type="button" class="btn btn-ink" data-cf="ok">Подтвердить</button>'});
+        csh.el.addEventListener('click',function(e){
+          var b=e.target.closest('[data-cf]');if(!b)return;
+          if(b.dataset.cf==='back'){csh.close();return}
+          if(b.dataset.cf==='ok'){csh.close();confirmed=true;setTimeout(function(){csh._btn&&csh._btn.click()},60)}
+        });
+      }
+      csh._btn=btn;csh.setBody(summary(f));csh.open();return true;
+    }
+    function gate(e){
+      var btn=e.target&&e.target.closest&&e.target.closest('.t706 .t-form__submit .t-submit, .t706 button[type=submit].t-submit');
+      if(!btn)return;
+      if(confirmed){confirmed=false;return}
+      var f=btn.closest('form');if(!f||!complete(f))return; // поля не заполнены: пусть Тильда сама покажет ошибки
+      if(ask(btn,f)){e.preventDefault();e.stopImmediatePropagation()}
+    }
+    document.addEventListener('click',gate,true);
   })();
   // КОНЕЦ КОРЗИНЫ В ШТОРКЕ
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
