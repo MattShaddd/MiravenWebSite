@@ -680,3 +680,27 @@ html.mv-cartsheet .t706__cartwin{opacity:0!important;visibility:hidden!important
 .top.slide{position:fixed!important;top:0;left:0;right:0;transform:translateY(-105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s,padding .35s;z-index:30}
 .top.slide.show{transform:none;box-shadow:0 10px 30px -24px rgba(0,0,0,.45)}
 .top.slide ~ .mnav{position:fixed;top:var(--hdrh,64px);left:0;right:0;z-index:29}
+
+/* ===== корзина-страница Тильды (режим «на весь экран») внутри шторки ===== */
+html.mv-cartsheet .t706__cartpage{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.sh-cart-page .sh-box{max-width:600px}
+.sh-cart .t706__cartpage-top{display:none!important}
+.sh-cart .t706__cartpage-content{display:flex!important;flex-direction:column;width:auto!important;max-width:none!important;margin:0!important;padding:0!important}
+.sh-cart .t706__cartpage-info{order:1;width:auto!important;float:none!important;max-width:none!important;padding:0!important;margin:0 0 16px!important}
+.sh-cart .t706__cartpage-open-form-wrap{order:2;width:auto!important;padding:0!important;margin:0 0 8px!important}
+.sh-cart .t706__cartpage-form{order:3;width:auto!important;float:none!important;max-width:none!important;padding:0!important;margin:0!important}
+.sh-cart .t706__cartpage-info-wrapper,.sh-cart .t706__cartpage-form-wrapper{width:auto!important;max-width:none!important;padding:0!important;margin:0!important}
+.sh-cart .t706__cartpage-products{border:0!important;display:block}
+.sh-cart .t706__cartpage-totals,.sh-cart .t706__cartpage-prodamount{padding:0!important;margin:0!important}
+.sh-cart .t-btn,.sh-cart .t-btnflex{background:var(--ink)!important;color:var(--white)!important;border:0!important;border-radius:999px!important;height:50px!important;font-size:15px!important;font-weight:500!important;box-shadow:none!important;width:100%!important;transition:background .2s!important}
+.sh-cart .t-btn:hover,.sh-cart .t-btnflex:hover{background:color-mix(in srgb,var(--ink) 86%,var(--white))!important}
+.sh-cart .t-btnflex__text,.sh-cart .t-btn span{color:inherit!important;font-size:15px!important}
+.sh-cart .t706__auth{background:var(--mist);border-radius:14px;padding:12px 14px;color:var(--muted);font-size:13px;margin-bottom:12px}
+.sh-cart .t706__auth *{color:inherit}
+.sh-cart .t-input-title,.sh-cart .t-radio__text,.sh-cart .t-checkbox__label{font-size:13px!important;color:var(--ink)!important}
+.sh-cart .t-input{background:transparent!important;color:var(--ink)!important;border:1px solid var(--stone)!important;border-radius:14px!important;height:46px!important;font-size:15px!important;box-shadow:none!important}
+.sh-cart .t-input:focus{border-color:var(--gold)!important}
+.sh-cart .t-input-group{margin-bottom:12px!important}
+.sh-cart .t-radio__indicator,.sh-cart .t-checkbox__indicator{border-color:var(--stone)!important;background:transparent!important}
+.sh-cart .t-form__errorbox-middle .t-form__errorbox-text{background:color-mix(in srgb,#B4443A 14%,transparent)!important;color:#B4443A!important;border-radius:12px;font-size:13px!important;padding:10px 12px!important}
+html[data-mv-theme="dark"] .sh-cart .t-form__errorbox-middle .t-form__errorbox-text{color:#E58B82!important}
