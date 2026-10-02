@@ -124,6 +124,13 @@
       }).catch(function(){track.innerHTML='<p class="empty">Не удалось загрузить каталог. <a href="/store">Открыть каталог</a></p>'});
     })();
   }
+  // вход / регистрация: личный кабинет покупателя Тильды (Members)
+  (function(){
+    var ar=document.getElementById('allrecords'),pid=ar&&ar.getAttribute('data-tilda-project-id'),signed=false;
+    try{signed=!!(pid&&JSON.parse(localStorage.getItem('tilda_members_profile'+pid)))}catch(e){}
+    var url='/members/login?redirecturl='+encodeURIComponent(location.pathname.replace(/^\//,'')+location.search);
+    document.querySelectorAll('a[href="#openmembersbar"]').forEach(function(a){a.href=url;if(signed&&a.id==='accBtn'){a.classList.add('signed');a.title=a.ariaLabel='Личный кабинет'}});
+  })();
   // поиск и мобильное меню
   var sf=document.getElementById('srch'),si=document.getElementById('srchIn');
   document.getElementById('searchBtn').addEventListener('click',function(){sf.hidden=false;si.focus();var c=document.getElementById('catalog');if(c)c.scrollIntoView({behavior:reduce?'auto':'smooth'})});
