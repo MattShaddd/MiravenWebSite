@@ -184,3 +184,6 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 .t706__carticon,.t706__carticon_showed{display:none!important}
 .tlk-userbar{top:14px!important;right:16px!important}
 .tlk-userbar__user-image{width:44px!important;height:44px!important}
+
+/* на страницах кабинета плавающие иконки профиля и корзины не нужны */
+.tlk-userbar,.t706__carticon,.t706__carticon_showed,.t-pos-widget,.t-menuwidgeticons__button{display:none!important}

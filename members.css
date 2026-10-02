@@ -184,3 +184,6 @@
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon_showed{display:none!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar{top:14px!important;right:16px!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__user-image{width:44px!important;height:44px!important}
+
+/* на страницах кабинета плавающие иконки профиля и корзины не нужны */
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon_showed, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t-pos-widget, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t-menuwidgeticons__button{display:none!important}
