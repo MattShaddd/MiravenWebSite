@@ -377,8 +377,12 @@
           });
         }).observe(pg,{attributes:true,attributeFilter:['style','class','hidden'],childList:true,subtree:true,characterData:true});
         // при открытии окна строки списка появляются по очереди
+        var wasShown=false;
         new MutationObserver(function(){
-          if(pg.classList.contains('t706__cartpage_showed')){pg.classList.add('mv-opening');ready=false;setTimeout(function(){ready=true},900);setTimeout(function(){pg.classList.remove('mv-opening')},1000)}
+          var now=pg.classList.contains('t706__cartpage_showed');
+          if(now===wasShown)return; // реагируем только на открытие/закрытие, а не на свои же классы
+          wasShown=now;
+          if(now){pg.classList.add('mv-opening');ready=false;setTimeout(function(){ready=true},900);setTimeout(function(){pg.classList.remove('mv-opening')},1000)}
           else ready=false;
         }).observe(pg,{attributes:true,attributeFilter:['class']});
         return true;
