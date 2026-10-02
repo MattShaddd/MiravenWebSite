@@ -396,7 +396,13 @@
 
   // шапка и активный пункт меню
   var top=document.querySelector('.top');
-  function onScroll(){top.classList.toggle('scrolled',window.scrollY>8)}
+  // на главной шапка скрыта вверху страницы и выезжает, когда пролистали героя
+  var heroEl=document.querySelector('.hero');
+  if(heroEl){top.classList.add('slide');document.documentElement.style.setProperty('--hdrh',top.offsetHeight+'px')}
+  function onScroll(){
+    top.classList.toggle('scrolled',window.scrollY>8);
+    if(heroEl){var th=Math.max(140,heroEl.offsetHeight*.6);top.classList.toggle('show',window.scrollY>th)}
+  }
   window.addEventListener('scroll',onScroll,{passive:true});onScroll();
   var links=[].slice.call(document.querySelectorAll('.nav a'));
   if('IntersectionObserver' in window){

@@ -675,3 +675,8 @@ html.mv-cartsheet .t706__cartwin{opacity:0!important;visibility:hidden!important
 .sh-cart .t706__orderform .t-input{height:44px!important;font-size:15px!important}
 .sh-cart .t706__orderform .t-submit{width:100%!important;height:50px!important;font-size:15px!important;margin-top:8px}
 .sh-cart .t706__auth{font-size:13px!important}
+
+/* ===== главная: шапка выезжает только после героя ===== */
+.top.slide{position:fixed!important;top:0;left:0;right:0;transform:translateY(-105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s,padding .35s;z-index:30}
+.top.slide.show{transform:none;box-shadow:0 10px 30px -24px rgba(0,0,0,.45)}
+.top.slide ~ .mnav{position:fixed;top:var(--hdrh,64px);left:0;right:0;z-index:29}
