@@ -187,3 +187,28 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 
 /* на страницах кабинета плавающие иконки профиля и корзины не нужны */
 .tlk-userbar,.t706__carticon,.t706__carticon_showed,.t-pos-widget,.t-menuwidgeticons__button{display:none!important}
+
+/* ===== купленные товары, заказы: кнопки, строки, пагинация ===== */
+.tmst-button{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 18px!important;border-radius:999px!important;font:inherit!important;font-size:14px!important;font-weight:500!important;line-height:1.2!important;text-decoration:none!important;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.tmst-button:active{transform:scale(.97)}
+.tmst-button_primary,.tmst-button.tmst-purchased__go-to-catalog-btn{background:var(--m-ink)!important;color:var(--m-bg)!important;border:0!important}
+.tmst-button_primary:hover{background:color-mix(in srgb,var(--m-ink) 86%,var(--m-bg))!important}
+.tmst-button_secondary{background:transparent!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)!important}
+.tmst-button_secondary:hover{border-color:var(--m-ink)!important}
+.tmst-button_text{background:transparent!important;border:0!important;color:var(--m-muted)!important;padding:0 8px!important}
+.tmst-button_text:hover{color:var(--m-gold-text)!important}
+.tmst-purchased__details__product-title{color:var(--m-ink)!important;font-weight:500!important;font-size:15px!important;text-decoration:none!important}
+.tmst-purchased__details__product-title:hover{color:var(--m-gold-text)!important}
+.tmst-purchased__details__product-sku,.tmst-purchased__product-details__date,.tmst-purchased__details__product-option-name{color:var(--m-muted)!important;font-size:13px!important}
+.tmst-purchased__product-details__price{color:var(--m-head)!important;font-weight:600!important}
+.tmst-purchased__list__product-image{border-radius:14px!important}
+.tmst-purchased__details__product-option-value{color:var(--m-ink)!important}
+.tmst-purchased__product-details__action{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.tmst-purchased__product-cta-details{color:var(--m-muted)!important;font-size:13px}
+.tmst-pagination__button{border-radius:999px!important;border:1px solid var(--m-stone)!important;background:transparent!important;color:var(--m-ink)!important;min-width:38px;height:38px}
+.tmst-pagination__button_active{background:var(--m-ink)!important;color:var(--m-bg)!important;border-color:var(--m-ink)!important}
+.tmst-pagination-nav{color:var(--m-ink)!important}
+.tmst-status{border-radius:999px!important;font-size:12px!important;padding:3px 10px!important}
+.tmst-error-text,.tmst-error-message{color:var(--m-muted)!important}
+.tmst-preloader-item{background:var(--m-stone)!important;border-radius:14px!important}
+.tlk-password-icon-hidden,.tlk-password-icon-visible{opacity:.9!important}

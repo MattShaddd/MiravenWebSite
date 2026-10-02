@@ -187,3 +187,28 @@
 
 /* на страницах кабинета плавающие иконки профиля и корзины не нужны */
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon_showed, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t-pos-widget, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t-menuwidgeticons__button{display:none!important}
+
+/* ===== купленные товары, заказы: кнопки, строки, пагинация ===== */
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 18px!important;border-radius:999px!important;font:inherit!important;font-size:14px!important;font-weight:500!important;line-height:1.2!important;text-decoration:none!important;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button:active{transform:scale(.97)}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button_primary, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button.tmst-purchased__go-to-catalog-btn{background:var(--m-ink)!important;color:var(--m-bg)!important;border:0!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button_primary:hover{background:color-mix(in srgb,var(--m-ink) 86%,var(--m-bg))!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button_secondary{background:transparent!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button_secondary:hover{border-color:var(--m-ink)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button_text{background:transparent!important;border:0!important;color:var(--m-muted)!important;padding:0 8px!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-button_text:hover{color:var(--m-gold-text)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__details__product-title{color:var(--m-ink)!important;font-weight:500!important;font-size:15px!important;text-decoration:none!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__details__product-title:hover{color:var(--m-gold-text)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__details__product-sku, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__product-details__date, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__details__product-option-name{color:var(--m-muted)!important;font-size:13px!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__product-details__price{color:var(--m-head)!important;font-weight:600!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__list__product-image{border-radius:14px!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__details__product-option-value{color:var(--m-ink)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__product-details__action{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-purchased__product-cta-details{color:var(--m-muted)!important;font-size:13px}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-pagination__button{border-radius:999px!important;border:1px solid var(--m-stone)!important;background:transparent!important;color:var(--m-ink)!important;min-width:38px;height:38px}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-pagination__button_active{background:var(--m-ink)!important;color:var(--m-bg)!important;border-color:var(--m-ink)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-pagination-nav{color:var(--m-ink)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-status{border-radius:999px!important;font-size:12px!important;padding:3px 10px!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-error-text, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-error-message{color:var(--m-muted)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-preloader-item{background:var(--m-stone)!important;border-radius:14px!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-password-icon-hidden, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-password-icon-visible{opacity:.9!important}
