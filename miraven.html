@@ -1,0 +1,106 @@
+<div class="site">
+        <header class="top wrap">
+          <a class="brand" href="#" aria-label="Миравен, на главную"><img src="{{BASE}}logo-header.webp" width="1022" height="121" alt="Миравен"></a>
+          <nav class="nav" aria-label="Меню">
+            <a href="#catalog" class="on">Каталог</a><a href="#delivery">Доставка</a><a href="#stores">Где купить</a><a href="#about">Об авторе</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a>
+          </nav>
+          <div class="top-actions">
+            <button class="icon-btn theme-btn" id="themeBtn" aria-label="Тёмная тема" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 14.6A8.5 8.5 0 0 1 9.4 3.7a8.5 8.5 0 1 0 10.9 10.9Z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></button>
+            <button class="icon-btn" id="searchBtn" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
+            <button class="icon-btn" id="cartBtn" aria-label="Корзина"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="cart">0</span></button>
+            <button class="icon-btn burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg></button>
+          </div>
+        <form class="srch" id="srch" role="search" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input type="search" id="srchIn" placeholder="Найти открытку, набор, свечу…" autocomplete="off" aria-label="Поиск по каталогу"><button type="button" class="icon-btn" id="srchX" aria-label="Закрыть поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></form>
+        </header>
+        <nav class="mnav" id="mnav" hidden><a href="#catalog">Каталог</a><a href="#delivery">Доставка</a><a href="#stores">Где купить</a><a href="#about">Об авторе</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></nav>
+
+        <section class="hero wrap">
+          <div class="hero-copy">
+            <span class="logo-shine intro" style="--d:0"><img class="logo" src="{{BASE}}logo-hero.webp" width="2044" height="336" alt="Миравен. Открытки рассказывают сказки"></span>
+            <h1 class="intro" style="--d:1">Авторские открытки и подарки от художницы Арины</h1>
+            <div class="ctas intro" style="--d:2">
+              <a class="btn btn-ink" href="#catalog">Перейти в каталог <span class="ar">→</span></a>
+              <a class="btn btn-line" href="#delivery">Доставка</a>
+            </div>
+            <div class="facts intro" style="--d:3">
+              <div><b id="factMin">от 150 ₽</b>открытка</div>
+              <div><b id="factCount">120+</b>товаров</div>
+              <div><b>по России</b>Почта и СДЭК</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="sec wrap" id="catalog" style="padding-top:clamp(40px,5vw,72px)">
+          <div class="cat-head">
+            <h2 class="h2">Каталог</h2>
+            <a class="link" href="/store">Смотреть все товары</a>
+            <div class="cat-nav">
+              <button class="arrow" id="prev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+              <button class="arrow" id="next" aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+            </div>
+          </div>
+          <div class="tabs" role="group" aria-label="Категории" id="tabs">
+            <i class="pill" aria-hidden="true"></i>
+            <button aria-pressed="true" data-cat="all">Все<span>0</span></button>
+          </div>
+          <div class="track-wrap"><div class="track" id="products" tabindex="0" aria-label="Товары"></div></div>
+          <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+        </section>
+
+        <div class="wrap"><div class="divider rv" aria-hidden="true"><i class="spk-inline"><svg viewBox="0 0 24 24"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/></svg></i></div></div>
+        <section class="sec wrap" id="delivery">
+          <div class="sec-head rv"><h2 class="h2">Доставка по России</h2></div>
+          <div class="deliv">
+            <div class="rv" style="--i:1"><h3>Почта России</h3><dl class="kv"><dt>Срок</dt><dd><span class="fill">указать</span></dd><dt>Стоимость</dt><dd><span class="fill">указать</span></dd></dl></div>
+            <div class="rv" style="--i:2"><h3>СДЭК</h3><dl class="kv"><dt>Срок</dt><dd><span class="fill">указать</span></dd><dt>Стоимость</dt><dd><span class="fill">указать</span></dd></dl></div>
+          </div>
+        </section>
+
+        <div class="wrap"><div class="divider rv" aria-hidden="true"><i class="spk-inline"><svg viewBox="0 0 24 24"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/></svg></i></div></div>
+        <section class="sec wrap" id="stores">
+          <div class="sec-head rv"><h2 class="h2">Где купить</h2><p>Открытки Миравен можно найти в магазинах-партнёрах: посмотреть вживую и забрать сразу.</p></div>
+          <div class="stores"><a class="store rv" style="--i:1" href="https://yandex.ru/maps/?text=%D0%9D%D0%BE%D0%B2%D0%BE%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%2C%20%D1%83%D0%BB.%20%D0%92%D0%B0%D1%82%D1%83%D1%82%D0%B8%D0%BD%D0%B0%2C%2029/1" target="_blank" rel="noopener"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-city">Новосибирск</span><b class="st-name">«Башня»</b><span class="st-addr">ул. Ватутина, 29/1</span><span class="st-go">На карте <span class="ar">→</span></span></a><a class="store rv" style="--i:2" href="https://yandex.ru/maps/?text=%D0%9D%D0%BE%D0%B2%D0%BE%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%2C%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9%20%D0%BF%D1%80%D0%BE%D1%81%D0%BF%D0%B5%D0%BA%D1%82%2C%20161%2C%20%D0%BE%D1%84%D0%B8%D1%81%2020" target="_blank" rel="noopener"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-city">Новосибирск</span><b class="st-name">«Книжная барахолка»</b><span class="st-addr">Красный проспект, 161, офис 20</span><span class=st-note>лофт-парк «Подземка»</span><span class="st-go">На карте <span class="ar">→</span></span></a><a class="store rv" style="--i:3" href="https://yandex.ru/maps/?text=%D0%A3%D1%84%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9C%D1%83%D1%81%D1%82%D0%B0%D1%8F%20%D0%9A%D0%B0%D1%80%D0%B8%D0%BC%D0%B0%2C%204%D0%B0" target="_blank" rel="noopener"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-city">Уфа</span><b class="st-name">«Тайная полка»</b><span class="st-addr">ул. Мустая Карима, 4а</span><span class=st-note>магазин подарков</span><span class="st-go">На карте <span class="ar">→</span></span></a><a class="store rv" style="--i:4" href="https://yandex.ru/maps/?text=%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%2C%20%D1%83%D0%BB.%20%D0%9F%D0%B5%D1%81%D1%82%D0%B5%D0%BB%D1%8F%2C%2017/25" target="_blank" rel="noopener"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-city">Санкт-Петербург</span><b class="st-name">«Твоя полка»</b><span class="st-addr">ул. Пестеля, 17/25</span><span class="st-go">На карте <span class="ar">→</span></span></a><a class="store rv" style="--i:4" href="https://yandex.ru/maps/?text=%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80%2C%20%D1%83%D0%BB.%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%B0%D1%8F%2C%2093" target="_blank" rel="noopener"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-city">Краснодар</span><b class="st-name">«Торговцы звёздами»</b><span class="st-addr">ул. Красная, 93 / ул. Пашковская, 71</span><span class="st-go">На карте <span class="ar">→</span></span></a><a class="store rv" style="--i:4" href="https://yandex.ru/maps/?text=%D0%98%D1%80%D0%BA%D1%83%D1%82%D1%81%D0%BA%2C%20%D1%83%D0%BB.%20%D0%A3%D1%80%D0%B8%D1%86%D0%BA%D0%BE%D0%B3%D0%BE%2C%202" target="_blank" rel="noopener"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-city">Иркутск</span><b class="st-name">«Твоя полка»</b><span class="st-addr">ул. Урицкого, 2</span><span class="st-go">На карте <span class="ar">→</span></span></a><a class="store rv" style="--i:4" href="https://yandex.ru/maps/?text=%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83%2C%20%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%20157%E2%80%93161" target="_blank" rel="noopener"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-city">Ростов-на-Дону</span><b class="st-name">«Твоя полка»</b><span class="st-addr">Пушкинская улица, 157–161</span><span class="st-go">На карте <span class="ar">→</span></span></a><div class="store store-online rv" style="--i:4"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5S9.600 5.900 12 3.500z"/></svg></span><span class="st-city">Онлайн</span><b class="st-name">«Полка Чудес»</b><span class="st-addr">Онлайн-магазин</span></div></div>
+        </section>
+
+        <section class="sec mist" id="about">
+          <div class="wrap about">
+            <div class="photo rv" id="aboutPhoto" data-cap="Портрет Арины за работой, светлый фон"></div>
+            <div class="about-copy rv" style="--i:1">
+              <div class="divider rv" style="justify-content:flex-start;--i:2" aria-hidden="true"><i class="spk-inline"><svg viewBox="0 0 24 24"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/></svg></i></div>
+              <h2 class="h2">Об авторе</h2>
+              <p>Меня зовут Арина. Все работы в магазине мои: красками и на планшете. Архитектура, пейзажи, времена года и открытки по любимым фильмам и играм.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="sec wrap" id="reviews">
+          <div class="sec-head rv"><h2 class="h2">Отзывы</h2><a class="link" href="https://vk.com/iamiraven">Все отзывы ВКонтакте</a></div>
+          <div class="reviews">
+            <figure class="review rv" style="--i:1"><span class="q"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/></svg></span><blockquote class="ph">Текст настоящего отзыва из ВКонтакте, 1–3 предложения.</blockquote><figcaption class="who"><i></i><span><b>Имя покупателя</b>город · что купил</span></figcaption></figure>
+            <figure class="review rv" style="--i:2"><span class="q"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/></svg></span><blockquote class="ph">Текст настоящего отзыва из ВКонтакте, 1–3 предложения.</blockquote><figcaption class="who"><i></i><span><b>Имя покупателя</b>город · что купил</span></figcaption></figure>
+            <figure class="review rv" style="--i:3"><span class="q"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z"/></svg></span><blockquote class="ph">Текст настоящего отзыва из ВКонтакте, 1–3 предложения.</blockquote><figcaption class="who"><i></i><span><b>Имя покупателя</b>город · что купил</span></figcaption></figure>
+          </div>
+        </section>
+
+        <section class="sec wrap" id="faq">
+          <div class="faq-grid">
+            <div class="rv"><h2 class="h2">Вопросы</h2><p>Telegram @miravenna<br>vk.com/iamiraven</p></div>
+            <div class="faq rv" style="--i:1">
+              <details open><summary>Когда отправите заказ?</summary><div class="ans"><p><span class="fill">Срок сборки после оплаты</span></p></div></details>
+              <details><summary>Как упакованы открытки?</summary><div class="ans"><p><span class="fill">Как упаковано</span></p></div></details>
+              <details><summary>Открытка пришла повреждённой</summary><div class="ans"><p><span class="fill">Замена или возврат</span></p></div></details>
+            </div>
+          </div>
+        </section>
+
+        <footer class="foot">
+          <div class="wrap">
+            <div class="foot-grid">
+              <div class="brand"><img class="wmk" src="{{BASE}}logo-hero.webp" width="2044" height="336" alt="Миравен. Открытки рассказывают сказки"></div>
+              <div><h4>Магазин</h4><ul><li><a href="#catalog">Каталог</a></li><li><a href="#delivery">Доставка</a></li><li><a href="#stores">Где купить</a></li><li><a href="#faq">Вопросы</a></li></ul></div>
+              <div><h4>Связаться</h4><ul><li>Telegram @miravenna</li><li>vk.com/iamiraven</li></ul></div>
+            </div>
+            <div class="fine"><span>© Миравен, 2026</span><span><a href="/oferta">Публичная оферта</a> · <a href="/politika">Политика конфиденциальности</a></span></div>
+          </div>
+        </footer>
+      </div>

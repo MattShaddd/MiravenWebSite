@@ -1,0 +1,18 @@
+<!-- Миравен: загрузчик. Вставляется один раз в блок T123 на Тильде. Весь код живёт в репозитории. -->
+<div id="miraven-root"></div>
+<script>
+(function(){
+  // ВАЖНО: адрес, где опубликованы файлы репозитория (GitHub Pages), со слэшем на конце
+  var BASE='https://USER.github.io/REPO/';
+
+  function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(f);return r.text()})}
+  var root=document.getElementById('miraven-root');
+  Promise.all([get('miraven.css'),get('miraven.html'),get('miraven.js')]).then(function(a){
+    var st=document.createElement('style');st.textContent=a[0];document.head.appendChild(st);
+    root.innerHTML=a[1].split('{{BASE}}').join(BASE);
+    var sc=document.createElement('script');sc.textContent=a[2];document.body.appendChild(sc);
+  }).catch(function(){
+    root.innerHTML='<p style="padding:40px 20px;text-align:center;font-family:sans-serif">Не удалось загрузить страницу. <a href="/store">Открыть каталог</a></p>';
+  });
+})();
+</script>
