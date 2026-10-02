@@ -381,10 +381,8 @@ body.qv-lock{overflow:hidden}
   .cat-bar-in{padding-block:10px;gap:0}
   .cat-bar .tabs,.cat-bar.compact .tabs{flex:1 0 100%;align-self:stretch}
   .cat-bar.compact .tabs{-webkit-mask:none;mask:none;align-items:center}
-  /* в одну строку кнопки остаются на виду справа */
-  .cat-bar.compact .tab-tool{position:sticky;background:var(--white)}
-  .cat-bar.compact .tab-tool[data-tool="filters"]{right:0}
-  .cat-bar.compact .tab-tool[data-tool="sort"]{right:46px;margin-left:auto}
+  /* при прокрутке кнопки уходят в начало строки категорий */
+  .cat-bar.compact .tab-tool{order:-1;position:static;background:transparent}
 }
 
 /* содержимое шторки сортировки (оболочка шторки — модуль MV.sheet в miraven.css) */
