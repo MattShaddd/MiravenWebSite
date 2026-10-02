@@ -813,3 +813,13 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
   .mv-cp{width:min(600px,calc(100vw - 48px));max-height:min(780px,90dvh);border-radius:26px;border:1px solid var(--stone);box-shadow:0 50px 100px -40px rgba(0,0,0,.6)}
   .mv-cp::before{display:none}
 }
+/* страница заказа: исправления высоты строк и фона итогов */
+.t706__cartpage .t706__product{height:auto!important;min-height:0!important;margin:0!important;padding:12px 0!important}
+.t706__cartpage .t706__cartpage-products{margin:0!important;padding:0!important}
+.t706__cartpage-totals,.t706__cartpage-prodamount,.t706__cartpage .t706__cartwin-totalamount-wrap,.t706__cartpage .t706__cartwin-totalamount-info{background:transparent!important;color:var(--ink)!important}
+.t706__cartpage-totals{border:0!important;padding:8px 0 0!important;position:static!important;width:auto!important}
+.t706__cartpage .t706__cartwin-totalamount-row,.t706__cartpage .t706__cartwin-totalamount-label,.t706__cartpage .t706__cartwin-totalamount,.t706__cartpage .t706__cartwin-prodamount-label,.t706__cartpage .t706__cartwin-prodamount,.t706__cartpage .t706__cartwin-totalamount-info_label,.t706__cartpage .t706__cartwin-totalamount-info_value{color:var(--ink)!important;font-size:14px!important}
+.t706__cartpage .t706__cartwin-totalamount-row_total *{font-size:16px!important;font-weight:600!important;color:var(--head)!important}
+.t706__cartpage .t-name,.t706__cartpage .t-heading,.t706__cartpage h3{color:var(--head)!important;font-family:"Lora",Georgia,serif!important;font-size:18px!important}
+.t706__cartpage .t-descr,.t706__cartpage .t-text{color:var(--ink)!important}
+.t706__cartpage .t-input-subtitle,.t706__cartpage .t-descr_xxs{color:var(--muted)!important;font-size:12px!important}
