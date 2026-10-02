@@ -223,7 +223,7 @@
   /* поиск и сортировка */
   var qT;$('q').addEventListener('input',function(){clearTimeout(qT);var v=this.value.trim().toLowerCase();qT=setTimeout(function(){S.q=v;resetShown()},200)});
   $('q').addEventListener('keydown',function(e){if(e.key==='Escape'){this.value='';S.q='';resetShown()}});
-  $('sort').addEventListener('change',function(){S.sort=this.value;resetShown()});
+  $('sort').addEventListener('change',function(){S.sort=this.value;sortPaint();resetShown()});
   more.addEventListener('click',showMore);
   if('IntersectionObserver' in window)new IntersectionObserver(function(en){if(en[0].isIntersecting)showMore()},{rootMargin:'700px 0px'}).observe($('sentinel'));
 
@@ -451,10 +451,34 @@
   });
   /* свайп вниз по фото закрывает на телефоне не нужен: есть крестик и системная «назад» */
 
+
+  /* ---------- сортировка шторкой («Расположить», телефон) ---------- */
+  var SORTS=[['def','По умолчанию','Как расположили мы'],['pa','Сначала дешевле','По возрастанию цены'],['pd','Сначала дороже','По убыванию цены'],['az','По названию','От А до Я']];
+  var ssh=$('ssh');
+  function sortPaint(){
+    var b=$('sortBtn');if(b)b.classList.toggle('active',S.sort!=='def');
+    $('sort').value=S.sort;
+    ssh.querySelectorAll('.ssh-opt').forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.s===S.sort))});
+  }
+  function sortOpen(on){
+    if(on&&!ssh.innerHTML){
+      ssh.innerHTML='<div class="ssh-box" role="dialog" aria-modal="true" aria-label="Сортировка"><i class="ssh-grab"></i><div class="ssh-title">Расположить</div>'+SORTS.map(function(x){return '<button class="ssh-opt" type="button" data-s="'+x[0]+'" aria-pressed="false"><span><b>'+x[1]+'</b><small>'+x[2]+'</small></span><i class="ssh-radio"></i></button>'}).join('')+'</div>';
+      ssh.addEventListener('click',function(e){
+        if(e.target===ssh){sortOpen(false);return}
+        var o=e.target.closest('.ssh-opt');if(!o)return;
+        S.sort=o.dataset.s;sortPaint();resetShown();setTimeout(function(){sortOpen(false)},180);
+      });
+    }
+    if(on){ssh.hidden=false;sortPaint();document.documentElement.style.overflow='hidden';requestAnimationFrame(function(){requestAnimationFrame(function(){ssh.classList.add('on')})})}
+    else{ssh.classList.remove('on');document.documentElement.style.overflow='';setTimeout(function(){if(!ssh.classList.contains('on'))ssh.hidden=true},reduce?0:350)}
+  }
+  if($('sortBtn'))$('sortBtn').addEventListener('click',function(){sortOpen(true)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!ssh.hidden)sortOpen(false)});
+
   /* ---------- оболочка: шапка, меню, вход, тема ---------- */
   var topEl=document.querySelector('.top'),bar=$('catBar');
   function hdr(){var h=topEl?topEl.offsetHeight:68;document.documentElement.style.setProperty('--hdr',h+'px')}
-  function onScroll(){topEl.classList.toggle('scrolled',window.scrollY>8);hdr();if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
+  function onScroll(){topEl.classList.toggle('scrolled',window.scrollY>8);hdr();var sn=$('barSent');if(sn&&bar)bar.classList.toggle('compact',sn.getBoundingClientRect().top<=topEl.offsetHeight);if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
   window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
   var mn=$('mnav'),bg=$('burger');if(mn&&bg){bg.addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true})}
   function searchOpen(on){

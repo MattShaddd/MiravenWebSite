@@ -334,3 +334,45 @@ body.qv-lock{overflow:hidden}
   .cat-bar .tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--white)}
   .cat-layout{padding-top:12px}
 }
+
+/* ===== телефон: панель как в приложениях — сортировка и фильтры иконками слева, категории плашками ===== */
+.ibtn{display:none}
+.ssh{display:none}
+@media (max-width:760px){
+  #barSent{height:0}
+  .cat-bar{position:sticky;top:calc(var(--hdr) - 1px);z-index:9;border-top:1px solid var(--stone);border-bottom:1px solid var(--stone)}
+  .cat-bar.stuck{box-shadow:0 12px 30px -24px rgba(0,0,0,.5)}
+  .cat-bar-in{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px;padding-block:10px}
+  .tools{display:contents}
+  .ibtn,.fbtn{display:inline-grid;place-items:center;flex:none;order:1;width:40px;height:40px;padding:0;border:1px solid var(--stone);border-radius:50%;background:transparent;color:var(--ink);position:relative;transition:background .25s,color .25s,border-color .25s}
+  .ibtn svg,.fbtn svg{width:20px;height:20px}
+  .ibtn.active{border-color:var(--gold);color:var(--gold-text)}
+  .ibtn.active::after{content:"";position:absolute;top:1px;right:1px;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px var(--white)}
+  .fbtn{order:2}
+  .fbtn .fcount{position:absolute;top:-4px;right:-4px}
+  .sort{display:none}
+  .cat-bar .tabs{order:3;flex:1 1 0;min-width:0;width:auto;max-width:none;margin:0;align-self:center;display:flex;flex-wrap:wrap;gap:6px;overflow:visible;border:0;border-radius:0;padding:0}
+  .search{order:4;flex:1 0 100%;grid-column:auto}
+  /* при прокрутке категории сжимаются в одну строку */
+  .cat-bar.compact .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-mask:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+  .cat-bar.compact .tabs::-webkit-scrollbar{display:none}
+  .cat-bar.compact .tabs button{flex:none}
+  .cat-bar.compact .cat-bar-in{align-items:center;padding-block:8px}
+  /* шторка «Расположить» */
+  .ssh{display:block;position:fixed;inset:0;z-index:75;background:rgba(23,19,28,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;transition:opacity .35s}
+  .ssh[hidden]{display:none}
+  .ssh.on{opacity:1}
+  .ssh-box{position:absolute;left:0;right:0;bottom:0;background:var(--white);border-radius:26px 26px 0 0;padding:10px 22px calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 -30px 60px -30px rgba(0,0,0,.5)}
+  .ssh.on .ssh-box{transform:none}
+  .ssh-grab{display:block;width:44px;height:5px;border-radius:3px;background:var(--stone);margin:2px auto 14px}
+  .ssh-title{text-align:center;font-weight:600;font-size:17px;color:var(--head);margin-bottom:6px}
+  .ssh-opt{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border:0;border-bottom:1px solid var(--stone);background:transparent;color:var(--ink);text-align:left}
+  .ssh-opt:last-child{border-bottom:0}
+  .ssh-opt span{display:grid;gap:2px}
+  .ssh-opt b{font-weight:600;font-size:18px;line-height:1.2}
+  .ssh-opt small{font-size:14px;color:var(--muted)}
+  .ssh-radio{flex:none;width:28px;height:28px;border-radius:50%;background:var(--mist);display:grid;place-items:center;transition:background .25s}
+  .ssh-radio::after{content:"";width:12px;height:7px;border-left:2.5px solid var(--white);border-bottom:2.5px solid var(--white);transform:translateY(-1px) rotate(-45deg) scale(0);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .ssh-opt[aria-pressed="true"] .ssh-radio{background:var(--gold)}
+  .ssh-opt[aria-pressed="true"] .ssh-radio::after{transform:translateY(-1px) rotate(-45deg) scale(1)}
+}
