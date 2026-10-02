@@ -895,3 +895,8 @@ html body .t706__cartpage #customdelivery .t-input-group .t-input.t-input,html b
 html body .t706__cartpage #customdelivery .t-input-group .searchbox-input.t-input{padding-right:42px!important}
 html body .t706__cartpage #customdelivery .t-input-group .t-input:focus{border-color:var(--gold)!important}
 html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!important}
+/* перебиваем стиль блока Тильды (#recNNN ... #customdelivery .t-input): повторяем id для повышенной специфичности */
+#customdelivery#customdelivery#customdelivery .t-input{background:transparent!important;color:var(--ink)!important;border:1px solid var(--stone)!important;border-radius:14px!important;padding:0 14px!important;height:46px!important;min-height:46px!important;box-shadow:none!important;box-sizing:border-box!important;width:100%!important;outline:none}
+#customdelivery#customdelivery#customdelivery .t-input:focus{border-color:var(--gold)!important}
+#customdelivery#customdelivery#customdelivery .searchbox-input{padding-right:42px!important}
+#customdelivery#customdelivery#customdelivery .t-input-title{color:var(--ink)!important;font-size:13px!important;font-weight:600!important;font-family:inherit!important}
