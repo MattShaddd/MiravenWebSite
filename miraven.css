@@ -634,7 +634,6 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 }
 
 /* ===== корзина «Ваш заказ» внутри шторки ===== */
-.t706__cartwin .t706__cartwin-content{position:static!important;width:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;transform:none!important;overflow:visible!important}
 .t706__cartwin .t706__cartwin-products{border-top:1px solid var(--stone)!important}
 
 /* ===== корзина в шторке: аккуратная вёрстка, мелкий шрифт, заметные кнопки ===== */
@@ -703,3 +702,6 @@ html[data-mv-theme="dark"] .t706__cartwin .t-form__errorbox-middle .t-form__erro
   .t706__cartwin-content{width:min(560px,calc(100vw - 48px))!important;max-height:min(760px,90dvh);border-radius:26px!important;border:1px solid var(--stone)!important;box-shadow:0 50px 100px -40px rgba(0,0,0,.6)!important}
   .t706__cartwin-content::before{display:none}
 }
+.t706__cartwin-content{background:var(--white)!important;position:relative!important;transform:none!important}
+.t706__cartwin .t706__close-button,.t706__cartwin .t706__cartwin-close-wrapper{background:transparent!important;border:0!important;box-shadow:none!important}
+.t706__cartwin .t706__close-icon g{fill:var(--ink)!important}
