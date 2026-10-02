@@ -316,3 +316,21 @@ body.qv-lock{overflow:hidden}
   .search{margin-bottom:0}
   .cat-bar.searching .search{margin-top:10px}
 }
+
+/* ===== телефон: компактная шапка страницы и категории плашками ===== */
+.crumb-cur{display:none}
+@media (max-width:760px){
+  .cat-hero{padding-block:12px 4px}
+  .crumbs{font-size:13px;gap:6px}
+  .crumb-cur{display:inline;color:var(--ink);font-weight:500}
+  .cat-title{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} /* заголовок остаётся для поисковиков, но не занимает места */
+  /* панель не липкая: категории показаны все, поэтому она высокая */
+  .cat-bar{position:static;border-top:0;box-shadow:none}
+  .cat-bar-in{padding-block:6px 10px}
+  .cat-bar .tabs{display:flex;flex-wrap:wrap;gap:6px;overflow:visible;border:0;border-radius:0;padding:0;margin:0 0 10px;width:100%;max-width:100%}
+  .cat-bar .tabs .pill{display:none}
+  .cat-bar .tabs button{padding:5px 11px;font-size:13px;border:1px solid var(--stone);transition:background .25s,color .25s,border-color .25s}
+  .cat-bar .tabs button span{margin-left:3px;font-size:12px}
+  .cat-bar .tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--white)}
+  .cat-layout{padding-top:12px}
+}
