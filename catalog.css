@@ -47,7 +47,7 @@
 .chip-clear:hover{border-color:transparent;text-decoration:underline}
 
 /* фильтры */
-.filters{position:sticky;top:calc(var(--hdr) + 76px);max-height:calc(100dvh - var(--hdr) - 96px);overflow:auto;scrollbar-width:thin;padding-right:6px}
+.filters{position:relative;min-width:0}
 .f-head,.f-foot{display:none}
 .f-group{border-bottom:1px solid var(--stone);padding-block:4px}
 .f-sw{border-top:1px solid var(--stone)}
@@ -55,7 +55,7 @@
 .f-group summary::-webkit-details-marker{display:none}
 .f-group summary::after{content:"";width:8px;height:8px;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:rotate(45deg) translateY(-2px);transition:transform .25s}
 .f-group[open] summary::after{transform:rotate(225deg) translateY(-2px)}
-.f-list{display:grid;gap:2px;padding-bottom:12px;max-height:240px;overflow:auto;scrollbar-width:thin}
+.f-list{display:grid;gap:2px;padding-bottom:12px}
 .f-opt{display:flex;align-items:center;gap:10px;padding:6px 2px;cursor:pointer;font-size:15px;line-height:1.3;transition:opacity .2s}
 .f-opt input{position:absolute;opacity:0;pointer-events:none}
 .f-box{flex:none;width:18px;height:18px;border:1.5px solid var(--stone);border-radius:6px;display:grid;place-items:center;transition:background .2s,border-color .2s}
