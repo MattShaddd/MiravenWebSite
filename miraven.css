@@ -879,7 +879,7 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 .t706__cartpage .t-checkbox__control{display:flex!important;align-items:flex-start;gap:10px}
 .t706__cartpage .t-checkbox__indicator{flex:none;width:20px!important;height:20px!important;border:1.5px solid var(--muted)!important;background:transparent!important;border-radius:6px!important;transition:background .2s,border-color .2s}
 .t706__cartpage .t-checkbox:checked + .t-checkbox__indicator{background:var(--gold)!important;border-color:var(--gold)!important}
-.t706__cartpage .t-checkbox:checked + .t-checkbox__indicator::after{border-color:#17151B!important;border-width:0 2px 2px 0!important}
+.t706__cartpage .t-checkbox:checked + .t-checkbox__indicator::after{border-color:#17151B!important;border-width:0 0 2px 2px!important}
 .t706__cartpage .t-checkbox__indicator::after{border-color:transparent!important}
 
 /* поля блока «Доставка»: у Тильды они с подчёркиванием и без отступов, приводим к общему виду */
