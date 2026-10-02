@@ -843,3 +843,8 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 .t706__cartpage .t-checkbox__indicator{border-radius:6px!important}
 .t706__cartpage .t-input-group_in .t-input,.t706__cartpage .t-input-group_pc .t-input{border:1px solid var(--stone)!important;border-radius:14px!important;padding:0 14px!important;height:46px!important}
 .t706__cartpage .t-input-block{position:relative}
+/* шапка окна заказа: строго в один ряд */
+.t706__cartpage-top{height:56px!important;min-height:56px!important;box-sizing:border-box;gap:10px}
+.t706__cartpage-top>*{position:relative!important;top:0!important;left:0!important;right:auto!important;bottom:auto!important;transform:none!important;margin:0!important;float:none!important;align-self:center}
+.t706__cartpage-heading{line-height:1.2!important;height:auto!important;display:block;flex:1;white-space:nowrap}
+.t706__cartpage-close svg,.t706__cartpage-back svg{display:block;margin:auto}
