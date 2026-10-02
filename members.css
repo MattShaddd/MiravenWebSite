@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Golos+Text:wght@400;500;600&display=swap");
+
+/* Миравен: стили страниц входа / регистрации / восстановления пароля Тильды (Members) */
+:root{
+  --m-bg:#F6F1E8; --m-mist:#EDE5D8; --m-stone:#DDD2C0; --m-ink:#2B2330; --m-head:#4A3E45;
+  --m-muted:#7B6F69; --m-gold:#C4913A; --m-gold-text:#8A6118; --m-err:#B4443A;
+}
+html,body{background:var(--m-bg)!important}
+body,.tlk-form,.tlk-userbar,.tlk-userbar__popup,.tlk-menu,.tlk-popup,.tlk-switcher{font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important;color:var(--m-ink);-webkit-font-smoothing:antialiased}
+
+/* фон: убираем серую подложку */
+.tlk-bg-filter,.tlk-bg-filter__bg{background:var(--m-bg)!important;opacity:1!important}
+
+/* карточка */
+.tlk-form__container-wrap{
+  background:var(--m-mist)!important;border:1px solid var(--m-stone);border-radius:26px!important;
+  box-shadow:0 30px 60px -40px rgba(43,35,48,.35)!important;padding:12px 8px!important}
+.tlk-form__container{padding:32px 28px!important}
+@media (max-width:480px){.tlk-form__container{padding:24px 18px!important}}
+
+/* заголовок */
+[data-field="tlk-title"],.tlk-form__title{
+  font-family:"Lora",Georgia,serif!important;font-weight:600!important;color:var(--m-head)!important;
+  font-size:30px!important;line-height:1.15!important;letter-spacing:-.01em;text-align:center}
+.tlk-form__sup-text{color:var(--m-muted)!important;text-align:center;font-size:15px}
+
+/* подписи и поля */
+[data-field="tlk-text"],.tlk-input-title{color:var(--m-muted)!important;font-weight:400!important;font-size:13px!important}
+.tlk-input{
+  background:var(--m-bg)!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)!important;
+  border-radius:14px!important;height:48px;padding:0 16px!important;font:inherit;font-size:16px!important;
+  box-shadow:none!important;transition:border-color .25s,box-shadow .25s}
+.tlk-input::placeholder{color:var(--m-muted);opacity:.7}
+.tlk-input:hover{border-color:var(--m-muted)!important}
+.tlk-input:focus{border-color:var(--m-gold)!important;box-shadow:0 0 0 3px rgba(196,145,58,.2)!important;outline:0}
+.tlk-input-error{color:var(--m-err)!important;font-size:13px}
+.tlk-input.tlk-input_error,.tlk-input_error{border-color:var(--m-err)!important}
+
+/* кнопка */
+.tlk-btn,.tlk-btn_gray{
+  background:var(--m-ink)!important;color:var(--m-bg)!important;border:0!important;border-radius:999px!important;
+  height:50px;padding:0 32px!important;font:inherit!important;font-weight:500!important;font-size:15px!important;
+  cursor:pointer;transition:background .2s,transform .2s}
+.tlk-btn:hover{background:color-mix(in srgb,var(--m-ink) 86%,var(--m-bg))!important}
+.tlk-btn:active{transform:scale(.98)}
+.tlk-form__submit-btn{display:flex;justify-content:center}
+
+/* ссылки */
+.tlk-form__wrap-links{justify-content:center;gap:8px 20px}
+.tlk-form__link,.tlk-form a{color:var(--m-muted)!important;text-decoration:none!important;border-bottom:1px solid var(--m-gold);padding-bottom:1px;font-size:14px;transition:color .2s}
+.tlk-form__link:hover,.tlk-form a:hover{color:var(--m-gold-text)!important}
+
+/* чекбокс согласия */
+.tlk-form input[type=checkbox]{accent-color:var(--m-gold)}
+.tlk-form label,.tlk-checkbox{color:var(--m-muted)!important;font-size:13px}
+
+/* логотип над формой */
+.tlk-form__container::before{
+  content:"";display:block;height:26px;margin:0 auto 22px;
+  background:url("https://mattshaddd.github.io/MiravenWebSite/logo-header.webp") center/contain no-repeat}
+
+/* плавающая панель профиля после входа */
+.tlk-userbar,.tlk-userbar__popup,.tlk-popup{border-radius:18px!important}
+.tlk-userbar__popup,.tlk-popup{background:var(--m-bg)!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)}
