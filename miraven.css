@@ -705,3 +705,8 @@ html[data-mv-theme="dark"] .t706__cartwin .t-form__errorbox-middle .t-form__erro
 .t706__cartwin-content{background:var(--white)!important;position:relative!important;transform:none!important}
 .t706__cartwin .t706__close-button,.t706__cartwin .t706__cartwin-close-wrapper{background:transparent!important;border:0!important;box-shadow:none!important}
 .t706__cartwin .t706__close-icon g{fill:var(--ink)!important}
+/* исправления вёрстки строк корзины и крестика */
+.t706__cartwin .t706__product{height:auto!important;min-height:0!important}
+.t706__cartwin .t706__cartwin-close,.t706__cartwin .t706__close{background:transparent!important}
+.t706__cartwin .t706__cartwin-close-wrapper{width:40px!important;height:40px!important;padding:0!important;margin:0!important}
+.t706__cartwin .t706__close-icon{width:18px!important;height:18px!important}
