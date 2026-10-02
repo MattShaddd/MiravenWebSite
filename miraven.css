@@ -828,3 +828,18 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 
 .mv-cp{overflow-x:hidden!important}
 .t706__cartpage .t-container,.t706__cartpage .t-col,.t706__cartpage .t-col_6{max-width:100%!important;box-sizing:border-box}
+/* доставка и поля в окне заказа: контраст и ширина */
+.t706__cartpage .t-radio__control{display:flex!important;flex-wrap:wrap;align-items:center;gap:2px 10px;box-sizing:border-box;width:100%!important;max-width:100%!important;margin:0!important;padding:11px 14px 11px 40px!important;position:relative;color:var(--ink)!important}
+.t706__cartpage .t-radio__control .t-radio__indicator{position:absolute!important;left:12px;top:50%;margin-top:-10px!important;border-color:var(--muted)!important;background:transparent!important}
+.t706__cartpage .t-radio__control .t-radio:checked + .t-radio__indicator{border-color:var(--gold)!important}
+.t706__cartpage .t-radio__control .t-radio__indicator::after,.t706__cartpage .t-radio__control .t-radio__indicator::before{background-color:var(--gold)!important;border-color:var(--gold)!important}
+.t706__cartpage .delivery-checkbox-label{color:var(--ink)!important;font-weight:500;font-size:14px}
+.t706__cartpage .delivery-minimum-time,.t706__cartpage .delivery-minimum-price{color:var(--muted)!important;font-size:13px}
+.t706__cartpage .t-radio__wrapper-delivery .t-name,.t706__cartpage .t-radio__wrapper-payment .t-name{margin:16px 0 10px!important}
+.t706__cartpage .t-input::placeholder,.t706__cartpage .searchbox-input::placeholder{color:var(--muted)!important;opacity:.75!important}
+.t706__cartpage input,.t706__cartpage textarea{box-sizing:border-box;max-width:100%}
+.t706__cartpage .t706__search-icon path{fill:var(--muted)!important}
+.t706__cartpage .t-checkbox__label a,.t706__cartpage .t-checkbox__control a{color:var(--gold-text)!important;text-decoration:underline!important;text-underline-offset:2px}
+.t706__cartpage .t-checkbox__indicator{border-radius:6px!important}
+.t706__cartpage .t-input-group_in .t-input,.t706__cartpage .t-input-group_pc .t-input{border:1px solid var(--stone)!important;border-radius:14px!important;padding:0 14px!important;height:46px!important}
+.t706__cartpage .t-input-block{position:relative}
