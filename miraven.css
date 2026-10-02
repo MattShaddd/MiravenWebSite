@@ -780,7 +780,9 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 .mv-cp *{font-family:inherit}
 .t706__cartpage-top{position:static!important;display:flex!important;align-items:center;gap:8px;padding:6px 0 8px!important;margin:0!important;height:auto!important;background:transparent!important;border:0!important;width:auto!important}
 .t706__cartpage-heading{flex:1;padding:0!important;margin:0!important;font-family:"Lora",Georgia,serif!important;font-weight:600!important;font-size:22px!important;line-height:1.2!important;color:var(--head)!important;text-align:left!important}
-.t706__cartpage-back,.t706__cartpage-close{position:static!important;flex:none;width:40px!important;height:40px!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;display:grid!important;place-items:center;color:var(--ink);transition:background .2s}
+.t706__cartpage-back,.t706__cartpage-close{position:static!important;flex:none;width:40px!important;height:40px!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;place-items:center;color:var(--ink);transition:background .2s}
+.t706__cartpage-close{display:grid!important}
+.t706__cartpage-back{display:grid}
 .t706__cartpage-back:hover,.t706__cartpage-close:hover{background:var(--mist)!important}
 .t706__cartpage-back svg,.t706__cartpage-close svg{width:18px!important;height:18px!important}
 .t706__cartpage-back g,.t706__cartpage-close g,.t706__cartpage-back path,.t706__cartpage-close path,.t706__cartpage-back rect,.t706__cartpage-close rect{fill:var(--ink)!important;stroke:none!important}
@@ -823,3 +825,6 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 .t706__cartpage .t-name,.t706__cartpage .t-heading,.t706__cartpage h3{color:var(--head)!important;font-family:"Lora",Georgia,serif!important;font-size:18px!important}
 .t706__cartpage .t-descr,.t706__cartpage .t-text{color:var(--ink)!important}
 .t706__cartpage .t-input-subtitle,.t706__cartpage .t-descr_xxs{color:var(--muted)!important;font-size:12px!important}
+
+.mv-cp{overflow-x:hidden!important}
+.t706__cartpage .t-container,.t706__cartpage .t-col,.t706__cartpage .t-col_6{max-width:100%!important;box-sizing:border-box}
