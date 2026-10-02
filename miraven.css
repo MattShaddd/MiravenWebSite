@@ -632,3 +632,14 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
   .sh-box{width:min(480px,calc(100vw - 48px));max-height:min(720px,86dvh);border-radius:26px;border:1px solid var(--stone);box-shadow:0 50px 100px -40px rgba(0,0,0,.6);transform:translateY(24px) scale(.985)}
   .sh-grab{display:none}
 }
+
+/* ===== корзина «Ваш заказ» внутри шторки ===== */
+html.mv-cartsheet .t706__cartwin{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.sh-cart .sh-box{max-width:560px}
+.sh-cart .t706__cartwin-content{position:static!important;width:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;transform:none!important;overflow:visible!important}
+.sh-cart .t706__cartwin-top{display:none!important}
+.sh-cart .t706__cartwin-products{border-top:1px solid var(--stone)!important}
+.cart-empty{display:none;gap:12px;justify-items:center;text-align:center;padding:40px 8px;color:var(--muted)}
+.cart-empty b{font-family:var(--f-story);font-size:22px;color:var(--head);font-weight:600}
+.sh-cart.is-empty .cart-empty{display:grid}
+.sh-cart.is-empty .t706__cartwin-content{display:none!important}

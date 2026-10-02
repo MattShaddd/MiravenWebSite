@@ -55,7 +55,9 @@ fa = home_js.index('  // ПЛАВАЮЩАЯ КОРЗИНА'); fb = home_js.index
 fab = home_js[fa:fb]
 sa = home_js.index('  // МОДАЛЬНЫЕ ШТОРКИ'); sb = home_js.index('  // КОНЕЦ ШТОРОК')
 sheet = home_js[sa:sb]
-cjs = rd('catalog.src.js').replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
+ca = home_js.index('  // КОРЗИНА В ШТОРКЕ'); cb = home_js.index('  // КОНЕЦ КОРЗИНЫ В ШТОРКЕ')
+cartsheet = home_js[ca:cb]
+cjs = rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
 # ---------- готовые блоки T123 ----------

@@ -504,6 +504,7 @@
   if($('qx'))$('qx').addEventListener('click',function(){searchOpen(false)});
   document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in')});
 
+  /*@CARTSHEET@*/
   /*@FAB@*/
   /*@AUTH@*/
   /*@THEME@*/

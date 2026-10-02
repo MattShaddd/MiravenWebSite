@@ -300,6 +300,56 @@
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stack.length){stack[stack.length-1].close()}});
   })();
   // КОНЕЦ ШТОРОК
+  // КОРЗИНА В ШТОРКЕ
+  // «Ваш заказ» открывается в нашей шторке (MV.sheet), а не отдельным окном Тильды: содержимое окна корзины переносится в шторку,
+  // вся логика (количество, удаление, промокод, оформление и оплата) остаётся штатной.
+  (function(){
+    var sh=null,content=null,home=null,empty=null,obs=null;
+    function win(){return document.querySelector('.t706__cartwin')}
+    function isEmpty(){var t=window.tcart;return !(t&&t.products&&t.products.length)}
+    function restore(){
+      if(content&&home){home.appendChild(content)}
+      if(obs){obs.disconnect();obs=null}
+      document.documentElement.classList.remove('mv-cartsheet');
+    }
+    function build(){
+      if(sh||!window.MV||!MV.sheet)return !!sh;
+      sh=MV.sheet({title:'Ваш заказ',className:'sh-cart',
+        onClose:function(){
+          var w=win();
+          if(w&&w.classList.contains('t706__cartwin_showed')&&typeof window.tcart__closeCart==='function'){try{window.tcart__closeCart()}catch(e){}}
+          restore();
+        }});
+      empty=document.createElement('div');empty.className='cart-empty';
+      empty.innerHTML='<b>Корзина пуста</b><span>Добавьте открытки из каталога, и они появятся здесь.</span><a class="btn btn-ink" href="/store">В каталог</a>';
+      return true;
+    }
+    function show(){
+      var w=win();content=w&&w.querySelector('.t706__cartwin-content');
+      if(!content||!build())return;
+      home=content.parentNode;
+      document.documentElement.classList.add('mv-cartsheet');
+      sh.body.innerHTML='';sh.body.appendChild(empty);sh.body.appendChild(content);
+      sh.el.classList.toggle('is-empty',isEmpty());
+      if(!sh.isOpen)sh.open();
+      // если Тильда сама закрыла корзину (например, после оформления), закрываем и шторку
+      if(obs)obs.disconnect();
+      obs=new MutationObserver(function(){if(!w.classList.contains('t706__cartwin_showed')&&sh.isOpen)sh.close()});
+      obs.observe(w,{attributes:true,attributeFilter:['class']});
+      // состав корзины меняется внутри: следим за пустотой
+      var pr=content.querySelector('.t706__cartwin-products');
+      if(pr){new MutationObserver(function(){sh.el.classList.toggle('is-empty',isEmpty())}).observe(pr,{childList:true})}
+    }
+    function hook(){
+      if(typeof window.tcart__openCart!=='function'||window.tcart__openCart.__mv)return false;
+      var o=window.tcart__openCart;
+      window.tcart__openCart=function(){var r=o.apply(this,arguments);setTimeout(show,30);return r};
+      window.tcart__openCart.__mv=1;return true;
+    }
+    if(!hook()){var n=0,t=setInterval(function(){if(hook()||++n>80)clearInterval(t)},150)}
+    window.addEventListener('load',function(){hook();setTimeout(hook,800)});
+  })();
+  // КОНЕЦ КОРЗИНЫ В ШТОРКЕ
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
     var site=document.querySelector('.site');if(!site)return;
