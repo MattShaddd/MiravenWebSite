@@ -245,6 +245,7 @@
   function apply(t,anim){
     if(anim){site.classList.add('pal-anim');clearTimeout(apply.t);apply.t=setTimeout(function(){site.classList.remove('pal-anim')},600)}
     if(t==='dark')site.setAttribute('data-theme','dark');else site.removeAttribute('data-theme');
+    document.documentElement.setAttribute('data-mv-theme',t==='dark'?'dark':'beige');
     tbtn.setAttribute('aria-pressed',String(t==='dark'));
     tbtn.setAttribute('aria-label',t==='dark'?'Светлая тема':'Тёмная тема');
     var bg=getComputedStyle(site).backgroundColor;document.body.style.background=bg;document.documentElement.style.background=bg;
