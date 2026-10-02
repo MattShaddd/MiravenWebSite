@@ -121,7 +121,7 @@
         (d.parts||[]).forEach(function(p){parts[p.uid]=p.title});
         all=all.concat(d.products||[]);
         if(d.nextslice&&slice<10){slice=d.nextslice;next()}else{items=all.map(norm);buildTabs();render()}
-      }).catch(function(){track.innerHTML='<p class="empty">Не удалось загрузить каталог. <a href="/store">Открыть каталог</a></p>'});
+      }).catch(function(){track.innerHTML='<p class="empty">Не удалось загрузить каталог. <a href="/newstore">Открыть каталог</a></p>'});
     })();
   }
   // вход / регистрация: родной попап личного кабинета Тильды (Members), оформляем под сайт
@@ -142,7 +142,7 @@
     function dt(s){var m=/(\d{4})-(\d\d)-(\d\d)/.exec(s||'');return m?m[3]+'.'+m[2]+'.'+m[1]:''}
     function plr(n,f){var a=n%100,b=a%10;return a>10&&a<20?f[2]:b>1&&b<5?f[1]:b===1?f[0]:f[2]}
     function prof(){try{return JSON.parse(localStorage.getItem('tilda_members_profile'+pid))||{}}catch(e){return{}}}
-    function pUrl(u){var m=/tproduct\/(\d+)/.exec(u||'');return m?'/store#p-'+m[1]:(u||'#')}
+    function pUrl(u){var m=/tproduct\/(\d+)/.exec(u||'');return m?'/newstore#p-'+m[1]:(u||'#')}
     var IC_X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     var IC_CH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
     function api(){return typeof window.tmst__fetchData==='function'}
@@ -166,13 +166,13 @@
       if(t==='orders'){
         if(cs.err)return '<div class="cab-empty"><b>Не удалось загрузить заказы</b><span>Обновите страницу или откройте их на отдельной странице.</span><a class="btn btn-line" href="/members/orderlist">Мои заказы</a></div>';
         if(!cs.loaded)return '<div class="cab-load"><i></i></div>';
-        if(!cs.orders.length)return '<div class="cab-empty"><b>Заказов пока нет</b><span>Выберите открытки в каталоге, и заказ появится здесь.</span><a class="btn btn-ink" href="/store">В каталог</a></div>';
+        if(!cs.orders.length)return '<div class="cab-empty"><b>Заказов пока нет</b><span>Выберите открытки в каталоге, и заказ появится здесь.</span><a class="btn btn-ink" href="/newstore">В каталог</a></div>';
         return cs.orders.map(orderHtml).join('')+(cs.orders.length<cs.total?'<button class="btn btn-line cab-more" type="button" data-cab="more">'+(cs.busy?'Загружаем…':'Показать ещё')+'</button>':'');
       }
       if(t==='bought'){
         var L=(cs.dash&&cs.dash.last_purchases)||[];
         if(!cs.loaded)return '<div class="cab-load"><i></i></div>';
-        if(!L.length)return '<div class="cab-empty"><b>Покупок пока нет</b><span>Здесь появятся товары из ваших заказов.</span><a class="btn btn-ink" href="/store">В каталог</a></div>';
+        if(!L.length)return '<div class="cab-empty"><b>Покупок пока нет</b><span>Здесь появятся товары из ваших заказов.</span><a class="btn btn-ink" href="/newstore">В каталог</a></div>';
         return '<div class="cab-grid">'+L.map(function(p){return '<a class="cb" href="'+eh(pUrl(p.url))+'"><span class="cb-im"><img src="'+eh(p.image)+'" alt="" loading="lazy"></span><b>'+eh(dec(p.title))+'</b></a>'}).join('')+'</div>'+(cs.dash.purchases_count>L.length?'<p class="cab-note">Показаны последние покупки. Всего: '+cs.dash.purchases_count+'.</p>':'');
       }
       var p=prof(),phone=p.phone?String(p.phone).replace(/^\+?7(\d{3})(\d{3})(\d{2})(\d{2})$/,'+7 ($1) $2-$3-$4'):'';
