@@ -456,7 +456,7 @@
   function hdr(){var h=topEl?topEl.offsetHeight:68;document.documentElement.style.setProperty('--hdr',h+'px')}
   function onScroll(){topEl.classList.toggle('scrolled',window.scrollY>8);hdr();if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
   window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
-  var mn=$('mnav');$('burger').addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true});
+  var mn=$('mnav'),bg=$('burger');if(mn&&bg){bg.addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true})}
   $('searchBtn').addEventListener('click',function(){var q=$('q');q.focus({preventScroll:true});window.scrollTo({top:Math.max(0,bar.getBoundingClientRect().top+scrollY-topEl.offsetHeight-8),behavior:reduce?'auto':'smooth'})});
   document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in')});
 

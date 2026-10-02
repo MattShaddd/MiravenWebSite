@@ -38,8 +38,9 @@ def relink(s):
     return s
 
 # в шапке каталога только ссылки, которые имеют смысл на этой странице (разделов главной здесь нет)
-header = re.sub(r'<nav class="nav".*?</nav>', '<nav class="nav" aria-label="Меню"><a href="{{HOME}}">Главная</a><a href="/store" class="on">Каталог</a></nav>', header, flags=re.S)
-mnav = re.sub(r'(<nav class="mnav"[^>]*>).*?(<a href="#openmembersbar")', lambda m: m.group(1) + '<a href="{{HOME}}">Главная</a><a href="/store">Каталог</a>' + m.group(2), mnav, flags=re.S)
+header = re.sub(r'\s*<nav class="nav".*?</nav>', '', header, flags=re.S)
+header = re.sub(r'\s*<button class="icon-btn burger".*?</button>', '', header, flags=re.S)
+mnav = ''  # на странице каталога меню разделов не нужно
 
 # в мобильном меню «Каталог» — текущая страница
 catalog_html = '<div class="site">\n' + relink(header) + '\n' + relink(mnav) + '\n\n' + rd('catalog.main.html') + '\n' + relink(footer) + '\n</div>\n'
