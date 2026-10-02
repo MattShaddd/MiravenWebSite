@@ -489,6 +489,8 @@
       if(e.ctrlKey||e.defaultPrevented)return;
       if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
       if(e.target.closest&&e.target.closest('.track')&&e.shiftKey)return;
+      // внутри окон (корзина, кабинет, шторки) колесо прокручивает их содержимое, а не страницу
+      if(e.target.closest&&e.target.closest('.mv-cp,.t706__cartpage,.t706__cartwin,.sh,.cab,.qv,.lb,.tlk-authModal'))return;
       e.preventDefault();
       var d=e.deltaY*(e.deltaMode===1?32:e.deltaMode===2?innerHeight:1);
       if(!smooth.raf)smooth.y=window.scrollY,smooth.t=smooth.y;
