@@ -300,3 +300,19 @@ body.qv-lock{overflow:hidden}
 .cat-hero{gap:6px}
 .crumbs{font-size:15px}
 @media (max-width:760px){.cat-hero{gap:4px}.crumbs{font-size:14px}}
+
+/* поиск: на телефоне выдвигается из панели по кнопке «Поиск» снизу */
+.search-x{display:none}
+@media (max-width:760px){
+  .cat-bar-in{display:grid;grid-template-columns:1fr;gap:0 10px}
+  .cat-bar .tabs{order:1;margin-bottom:10px}
+  .tools{order:3;display:grid;grid-template-columns:1fr auto;gap:10px;width:100%}
+  .sort select{width:100%;max-width:none}
+  .search{grid-column:1/-1;grid-row:2;overflow:hidden;max-height:0;opacity:0;transform:translateY(-8px);transition:max-height .45s cubic-bezier(.2,.8,.2,1),opacity .3s,transform .45s cubic-bezier(.2,.8,.2,1)}
+  .cat-bar.searching .search{max-height:52px;opacity:1;transform:none}
+  .search input,.search input:focus{width:100%;padding-right:44px}
+  .search-x{display:grid;place-items:center;position:absolute;right:4px;top:50%;margin-top:-18px;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--muted)}
+  .search-x svg{width:18px;height:18px}
+  .search{margin-bottom:0}
+  .cat-bar.searching .search{margin-top:10px}
+}
