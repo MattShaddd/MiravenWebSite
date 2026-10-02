@@ -223,3 +223,15 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 #allrecords .tmst-button[disabled],#allrecords .tmst-button.disabled{opacity:.5;pointer-events:none}
 #allrecords .tmst-button.tmst-button_secondary,#allrecords a.tmst-button.tmst-button_secondary{background-color:transparent!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)!important}
 #allrecords .tmst-button.tmst-button_secondary:hover{border-color:var(--m-ink)!important;color:var(--m-gold-text)!important}
+
+/* сообщения об ошибках и успехе в формах входа/регистрации: читаемый текст на мягком фоне */
+#allrecords .tlk-input-error.tlk-input-error_all,.tlk-form .tlk-input-error_all,.tlk-input-error_all{background:color-mix(in srgb,#B4443A 16%,transparent)!important;color:#E58B82!important;border:1px solid color-mix(in srgb,#B4443A 40%,transparent)!important;border-radius:12px!important;padding:12px 14px!important;margin:12px 0 0!important;font-size:13px!important;line-height:1.4!important;text-align:center!important;opacity:1!important;box-shadow:none!important}
+#allrecords .tlk-input-error.tlk-input-error_all *,.tlk-input-error_all *{color:inherit!important}
+.tlk-input-error_all:empty{display:none!important;padding:0!important;border:0!important;margin:0!important}
+#allrecords .tlk-input-error.tlk-input-error_success,.tlk-input-error_success{background:color-mix(in srgb,#5E9A6B 16%,transparent)!important;color:#8CC79A!important;border:1px solid color-mix(in srgb,#5E9A6B 40%,transparent)!important;border-radius:12px!important;padding:12px 14px!important;font-size:13px!important;text-align:center!important}
+.tlk-form .tlk-input-error:not(.tlk-input-error_all){color:#E58B82!important;font-size:12px!important}
+.tlk-input.tlk-input_error,.tlk-input_error{border-color:#B4443A!important}
+@media (prefers-color-scheme:light){
+  #allrecords .tlk-input-error.tlk-input-error_all,.tlk-input-error_all{color:#9A2F26!important}
+  .tlk-form .tlk-input-error:not(.tlk-input-error_all){color:#9A2F26!important}
+}
