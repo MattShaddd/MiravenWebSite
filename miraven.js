@@ -258,6 +258,48 @@
     new MutationObserver(scan).observe(site,{attributes:true,attributeFilter:['data-theme']});
     new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});scan();
   })();
+  // МОДАЛЬНЫЕ ШТОРКИ (модуль MV.sheet)
+  // Использование: var s=MV.sheet({title:'Заголовок', body:'<p>html</p>'|Node, footer:Node|'html', className:'my', onOpen:fn, onClose:fn});
+  //   s.open(); s.close(); s.setTitle(t); s.setBody(x); s.setFooter(x); s.isOpen; s.el; s.body (контейнер содержимого)
+  // На телефоне (до 980px) выезжает снизу, на широких экранах это центрированное окно. Esc, клик по подложке и крестик закрывают.
+  (function(){
+    var MV=window.MV=window.MV||{},stack=[],locks=0;
+    var X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function put(box,x){if(x==null)return;box.innerHTML='';if(typeof x==='string')box.innerHTML=x;else box.appendChild(x)}
+    MV.sheet=function(o){
+      o=o||{};
+      var el=document.createElement('div');el.className='sh'+(o.className?' '+o.className:'');el.hidden=true;
+      el.innerHTML='<div class="sh-box" role="dialog" aria-modal="true"><i class="sh-grab"></i><div class="sh-head"><b class="sh-title"></b><button type="button" class="sh-x" aria-label="Закрыть">'+X+'</button></div><div class="sh-body"></div><div class="sh-foot" hidden></div></div>';
+      (document.querySelector('.site')||document.body).appendChild(el);
+      var box=el.querySelector('.sh-box'),body=el.querySelector('.sh-body'),foot=el.querySelector('.sh-foot'),title=el.querySelector('.sh-title'),from=null;
+      var api={el:el,body:body,foot:foot,isOpen:false};
+      api.setTitle=function(t){title.textContent=t||'';box.setAttribute('aria-label',t||'')};
+      api.setBody=function(x){put(body,x)};
+      api.setFooter=function(x){foot.hidden=x==null;put(foot,x)};
+      api.open=function(){
+        if(api.isOpen)return;api.isOpen=true;from=document.activeElement;
+        el.hidden=false;stack.push(api);
+        if(!locks++)document.documentElement.style.overflow='hidden';
+        requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('on')})});
+        setTimeout(function(){var f=box.querySelector('.sh-x');f&&f.focus({preventScroll:true})},60);
+        if(o.onOpen)o.onOpen(api);
+      };
+      api.close=function(){
+        if(!api.isOpen)return;api.isOpen=false;el.classList.remove('on');
+        var i=stack.indexOf(api);if(i>-1)stack.splice(i,1);
+        if(!--locks)document.documentElement.style.overflow='';
+        setTimeout(function(){if(!api.isOpen)el.hidden=true},rm?0:420);
+        if(from&&from.focus)try{from.focus({preventScroll:true})}catch(e){}
+        if(o.onClose)o.onClose(api);
+      };
+      el.addEventListener('click',function(e){if(e.target===el||e.target.closest('.sh-x'))api.close()});
+      api.setTitle(o.title);api.setBody(o.body);api.setFooter(o.footer);
+      return api;
+    };
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stack.length){stack[stack.length-1].close()}});
+  })();
+  // КОНЕЦ ШТОРОК
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
     var site=document.querySelector('.site');if(!site)return;

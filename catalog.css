@@ -48,7 +48,7 @@
 
 /* фильтры */
 .filters{position:relative;min-width:0}
-.f-head,.f-foot{display:none}
+.f-foot{display:none}
 .f-group{border-bottom:1px solid var(--stone);padding-block:4px}
 .f-sw{border-top:1px solid var(--stone)}
 .f-group summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px 0;font-weight:500;font-size:15px}
@@ -213,14 +213,8 @@ body.qv-lock{overflow:hidden}
   .cat-layout.nofilters .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 @media (max-width:980px){
+  .filters{display:none}
   .cat-layout{grid-template-columns:1fr}
-  .filters{position:fixed;z-index:70;left:0;right:0;bottom:0;top:auto;max-height:86dvh;padding:0;background:var(--white);border-radius:24px 24px 0 0;box-shadow:0 -30px 60px -30px rgba(0,0,0,.5);transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow:hidden}
-  .filters.open{transform:none}
-  .f-head{display:flex;align-items:center;justify-content:space-between;padding:12px 12px 8px 22px;font-size:18px}
-  .f-body{flex:1;overflow:auto;padding:0 22px}
-  .f-foot{display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:14px 22px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--stone);background:var(--white)}
-  .f-shade{position:fixed;inset:0;z-index:65;background:rgba(23,19,28,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-  .f-shade[hidden]{display:none}
   .f-list{max-height:none}
   /* просмотрщик */
   .qv{padding:0;place-items:stretch}
@@ -277,7 +271,6 @@ body.qv-lock{overflow:hidden}
 
 /* доводка */
 @media (max-width:980px){
-  .f-head,.f-foot{flex:none}
   .qv-add span{white-space:nowrap}
   .qv-add{padding:0 14px;font-size:15px}
   .qv-qty button{width:38px}
@@ -337,7 +330,6 @@ body.qv-lock{overflow:hidden}
 
 /* ===== телефон: панель как в приложениях — сортировка и фильтры иконками слева, категории плашками ===== */
 .ibtn{display:none}
-.ssh{display:none}
 @media (max-width:760px){
   #barSent{height:0}
   .cat-bar{position:sticky;top:calc(var(--hdr) - 1px);z-index:9;border-top:1px solid var(--stone);border-bottom:1px solid var(--stone)}
@@ -359,13 +351,6 @@ body.qv-lock{overflow:hidden}
   .cat-bar.compact .tabs button{flex:none}
   .cat-bar.compact .cat-bar-in{align-items:center;padding-block:8px}
   /* шторка «Расположить» */
-  .ssh{display:block;position:fixed;inset:0;z-index:75;background:rgba(23,19,28,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;transition:opacity .35s}
-  .ssh[hidden]{display:none}
-  .ssh.on{opacity:1}
-  .ssh-box{position:absolute;left:0;right:0;bottom:0;background:var(--white);border-radius:26px 26px 0 0;padding:10px 22px calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 -30px 60px -30px rgba(0,0,0,.5)}
-  .ssh.on .ssh-box{transform:none}
-  .ssh-grab{display:block;width:44px;height:5px;border-radius:3px;background:var(--stone);margin:2px auto 14px}
-  .ssh-title{text-align:center;font-weight:600;font-size:17px;color:var(--head);margin-bottom:6px}
   .ssh-opt{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border:0;border-bottom:1px solid var(--stone);background:transparent;color:var(--ink);text-align:left}
   .ssh-opt:last-child{border-bottom:0}
   .ssh-opt span{display:grid;gap:2px}
@@ -383,3 +368,26 @@ body.qv-lock{overflow:hidden}
   .cat-bar.compact .tabs{flex:1 1 0;align-self:center}
 }
 @media (max-width:760px){.cat-bar-in{justify-content:flex-start}}
+
+/* ===== телефон: сортировка и фильтры — маленькие кнопки в конце списка категорий, того же размера, что плашки ===== */
+.tab-tool{display:none}
+@media (max-width:760px){
+  #sortBtn,#fbtn{display:none!important}
+  .cat-bar .tabs .tab-tool{display:inline-flex;align-items:center;justify-content:center;gap:4px;position:relative;z-index:1;flex:none;height:auto;min-height:0;padding:5px 11px;border:1px solid var(--stone);border-radius:999px;background:transparent;color:var(--ink);font-size:13px;line-height:1.5}
+  .tab-tool svg{width:16px;height:16px;margin:2px 0}
+  .tab-tool.active{border-color:var(--gold);color:var(--gold-text)}
+  .tab-tool .tt-n{font-style:normal;font-size:12px;font-weight:600;color:var(--gold-text)}
+  .tab-tool .tt-n[hidden]{display:none}
+  .cat-bar-in{padding-block:10px;gap:0}
+  .cat-bar .tabs,.cat-bar.compact .tabs{flex:1 0 100%;align-self:stretch}
+  .cat-bar.compact .tabs{-webkit-mask:none;mask:none;align-items:center}
+  /* в одну строку кнопки остаются на виду справа */
+  .cat-bar.compact .tab-tool{position:sticky;background:var(--white)}
+  .cat-bar.compact .tab-tool[data-tool="filters"]{right:0}
+  .cat-bar.compact .tab-tool[data-tool="sort"]{right:46px;margin-left:auto}
+}
+
+/* содержимое шторки сортировки (оболочка шторки — модуль MV.sheet в miraven.css) */
+.ssh-opt:first-child{border-top:1px solid var(--stone)}
+.sh-filters .sh-body{padding-bottom:12px}
+.sh-filters .f-foot{display:contents}

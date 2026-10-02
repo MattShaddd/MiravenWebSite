@@ -609,3 +609,26 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
   .sfab:active{filter:brightness(1.1)}
   .mv-searching .sfab{opacity:0;pointer-events:none}
 }
+
+/* ===== модуль MV.sheet: единый формат модальных шторок ===== */
+.sh{position:fixed;inset:0;z-index:75;display:flex;align-items:flex-end;justify-content:center;background:rgba(23,19,28,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;transition:opacity .35s}
+.sh[hidden]{display:none}
+.sh.on{opacity:1}
+.sh-box{width:100%;max-height:86dvh;display:flex;flex-direction:column;background:var(--white);color:var(--ink);border-radius:26px 26px 0 0;box-shadow:0 -30px 60px -30px rgba(0,0,0,.5);overflow:hidden;transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.sh.on .sh-box{transform:none}
+.sh-grab{display:block;flex:none;width:44px;height:5px;border-radius:3px;background:var(--stone);margin:10px auto 2px}
+.sh-head{display:flex;flex:none;align-items:center;justify-content:space-between;gap:12px;padding:6px 14px 6px 22px}
+.sh-title{font-family:var(--f-story);font-weight:600;font-size:22px;line-height:1.2;color:var(--head)}
+.sh-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:var(--ink);display:grid;place-items:center;transition:background .2s}
+.sh-x:hover{background:var(--mist)}
+.sh-x svg{width:20px;height:20px}
+.sh-body{flex:1 1 auto;min-height:0;overflow:auto;padding:0 22px 12px;overscroll-behavior:contain}
+.sh-foot{flex:none;display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:14px 22px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--stone);background:var(--white)}
+.sh-foot[hidden]{display:none}
+.sh-foot .f-foot{display:contents}
+.sh:not(.sh-foot-has) .sh-body:last-child{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+@media (min-width:981px){
+  .sh{align-items:center}
+  .sh-box{width:min(480px,calc(100vw - 48px));max-height:min(720px,86dvh);border-radius:26px;border:1px solid var(--stone);box-shadow:0 50px 100px -40px rgba(0,0,0,.6);transform:translateY(24px) scale(.985)}
+  .sh-grab{display:none}
+}

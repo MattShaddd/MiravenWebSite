@@ -1,5 +1,47 @@
 (function(){
   'use strict';
+    // МОДАЛЬНЫЕ ШТОРКИ (модуль MV.sheet)
+  // Использование: var s=MV.sheet({title:'Заголовок', body:'<p>html</p>'|Node, footer:Node|'html', className:'my', onOpen:fn, onClose:fn});
+  //   s.open(); s.close(); s.setTitle(t); s.setBody(x); s.setFooter(x); s.isOpen; s.el; s.body (контейнер содержимого)
+  // На телефоне (до 980px) выезжает снизу, на широких экранах это центрированное окно. Esc, клик по подложке и крестик закрывают.
+  (function(){
+    var MV=window.MV=window.MV||{},stack=[],locks=0;
+    var X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function put(box,x){if(x==null)return;box.innerHTML='';if(typeof x==='string')box.innerHTML=x;else box.appendChild(x)}
+    MV.sheet=function(o){
+      o=o||{};
+      var el=document.createElement('div');el.className='sh'+(o.className?' '+o.className:'');el.hidden=true;
+      el.innerHTML='<div class="sh-box" role="dialog" aria-modal="true"><i class="sh-grab"></i><div class="sh-head"><b class="sh-title"></b><button type="button" class="sh-x" aria-label="Закрыть">'+X+'</button></div><div class="sh-body"></div><div class="sh-foot" hidden></div></div>';
+      (document.querySelector('.site')||document.body).appendChild(el);
+      var box=el.querySelector('.sh-box'),body=el.querySelector('.sh-body'),foot=el.querySelector('.sh-foot'),title=el.querySelector('.sh-title'),from=null;
+      var api={el:el,body:body,foot:foot,isOpen:false};
+      api.setTitle=function(t){title.textContent=t||'';box.setAttribute('aria-label',t||'')};
+      api.setBody=function(x){put(body,x)};
+      api.setFooter=function(x){foot.hidden=x==null;put(foot,x)};
+      api.open=function(){
+        if(api.isOpen)return;api.isOpen=true;from=document.activeElement;
+        el.hidden=false;stack.push(api);
+        if(!locks++)document.documentElement.style.overflow='hidden';
+        requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('on')})});
+        setTimeout(function(){var f=box.querySelector('.sh-x');f&&f.focus({preventScroll:true})},60);
+        if(o.onOpen)o.onOpen(api);
+      };
+      api.close=function(){
+        if(!api.isOpen)return;api.isOpen=false;el.classList.remove('on');
+        var i=stack.indexOf(api);if(i>-1)stack.splice(i,1);
+        if(!--locks)document.documentElement.style.overflow='';
+        setTimeout(function(){if(!api.isOpen)el.hidden=true},rm?0:420);
+        if(from&&from.focus)try{from.focus({preventScroll:true})}catch(e){}
+        if(o.onClose)o.onClose(api);
+      };
+      el.addEventListener('click',function(e){if(e.target===el||e.target.closest('.sh-x'))api.close()});
+      api.setTitle(o.title);api.setBody(o.body);api.setFooter(o.footer);
+      return api;
+    };
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stack.length){stack[stack.length-1].close()}});
+  })();
+
   /* Каталог Миравен. Исходник: catalog.src.js. Файл catalog.js собирается скриптом build.py (подтягивает вход и тему из miraven.js). */
   var API={part:'683137745982',rec:'1278450591'};
   var HOME=window.MV_HOME||'/';
@@ -138,11 +180,15 @@
     var ids=Object.keys(parts).filter(function(id){return cnt[id]}).sort(function(a,b){var x=ORDER.indexOf(parts[a]),y=ORDER.indexOf(parts[b]);return (x<0?99:x)-(y<0?99:y)});
     var h='<button type="button" aria-pressed="true" data-cat="all">Все<span>'+cnt.all+'</span></button>';
     ids.forEach(function(id){h+='<button type="button" aria-pressed="false" data-cat="'+id+'">'+esc(parts[id])+'<span>'+cnt[id]+'</span></button>'});
-    tabs.querySelectorAll('button').forEach(function(x){x.remove()});tabs.insertAdjacentHTML('beforeend',h);pillInit();
+    h+='<button type="button" class="tab-tool" data-tool="sort" aria-label="Сортировка" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5v14M4.500 15.500L8 19l3.500-3.500M16 19V5M12.500 8.500L16 5l3.500 3.500"/></svg></button><button type="button" class="tab-tool" data-tool="filters" aria-label="Фильтры"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><i class="tt-n" hidden>0</i></button>';
+    tabs.querySelectorAll('button').forEach(function(x){x.remove()});tabs.insertAdjacentHTML('beforeend',h);pillInit();sortPaint();
   }
   tabs.addEventListener('click',function(e){
-    var b=e.target.closest('button');if(!b||b.getAttribute('aria-pressed')==='true')return;
-    tabs.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    var b=e.target.closest('button');if(!b)return;
+    if(b.dataset.tool==='sort'){sortOpen(true);return}
+    if(b.dataset.tool==='filters'){openF(!fsOpen());return}
+    if(b.getAttribute('aria-pressed')==='true')return;
+    tabs.querySelectorAll('[data-cat]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
     movePill(b);b.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
     S.cat=b.dataset.cat;resetShown();
   });
@@ -170,24 +216,29 @@
         l.querySelector('small').textContent=n;l.classList.toggle('zero',!n&&!on);inp.checked=on;
       });
     });
-    var n=activeCount(),fc=$('fcount');fc.textContent=n;fc.hidden=!n;
+    var n=activeCount(),fc=$('fcount');fc.textContent=n;fc.hidden=!n;var tn=tabs.querySelector('.tt-n');if(tn){tn.textContent=n;tn.hidden=!n}var ft=tabs.querySelector('[data-tool=filters]');if(ft)ft.classList.toggle('active',n>0);
     $('fdone').textContent='Показать '+curList.length+' '+plural(curList.length,['товар','товара','товаров']);
     $('freset').disabled=!(n||S.q);
   }
+  var fsheet=null;
+  function fsOpen(){return !!(fsheet&&fsheet.isOpen)}
   function openF(on){
-    var f=$('filters'),sh=$('fshade'),mob=window.matchMedia('(max-width:980px)').matches;
-    if(!mob){ // на десктопе кнопка сворачивает панель
+    var mob=window.matchMedia('(max-width:980px)').matches;
+    if(!mob){ // на десктопе кнопка сворачивает боковую панель
       var lay=document.querySelector('.cat-layout'),off=lay.classList.toggle('nofilters');
       $('fbtn').setAttribute('aria-expanded',String(!off));
       return;
     }
-    f.classList.toggle('open',on);sh.hidden=!on;$('fbtn').setAttribute('aria-expanded',String(on));
-    document.documentElement.style.overflow=on?'hidden':'';
+    if(!fsheet){
+      var home=$('filters'),fb=$('fbody'),ff=home.querySelector('.f-foot');
+      fsheet=MV.sheet({title:'Фильтры',className:'sh-filters',body:fb,footer:ff,
+        onOpen:function(){$('fbtn').setAttribute('aria-expanded','true')},
+        onClose:function(){home.appendChild(fb);home.appendChild(ff);$('fbtn').setAttribute('aria-expanded','false')}});
+    }
+    if(on)fsheet.open();else fsheet.close();
   }
-  $('fbtn').addEventListener('click',function(){var open=$('filters').classList.contains('open');openF(!open)});
-  $('fclose').addEventListener('click',function(){openF(false)});
+  $('fbtn').addEventListener('click',function(){openF(!fsOpen())});
   $('fdone').addEventListener('click',function(){openF(false)});
-  $('fshade').addEventListener('click',function(){openF(false)});
   $('fbody').addEventListener('change',function(e){
     var t=e.target;
     if(t.id==='fstock'){S.stock=t.checked;resetShown();return}
@@ -454,26 +505,25 @@
 
   /* ---------- сортировка шторкой («Расположить», телефон) ---------- */
   var SORTS=[['def','По умолчанию','Как расположили мы'],['pa','Сначала дешевле','По возрастанию цены'],['pd','Сначала дороже','По убыванию цены'],['az','По названию','От А до Я']];
-  var ssh=$('ssh');
+  var sortSheet=null;
   function sortPaint(){
     var b=$('sortBtn');if(b)b.classList.toggle('active',S.sort!=='def');
+    var st=tabs.querySelector('[data-tool=sort]');if(st)st.classList.toggle('active',S.sort!=='def');
     $('sort').value=S.sort;
-    ssh.querySelectorAll('.ssh-opt').forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.s===S.sort))});
+    document.querySelectorAll('.ssh-opt').forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.s===S.sort))});
   }
   function sortOpen(on){
-    if(on&&!ssh.innerHTML){
-      ssh.innerHTML='<div class="ssh-box" role="dialog" aria-modal="true" aria-label="Сортировка"><i class="ssh-grab"></i><div class="ssh-title">Расположить</div>'+SORTS.map(function(x){return '<button class="ssh-opt" type="button" data-s="'+x[0]+'" aria-pressed="false"><span><b>'+x[1]+'</b><small>'+x[2]+'</small></span><i class="ssh-radio"></i></button>'}).join('')+'</div>';
-      ssh.addEventListener('click',function(e){
-        if(e.target===ssh){sortOpen(false);return}
+    if(!on){if(sortSheet)sortSheet.close();return}
+    if(!sortSheet){
+      sortSheet=MV.sheet({title:'Расположить',className:'sh-sort',body:'<div class="ssh-list">'+SORTS.map(function(x){return '<button class="ssh-opt" type="button" data-s="'+x[0]+'" aria-pressed="false"><span><b>'+x[1]+'</b><small>'+x[2]+'</small></span><i class="ssh-radio"></i></button>'}).join('')+'</div>'});
+      sortSheet.body.addEventListener('click',function(e){
         var o=e.target.closest('.ssh-opt');if(!o)return;
-        S.sort=o.dataset.s;sortPaint();resetShown();setTimeout(function(){sortOpen(false)},180);
+        S.sort=o.dataset.s;sortPaint();resetShown();setTimeout(function(){sortSheet.close()},180);
       });
     }
-    if(on){ssh.hidden=false;sortPaint();document.documentElement.style.overflow='hidden';requestAnimationFrame(function(){requestAnimationFrame(function(){ssh.classList.add('on')})})}
-    else{ssh.classList.remove('on');document.documentElement.style.overflow='';setTimeout(function(){if(!ssh.classList.contains('on'))ssh.hidden=true},reduce?0:350)}
+    sortPaint();sortSheet.open();
   }
   if($('sortBtn'))$('sortBtn').addEventListener('click',function(){sortOpen(true)});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!ssh.hidden)sortOpen(false)});
 
   /* ---------- оболочка: шапка, меню, вход, тема ---------- */
   var topEl=document.querySelector('.top'),bar=$('catBar');
@@ -655,6 +705,48 @@
     new MutationObserver(scan).observe(site,{attributes:true,attributeFilter:['data-theme']});
     new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});scan();
   })();
+  // МОДАЛЬНЫЕ ШТОРКИ (модуль MV.sheet)
+  // Использование: var s=MV.sheet({title:'Заголовок', body:'<p>html</p>'|Node, footer:Node|'html', className:'my', onOpen:fn, onClose:fn});
+  //   s.open(); s.close(); s.setTitle(t); s.setBody(x); s.setFooter(x); s.isOpen; s.el; s.body (контейнер содержимого)
+  // На телефоне (до 980px) выезжает снизу, на широких экранах это центрированное окно. Esc, клик по подложке и крестик закрывают.
+  (function(){
+    var MV=window.MV=window.MV||{},stack=[],locks=0;
+    var X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function put(box,x){if(x==null)return;box.innerHTML='';if(typeof x==='string')box.innerHTML=x;else box.appendChild(x)}
+    MV.sheet=function(o){
+      o=o||{};
+      var el=document.createElement('div');el.className='sh'+(o.className?' '+o.className:'');el.hidden=true;
+      el.innerHTML='<div class="sh-box" role="dialog" aria-modal="true"><i class="sh-grab"></i><div class="sh-head"><b class="sh-title"></b><button type="button" class="sh-x" aria-label="Закрыть">'+X+'</button></div><div class="sh-body"></div><div class="sh-foot" hidden></div></div>';
+      (document.querySelector('.site')||document.body).appendChild(el);
+      var box=el.querySelector('.sh-box'),body=el.querySelector('.sh-body'),foot=el.querySelector('.sh-foot'),title=el.querySelector('.sh-title'),from=null;
+      var api={el:el,body:body,foot:foot,isOpen:false};
+      api.setTitle=function(t){title.textContent=t||'';box.setAttribute('aria-label',t||'')};
+      api.setBody=function(x){put(body,x)};
+      api.setFooter=function(x){foot.hidden=x==null;put(foot,x)};
+      api.open=function(){
+        if(api.isOpen)return;api.isOpen=true;from=document.activeElement;
+        el.hidden=false;stack.push(api);
+        if(!locks++)document.documentElement.style.overflow='hidden';
+        requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('on')})});
+        setTimeout(function(){var f=box.querySelector('.sh-x');f&&f.focus({preventScroll:true})},60);
+        if(o.onOpen)o.onOpen(api);
+      };
+      api.close=function(){
+        if(!api.isOpen)return;api.isOpen=false;el.classList.remove('on');
+        var i=stack.indexOf(api);if(i>-1)stack.splice(i,1);
+        if(!--locks)document.documentElement.style.overflow='';
+        setTimeout(function(){if(!api.isOpen)el.hidden=true},rm?0:420);
+        if(from&&from.focus)try{from.focus({preventScroll:true})}catch(e){}
+        if(o.onClose)o.onClose(api);
+      };
+      el.addEventListener('click',function(e){if(e.target===el||e.target.closest('.sh-x'))api.close()});
+      api.setTitle(o.title);api.setBody(o.body);api.setFooter(o.footer);
+      return api;
+    };
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stack.length){stack[stack.length-1].close()}});
+  })();
+  // КОНЕЦ ШТОРОК
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
     var site=document.querySelector('.site');if(!site)return;

@@ -53,7 +53,9 @@ t = home_js.index("  var site=document.querySelector('.site'),tbtn")
 theme = home_js[t:home_js.rindex('})();')]
 fa = home_js.index('  // ПЛАВАЮЩАЯ КОРЗИНА'); fb = home_js.index('  // КОНЕЦ ПЛАВАЮЩЕЙ КОРЗИНЫ')
 fab = home_js[fa:fb]
-cjs = rd('catalog.src.js').replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
+sa = home_js.index('  // МОДАЛЬНЫЕ ШТОРКИ'); sb = home_js.index('  // КОНЕЦ ШТОРОК')
+sheet = home_js[sa:sb]
+cjs = rd('catalog.src.js').replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
 # ---------- готовые блоки T123 ----------
