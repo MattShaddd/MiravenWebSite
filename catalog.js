@@ -732,7 +732,7 @@
         var bar=sub.querySelector('.mv-sum');
         if(!bar){bar=document.createElement('div');bar.className='mv-sum';sub.insertBefore(bar,sub.firstChild)}
         var tot=pg.querySelector('.t706__cartwin-totalamount'),cur=pg.querySelector('.t706__cartwin-prodamount-currency'),
-            amount=tot?tot.textContent.trim():'';
+            amount=tot?tot.textContent.replace(/\s*р\.?\s*$/i,'').trim():'';
         var chk=pg.querySelector('input[name="tildadelivery-type"]:checked'),line='';
         if(chk){var lb=chk.closest('label'),nm=lb&&lb.querySelector('.delivery-checkbox-label'),pr=lb&&lb.querySelector('.delivery-minimum-price');
           line='Доставка: '+(nm?nm.textContent.trim():'')+(pr?' · '+pr.textContent.replace(/^[\s,]+/,'').trim():'')}
@@ -1123,7 +1123,7 @@
         var bar=sub.querySelector('.mv-sum');
         if(!bar){bar=document.createElement('div');bar.className='mv-sum';sub.insertBefore(bar,sub.firstChild)}
         var tot=pg.querySelector('.t706__cartwin-totalamount'),cur=pg.querySelector('.t706__cartwin-prodamount-currency'),
-            amount=tot?tot.textContent.trim():'';
+            amount=tot?tot.textContent.replace(/\s*р\.?\s*$/i,'').trim():'';
         var chk=pg.querySelector('input[name="tildadelivery-type"]:checked'),line='';
         if(chk){var lb=chk.closest('label'),nm=lb&&lb.querySelector('.delivery-checkbox-label'),pr=lb&&lb.querySelector('.delivery-minimum-price');
           line='Доставка: '+(nm?nm.textContent.trim():'')+(pr?' · '+pr.textContent.replace(/^[\s,]+/,'').trim():'')}
