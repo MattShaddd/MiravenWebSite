@@ -890,3 +890,8 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 .t706__cartpage #customdelivery .t-input::placeholder{color:var(--muted)!important;opacity:.75!important}
 .t706__cartpage #customdelivery .searchbox-input{padding-right:40px!important}
 .t706__cartpage #customdelivery .t706__search-icon{right:14px!important}
+/* повышенная специфичность: перебивает стили блока корзины на странице */
+html body .t706__cartpage #customdelivery .t-input-group .t-input.t-input,html body .t706__cartpage #customdelivery .t-input-group input.t-input{background:transparent!important;color:var(--ink)!important;border:1px solid var(--stone)!important;border-radius:14px!important;padding:0 14px!important;height:46px!important;min-height:46px!important;box-shadow:none!important;box-sizing:border-box!important;width:100%!important}
+html body .t706__cartpage #customdelivery .t-input-group .searchbox-input.t-input{padding-right:42px!important}
+html body .t706__cartpage #customdelivery .t-input-group .t-input:focus{border-color:var(--gold)!important}
+html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!important}
