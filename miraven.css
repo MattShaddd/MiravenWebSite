@@ -314,16 +314,5 @@ a.store:hover .st-go .ar{transform:translateX(4px)}
 a.icon-btn{text-decoration:none}
 .icon-btn.signed::after{content:"";position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px var(--white)}
 
-/* попап входа */
-.auth{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:16px;background:rgba(43,35,48,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
-.auth.open{opacity:1;visibility:visible;transition:opacity .3s}
-.auth-box{position:relative;width:min(440px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:var(--mist);border:1px solid var(--stone);border-radius:var(--r-lg);box-shadow:0 40px 80px -40px rgba(0,0,0,.55);transform:translateY(16px) scale(.98);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.auth.open .auth-box{transform:none}
-.auth-x{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border:0;border-radius:50%;background:transparent;color:var(--ink);display:grid;place-items:center;transition:background .2s}
-.auth-x:hover{background:var(--stone)}
-.auth-x svg{width:20px;height:20px}
-.auth iframe{display:block;width:100%;height:340px;border:0;background:transparent;opacity:0;transition:opacity .3s}
-.auth-box.ready iframe{opacity:1}
-.auth-load{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:2px solid var(--stone);border-top-color:var(--gold);animation:authspin .8s linear infinite;transition:opacity .2s}
-.auth-box.ready .auth-load{opacity:0}
-@keyframes authspin{to{transform:rotate(360deg)}}
+/* попап входа (родной попап Тильды) */
+.tlk-authModal{background:rgba(43,35,48,.5)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}

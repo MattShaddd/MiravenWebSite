@@ -124,69 +124,36 @@
       }).catch(function(){track.innerHTML='<p class="empty">Не удалось загрузить каталог. <a href="/store">Открыть каталог</a></p>'});
     })();
   }
-  // вход / регистрация: личный кабинет покупателя Тильды (Members) в попапе
+  // вход / регистрация: родной попап личного кабинета Тильды (Members), оформляем под сайт
   (function(){
     var ar=document.getElementById('allrecords'),pid=ar&&ar.getAttribute('data-tilda-project-id'),signed=false;
     try{signed=!!(pid&&JSON.parse(localStorage.getItem('tilda_members_profile'+pid)))}catch(e){}
-    var path=location.pathname.replace(/^\//,'')+location.search;
-    var url='/members/login?redirecturl='+encodeURIComponent(path);
-    var siteEl=document.querySelector('.site'),box,frame,wrap,timer,watch;
     var accBtn=document.getElementById('accBtn');
     if(signed&&accBtn){accBtn.classList.add('signed');accBtn.title='Личный кабинет';accBtn.setAttribute('aria-label','Личный кабинет')}
+    // ссылка вида /members/login: её перехватывает Тильда и открывает попап (без неё остаётся переход на страницу)
+    var url='/members/login?redirecturl='+encodeURIComponent(location.pathname.replace(/^\//,'')+location.search);
     document.querySelectorAll('a[href="#openmembersbar"]').forEach(function(a){a.href=url});
 
-    var CSS_URL='https://mattshaddd.github.io/MiravenWebSite/members.css';
-    function build(){
-      wrap=document.createElement('div');wrap.className='auth';wrap.setAttribute('role','dialog');wrap.setAttribute('aria-modal','true');wrap.setAttribute('aria-label','Вход и регистрация');
-      wrap.innerHTML='<div class="auth-box"><button class="auth-x" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button><i class="auth-load"></i><iframe title="Вход и регистрация" tabindex="0"></iframe></div>';
-      siteEl.appendChild(wrap);box=wrap.querySelector('.auth-box');frame=wrap.querySelector('iframe');
-      wrap.addEventListener('click',function(e){if(e.target===wrap)close()});
-      wrap.querySelector('.auth-x').addEventListener('click',close);
-      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&wrap.classList.contains('open'))close()});
-      frame.addEventListener('load',onLoad);
-    }
+    var site=document.querySelector('.site'),CSS_URL='https://mattshaddd.github.io/MiravenWebSite/members.css';
     function vars(){
-      var cs=getComputedStyle(siteEl),g=function(n){return cs.getPropertyValue(n).trim()};
-      return ':root{--m-bg:'+g('--white')+';--m-mist:'+g('--mist')+';--m-stone:'+g('--stone')+';--m-ink:'+g('--ink')+';--m-head:'+g('--head')+';--m-muted:'+g('--muted')+';--m-gold:'+g('--gold')+';--m-gold-text:'+g('--gold-text')+'}';
+      var cs=getComputedStyle(site),g=function(n){return cs.getPropertyValue(n).trim()};
+      return ':root{--m-bg:'+g('--white')+';--m-mist:'+g('--mist')+';--m-stone:'+g('--stone')+';--m-ink:'+g('--ink')+';--m-head:'+g('--head')+';--m-muted:'+g('--muted')+';--m-gold:'+g('--gold')+';--m-gold-text:'+g('--gold-text')+'}'
+        +'html,body{background:transparent!important}.tlk-bg-filter,.tlk-bg-filter__bg{display:none!important}';
     }
-    var POP='html,body{background:transparent!important;overflow:hidden}.tlk-bg-filter,.tlk-bg-filter__bg{display:none!important}.tlk-form{min-height:0!important;height:auto!important;padding:0!important;margin:0!important;background:transparent!important}.tlk-form__container-wrap{background:transparent!important;border:0!important;box-shadow:none!important;margin:0!important;padding:0!important;width:100%!important;max-width:none!important}.tlk-form__container{padding:36px 32px 28px!important;max-width:none!important;width:100%!important}@media(max-width:480px){.tlk-form__container{padding:30px 20px 22px!important}}';
-    function onLoad(){
-      var d,w;try{w=frame.contentWindow;d=frame.contentDocument;if(!d||!d.head)return}catch(e){return}
-      if(!/^\/members/.test(w.location.pathname)){done();return}
+    function skin(f){
+      var d;try{d=f.contentDocument;if(!d||!d.head||!d.body||!d.body.firstChild)return false}catch(e){return false}
+      if(d.getElementById('miraven-skin'))return true;
       var l=d.createElement('link');l.rel='stylesheet';l.href=CSS_URL;d.head.appendChild(l);
-      var st=d.createElement('style');st.textContent=vars()+POP;d.head.appendChild(st);
-      box.classList.add('ready');
-      clearInterval(timer);
-      timer=setInterval(fit,200);fit();
+      var s=d.createElement('style');s.id='miraven-skin';s.textContent=vars();d.head.appendChild(s);
+      return true;
     }
-    function fit(){
-      try{var d=frame.contentDocument,h=d.querySelector('.tlk-form__container');if(!h)return;frame.style.height=Math.ceil(h.getBoundingClientRect().height)+'px'}catch(e){}
+    function watch(f){
+      if(f.__mv)return;f.__mv=1;
+      f.addEventListener('load',function(){skin(f)});
+      var n=0,t=setInterval(function(){if(skin(f)||++n>40)clearInterval(t)},100);
     }
-    function done(){
-      // вошли: Тильда увела на страницу после входа, обновляем нашу
-      clearInterval(watch);clearInterval(timer);frame.src='about:blank';
-      try{var t=+sessionStorage.getItem('miraven-auth-reload')||0;if(Date.now()-t<8000)return;sessionStorage.setItem('miraven-auth-reload',Date.now())}catch(e){}
-      location.reload();
-    }
-    function open(){
-      if(!wrap)build();
-      box.classList.remove('ready');frame.style.height='';
-      frame.src=url;wrap.classList.add('open');document.documentElement.style.overflow='hidden';
-      clearInterval(watch);
-      watch=setInterval(function(){try{var p=frame.contentWindow.location.pathname;if(p!=='blank'&&p!=='/srcdoc'&&frame.contentWindow.location.href!=='about:blank'&&!/^\/members/.test(p))done()}catch(e){}},250);
-      setTimeout(function(){var x=wrap.querySelector('.auth-x');x&&x.focus()},50);
-    }
-    function close(){
-      wrap.classList.remove('open');document.documentElement.style.overflow='';
-      clearInterval(watch);clearInterval(timer);setTimeout(function(){if(!wrap.classList.contains('open'))frame.src='about:blank'},300);
-      accBtn&&accBtn.focus();
-    }
-    document.addEventListener('click',function(e){
-      var a=e.target.closest&&e.target.closest('a[href="#openmembersbar"],a[href^="/members/login"]');if(!a)return;
-      e.preventDefault();
-      if(signed){var ub=document.querySelector('.tlk-userbar,[class*="userbar"] [class*="toggle"],[class*="userbar"]');if(ub){ub.click();return}}
-      open();
-    });
+    function scan(){document.querySelectorAll('iframe.tlk-authModal-content').forEach(watch)}
+    new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});scan();
   })();
   // поиск и мобильное меню
   var sf=document.getElementById('srch'),si=document.getElementById('srchIn');
