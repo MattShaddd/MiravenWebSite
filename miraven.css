@@ -210,7 +210,7 @@ html{scroll-behavior:smooth}
 
 
 /* ---------- темы: бежевая (по умолчанию) и тёмная ---------- */
-.site{transition:background-color .3s,color .3s;color:var(--ink);background:var(--white)}
+.site{transition:background-color .3s,color .3s;color:var(--ink);background:radial-gradient(ellipse 78% 68% at 50% 44%,transparent 24%,rgba(14,11,18,.08) 52%,rgba(14,11,18,.28) 76%,rgba(10,8,14,.52) 100%) fixed,var(--white)}
 .site[data-theme="dark"]{
   --white:#15131A; --mist:#1D1A24; --stone:#2F2B38; --ink:#EFE9DF; --muted:#9D97A7;
   --head:#E8E1D4; --gold:#CC9A3C; --gold-text:#D8AD5E; color-scheme:dark}
