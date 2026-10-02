@@ -177,7 +177,7 @@
       }
       var p=prof(),phone=p.phone?String(p.phone).replace(/^\+?7(\d{3})(\d{3})(\d{2})(\d{2})$/,'+7 ($1) $2-$3-$4'):'';
       return '<dl class="cab-dl"><dt>Имя</dt><dd>'+eh(dec(p.name||'—'))+'</dd><dt>Эл. почта</dt><dd>'+eh(p.login||'—')+'</dd><dt>Телефон</dt><dd>'+eh(phone||'—')+'</dd></dl>'
-        +'<div class="cab-links"><a class="btn btn-line" href="/members/profile">Редактировать профиль</a><a class="btn btn-line" href="/members/addresses">Мои адреса</a><button class="btn btn-ink" type="button" data-cab="out">Выйти</button></div>';
+        +'<div class="cab-links"><a class="btn btn-line" href="/members/profile">Редактировать профиль</a><a class="btn btn-line" href="/members/addresses">Мои адреса</a><button class="btn btn-ink" type="button" data-cab="out">Выйти из профиля</button></div>';
     }
     function cabRender(){
       if(!cab)return;
@@ -209,7 +209,12 @@
             case 'tab':cs.tab=a.dataset.t;cabRender();break;
             case 'ord':{var art=a.closest('.co'),on=!art.classList.contains('open');art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));break}
             case 'more':cabLoad(true);break;
-            case 'out':if(typeof window.tma__userbar__sendLogout==='function'){try{window.tma__userbar__sendLogout();break}catch(x){}}location.href='/members/login?exit=y';break;
+            case 'out':{
+              var fin=false,after=function(){if(fin)return;fin=true;location.reload()};
+              document.addEventListener('membersLogout',after,{once:true});
+              if(typeof window.tma__userbar__sendLogout==='function'){try{window.tma__userbar__sendLogout();setTimeout(after,2500);a.disabled=true;a.textContent='Выходим…';break}catch(x){}}
+              location.href='/members/login?exit=y';break;
+            }
           }
         });
         document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!cab.hidden)cabClose()});
