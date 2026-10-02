@@ -212,3 +212,12 @@
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-error-text, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-error-message{color:var(--m-muted)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-preloader-item{background:var(--m-stone)!important;border-radius:14px!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-password-icon-hidden, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-password-icon-visible{opacity:.9!important}
+
+/* кнопки кабинета: перебиваем цвета из настроек Тильды (#allrecords ...) */
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button_primary, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button.tmst-purchased__go-to-catalog-btn{background-color:var(--m-ink)!important;color:var(--m-bg)!important;border:0!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button_primary:hover{background-color:color-mix(in srgb,var(--m-ink) 86%,var(--m-bg))!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button_secondary{background-color:transparent!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button_secondary:hover{border-color:var(--m-ink)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button_text{background-color:transparent!important;color:var(--m-muted)!important;border:0!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button_text:hover{color:var(--m-gold-text)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button[disabled], :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-button.disabled{opacity:.5;pointer-events:none}
