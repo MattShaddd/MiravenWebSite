@@ -475,3 +475,9 @@ html[data-mv-theme="dark"] .t706__product-minus img,html[data-mv-theme="dark"] .
 .t706__orderform .t-form__errorbox-text,.t706__orderform .t-form__errorbox-item{color:#C0584E!important}
 .t706__orderform .t-checkbox__indicator,.t706__orderform .t-checkbox__control{color:var(--ink)!important}
 .t706__orderform .t-checkbox__indicator{border-color:var(--stone)!important}
+
+/* поле телефона в корзине: рамка только у внешней обёртки */
+.t706__orderform input.t-input-phonemask{border:0!important;box-shadow:none!important;background:transparent!important;height:100%!important}
+.t706__orderform .t-input-phonemask__wrap{display:flex;align-items:center;border:1px solid var(--stone)!important;height:50px!important;padding:0!important;box-shadow:none!important}
+.t706__orderform .t-input-phonemask__wrap:focus-within{border-color:var(--gold)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 22%,transparent)!important}
+.t706__orderform .t-input-phonemask__select{padding-left:12px}

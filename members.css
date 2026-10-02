@@ -5,6 +5,10 @@
   --m-bg:#F6F1E8; --m-mist:#EDE5D8; --m-stone:#DDD2C0; --m-ink:#2B2330; --m-head:#4A3E45;
   --m-muted:#7B6F69; --m-gold:#C4913A; --m-gold-text:#8A6118; --m-err:#B4443A;
 }
+
+@media (prefers-color-scheme:dark){
+  :root{--m-bg:#15131A;--m-mist:#1D1A24;--m-stone:#2F2B38;--m-ink:#EFE9DF;--m-head:#E8E1D4;--m-muted:#9D97A7;--m-gold:#CC9A3C;--m-gold-text:#D8AD5E;--m-err:#E07A70}
+}
 html,body{background:var(--m-bg)!important}
 body,.tlk-form,.tlk-userbar,.tlk-userbar__popup,.tlk-menu,.tlk-popup,.tlk-switcher{font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important;color:var(--m-ink);-webkit-font-smoothing:antialiased}
 
@@ -68,3 +72,35 @@ button[onclick*="CloseModal"]{top:14px!important;right:14px!important;width:34px
 button[onclick*="CloseModal"]:hover{opacity:1!important;background:var(--m-stone)!important}
 button[onclick*="CloseModal"] svg{width:16px;height:16px}
 button[onclick*="CloseModal"] line{stroke:var(--m-ink)!important;stroke-width:1.4}
+
+/* отдельная страница: карточка по центру, слоган под формой */
+.tlk-form__container-wrap{min-width:min(420px,100vw - 32px)}
+.tlk-form__container-wrap::after{content:"открытки рассказывают сказки";display:block;text-align:center;font-family:"Lora",Georgia,serif;font-style:italic;font-size:13px;color:var(--m-gold-text);padding:0 0 14px}
+.tlk-input-title{margin-bottom:4px}
+.tlk-form__item{margin-bottom:6px}
+
+/* ===== личный кабинет (после входа) ===== */
+.tlk-userbar{top:84px!important}
+.tlk-userbar__user,.tlk-userbar__user-image{border-radius:50%!important}
+.tlk-userbar__user{background:var(--m-ink)!important;color:var(--m-bg)!important;box-shadow:0 10px 24px -12px rgba(0,0,0,.5)!important}
+.tlk-userbar__popup,.tlk-userbar__popup-container,.tlk-userbar__popup-content,.tlk-popup__container{background:var(--m-bg)!important;color:var(--m-ink)!important;border-radius:20px!important}
+.tlk-userbar__popup{border:1px solid var(--m-stone)!important;box-shadow:0 30px 60px -30px rgba(0,0,0,.5)!important}
+.tlk-userbar__popup-name,.tlk-userbar__popup-title,.tlk-userbar__popup-heading,.tlk-popup__title,.tlk-title{font-family:"Lora",Georgia,serif!important;color:var(--m-head)!important;font-weight:600!important}
+.tlk-userbar__popup-text,.tlk-userbar__popup-wrap-name,.tlk-text{color:var(--m-muted)!important}
+.tlk-userbar__popup-store-item,.tlk-userbar__popup-groups-item,.tlk-userbar__popup-courses-item,.tlk-accordion__link,.tlk-userbar__popup-accordion-link{border-radius:12px!important;transition:background .2s,color .2s}
+.tlk-userbar__popup-store-item:hover,.tlk-userbar__popup-groups-item:hover,.tlk-accordion__link:hover{background:var(--m-mist)!important;color:var(--m-gold-text)!important}
+.tlk-userbar__popup-logout,.tlk-userbar__popup-edit-profile{color:var(--m-muted)!important}
+.tlk-userbar__popup-logout:hover,.tlk-userbar__popup-edit-profile:hover{color:var(--m-gold-text)!important}
+.tlk-userbar__loyalty,.tlk-userbar__popup-warning{background:var(--m-mist)!important;border-radius:14px!important;color:var(--m-ink)!important}
+.tlk-popup{background:rgba(23,19,28,.55)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.tlk-popup__container{border:1px solid var(--m-stone)!important}
+.tlk-popup__close{color:var(--m-ink)!important}
+.tlk-popup__button,.tlk-btn_white,.tlk-btn_black,.tlk-btn_accent{border-radius:999px!important;font-family:inherit!important}
+.tlk-btn_white{background:transparent!important;color:var(--m-ink)!important;box-shadow:inset 0 0 0 1px var(--m-stone)!important}
+.tlk-btn_white:hover{box-shadow:inset 0 0 0 1px var(--m-ink)!important}
+.tlk-select,.tlk-select-custom__selected,.tlk-profile-dropdown-menu,.tlk-profile-dropdown-list{background:var(--m-bg)!important;color:var(--m-ink)!important;border:1px solid var(--m-stone)!important;border-radius:14px!important}
+.tlk-profile-dropdown-item:hover,.tlk-select-custom__options *:hover{background:var(--m-mist)!important}
+.tlk-upload__button,.tlk-upload-label{border-radius:999px!important;border:1px solid var(--m-stone)!important;color:var(--m-ink)!important;background:transparent!important}
+.tlk-tooltip,.tlk-tooltip_theme_dark{border-radius:10px!important}
+.tlk-page-error__title{font-family:"Lora",Georgia,serif!important;color:var(--m-head)!important}
+.tlk-loader__icon span{background:var(--m-gold)!important}
