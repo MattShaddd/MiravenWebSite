@@ -710,3 +710,6 @@ html[data-mv-theme="dark"] .t706__cartwin .t-form__errorbox-middle .t-form__erro
 .t706__cartwin .t706__cartwin-close,.t706__cartwin .t706__close{background:transparent!important}
 .t706__cartwin .t706__cartwin-close-wrapper{width:40px!important;height:40px!important;padding:0!important;margin:0!important}
 .t706__cartwin .t706__close-icon{width:18px!important;height:18px!important}
+.t706__cartwin .t706__product{margin:0!important;padding:12px 0!important}
+.t706__cartwin .t706__cartwin-products{margin:0!important;padding:0!important}
+.t706__cartwin .t706__cartwin-bottom{margin-top:0!important}
