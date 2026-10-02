@@ -376,3 +376,10 @@ body.qv-lock{overflow:hidden}
   .ssh-opt[aria-pressed="true"] .ssh-radio{background:var(--gold)}
   .ssh-opt[aria-pressed="true"] .ssh-radio::after{transform:translateY(-1px) rotate(-45deg) scale(1)}
 }
+
+/* телефон: иконки не сдвигают категории. Вверху страницы они в своей строке, категории на всю ширину; при прокрутке всё встаёт в одну строку */
+@media (max-width:760px){
+  .cat-bar .tabs{flex:1 0 100%;align-self:stretch}
+  .cat-bar.compact .tabs{flex:1 1 0;align-self:center}
+}
+@media (max-width:760px){.cat-bar-in{justify-content:flex-start}}
