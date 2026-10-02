@@ -964,6 +964,12 @@
         var a=e.target.closest&&e.target.closest('#accBtn,.acc-link');if(!a)return;
         e.preventDefault();e.stopImmediatePropagation();cabOpen();
       },true);
+      // в окне заказа «Вы авторизованы как …» ведёт в наш кабинет, а не на стандартную страницу Тильды
+      document.addEventListener('click',function(e){
+        var a=e.target.closest&&e.target.closest('.t706__auth a[href*="/members"]');
+        if(!a||/exit=y/.test(a.getAttribute('href')||''))return;
+        e.preventDefault();e.stopImmediatePropagation();cabOpen();
+      },true);
     }
 
     var site=document.querySelector('.site'),CSS_URL='https://mattshaddd.github.io/MiravenWebSite/members.css';
