@@ -415,7 +415,7 @@
     var url='#p-'+uid;
     if(!fromPop){if(first){history.pushState({qv:1},'',url);pushed=true}else history.replaceState({qv:1},'',url)}
     qv.querySelector('.qv-box').scrollTop=0;
-    var cl=qv.querySelector('[data-qv="x"]');cl&&cl.focus({preventScroll:true});
+    qv.focus({preventScroll:true});
   }
   function hideQV(){
     if(qv.hidden)return;
