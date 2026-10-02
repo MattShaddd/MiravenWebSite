@@ -70,6 +70,7 @@
     if(i.qty>0)Y.inv=i.qty;
     if(p.unit)Y.unit=p.unit;if(p.portion)Y.portion=p.portion;if(p.single)Y.single=p.single;
     if(typeof window.tcart__addProduct!=='function'){location.href=i.url;return}
+    var t6=document.querySelector('.t706');if(t6)t6.setAttribute('data-opencart-onorder','no');
     tcart__addProduct(Y);
     b.classList.add('done');b.innerHTML=CHECK+'<span>В корзине</span>';
     setTimeout(function(){b.classList.remove('done');b.innerHTML=PLUS+'<span>В корзину</span>'},2200);
