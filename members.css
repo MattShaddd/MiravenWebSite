@@ -130,3 +130,10 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 #rec1285626401 .t457__copyright,#rec1285626401 .t457__li a,#rec1285626401 a{color:var(--m-gold-text)!important}
 #rec1285626401 .t457__li a:hover{color:var(--m-ink)!important}
 #rec1285626401 [style*="background"]{background:transparent!important}
+
+/* исправление: карточка не должна быть flex-рядом (иначе слоган уезжает вправо, а форма сужается) */
+.tlk-form__container-wrap{display:block!important;box-sizing:border-box}
+.tlk-form__container{display:block!important;width:100%!important;max-width:none!important;box-sizing:border-box}
+.tlk-form__container-wrap::after{text-align:center;width:100%}
+.tlk-form__simplified .tlk-form__container-wrap::after{display:none}
+@media (max-width:480px){.tlk-form__container-wrap{min-width:0!important;width:100%!important}}
