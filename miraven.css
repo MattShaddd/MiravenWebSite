@@ -900,3 +900,11 @@ html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!i
 #customdelivery#customdelivery#customdelivery .t-input:focus{border-color:var(--gold)!important}
 #customdelivery#customdelivery#customdelivery .searchbox-input{padding-right:42px!important}
 #customdelivery#customdelivery#customdelivery .t-input-title{color:var(--ink)!important;font-size:13px!important;font-weight:600!important;font-family:inherit!important}
+
+/* промокод: кнопка ровная и по центру; пустые списки-подсказки не рисуют рамку */
+.t706__cartpage .t-inputpromocode__wrapper .t-inputpromocode__btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:46px!important;min-height:46px!important;line-height:1!important;padding:0 20px!important;border-radius:14px!important;background:var(--ink)!important;color:var(--white)!important;vertical-align:middle;white-space:nowrap;cursor:pointer}
+.t706__cartpage .t-inputpromocode__wrapper .t-inputpromocode__btn[style*="display: none"],.t706__cartpage .t-inputpromocode__wrapper .t-inputpromocode__btn[style*="display:none"]{display:none!important}
+.t706__cartpage .t-inputpromocode__wrapper .t-inputpromocode{height:46px!important}
+.t706__cartpage .searchbox-list:empty,.t706__cartpage .searchbox-list:not(:has(.searchbox-list-item)){display:none!important}
+.t706__cartpage .t-input-error,.t706__cartpage .t-input-error_show,.t706__cartpage [class*="t-input-error"]{color:#E0605A!important;font-size:12px!important;line-height:1.3!important}
+.t706__cartpage .t-input-error{margin-top:6px}
