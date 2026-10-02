@@ -315,11 +315,12 @@
         (it.descr?'<p class="qv-sub" style="margin-top:-8px">'+clean(it.descr).replace(/<br\s*\/?>/g,' · ')+'</p>':'')+
         '<div class="qv-priceRow" id="qvPrice"></div>'+
         opts+
-        '<div class="qv-buy"><div class="qv-qty"><button type="button" data-qv="qm" aria-label="Меньше">−</button><output id="qvQty">1</output><button type="button" data-qv="qp" aria-label="Больше">+</button></div><button class="btn btn-ink qv-add" type="button" data-qv="add" id="qvAdd"></button></div>'+
-        '<button class="qv-gocart" type="button" data-qv="cart" id="qvGo" hidden>Товар в корзине. Открыть корзину →</button>'+
         '<div class="qv-ship">'+TRUCK+'<span>Отправляю в течение 3 рабочих дней после оплаты: Почтой России, Ozon-доставкой или СДЭК.</span></div>'+
         descr+chars+
         (rel.length>2?'<div class="qv-rel"><div class="qv-h">Похожие товары</div><div class="qv-rel-track">'+rel.map(function(x){return '<button type="button" data-rel="'+x.uid+'"><span class="im"><img src="'+esc(thumb(x.img,260))+'" alt="" loading="lazy"></span><span>'+esc(x.n)+'</span><b>'+fmt(x.price)+' ₽</b></button>'}).join('')+'</div></div>':'')+
+      '</div><div class="qv-foot">'+
+        '<div class="qv-buy"><div class="qv-qty"><button type="button" data-qv="qm" aria-label="Меньше">−</button><output id="qvQty">1</output><button type="button" data-qv="qp" aria-label="Больше">+</button></div><button class="btn btn-ink qv-add" type="button" data-qv="add" id="qvAdd"></button></div>'+
+        '<button class="qv-gocart" type="button" data-qv="cart" id="qvGo" hidden>Товар в корзине. Открыть корзину →</button>'+
       '</div></div>';
   }
   function paintBuy(){
@@ -331,7 +332,7 @@
     var box=qv.querySelector('.qv-qty');box.children[0].disabled=qty<=1;box.children[2].disabled=qty>=max;
     var add=$('qvAdd');
     if(ed.qty===0){add.disabled=true;add.classList.remove('done');add.innerHTML='Нет в наличии'}
-    else{add.disabled=false;add.classList.remove('done');add.innerHTML=PLUS+'<span>В корзину · '+fmt(ed.price*qty)+' ₽</span>'}
+    else{add.disabled=false;add.classList.remove('done');add.innerHTML=PLUS+'<span>В корзину · '+fmt(ed.price*qty)+' ₽</span>'}
     it.opts.forEach(function(o,k){var e=$('optv-'+k);if(e)e.textContent=sel[o.title]||''});
   }
   function curIdx(){var s=$('qvSlides');return s?Math.round(s.scrollLeft/(s.clientWidth||1)):0}
