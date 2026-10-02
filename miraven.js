@@ -132,7 +132,7 @@
     if(signed&&accBtn){accBtn.classList.add('signed');accBtn.title='Личный кабинет';accBtn.setAttribute('aria-label','Личный кабинет')}
     // ссылка вида /members/login: её перехватывает Тильда и открывает попап (без неё остаётся переход на страницу)
     var url='/members/login?redirecturl='+encodeURIComponent(location.pathname.replace(/^\//,'')+location.search);
-    document.querySelectorAll('a[href="#openmembersbar"]').forEach(function(a){a.href=url});
+    if(!signed)document.querySelectorAll('a[href="#openmembersbar"]').forEach(function(a){a.href=url});
     // вошёл: иконка в шапке открывает меню кабинета (штатный механизм Тильды; плавающую кнопку прячем в CSS)
     function bindUserbar(){if(signed&&typeof window.tma__userbar__useUserbarHandlers==='function'){try{window.tma__userbar__useUserbarHandlers()}catch(e){}}}
     bindUserbar();window.addEventListener('load',function(){bindUserbar();setTimeout(bindUserbar,800);setTimeout(bindUserbar,2000)});
