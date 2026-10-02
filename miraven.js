@@ -23,7 +23,8 @@
     var L=list();if(!L.length)return '<p class="empty">Ничего не нашлось. Попробуйте другой запрос.</p>';
     return L.map(function(i,k){
       var btn=i.sold?'':'<button class="add" data-uid="'+i.uid+'" aria-label="'+(i.multi?'Выбрать вариант: ':'В корзину: ')+esc(i.title)+'">'+PLUS+'<span>'+(i.multi?'Выбрать':'В корзину')+'</span></button>';
-      return '<article class="prod'+(i.sold?' soldout':'')+'" style="--i:'+Math.min(k,7)+'"><div class="photo">'+(i.img?'<img class="pimg" loading="lazy" decoding="async" src="'+esc(thumb(i.img))+'" data-full="'+esc(i.img)+'" alt="'+esc(i.title)+'" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+'<a class="plink" href="'+esc(i.url)+'" aria-label="'+esc(i.title)+'"></a>'+btn+'</div><div class="meta"><small>'+esc(i.t||i.part)+'</small><h3><a href="'+esc(i.url)+'">'+esc(i.n)+'</a></h3></div><span class="price">'+(i.sold?'<span class="soldtag">Нет в наличии</span>':fmt(i.price)+' ₽'+(i.old?'<s>'+fmt(i.old)+' ₽</s>':''))+'</span></article>';
+      var url='/newstore#p-'+i.uid;
+      return '<article class="prod'+(i.sold?' soldout':'')+'" style="--i:'+Math.min(k,7)+'"><div class="photo">'+(i.img?'<img class="pimg" loading="lazy" decoding="async" src="'+esc(thumb(i.img))+'" data-full="'+esc(i.img)+'" alt="'+esc(i.title)+'" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+'<a class="plink" href="'+url+'" aria-label="'+esc(i.title)+'"></a>'+btn+'</div><div class="meta"><small>'+esc(i.t||i.part)+'</small><h3><a href="'+url+'">'+esc(i.n)+'</a></h3></div><span class="price">'+(i.sold?'<span class="soldtag">Нет в наличии</span>':fmt(i.price)+' ₽'+(i.old?'<s>'+fmt(i.old)+' ₽</s>':''))+'</span></article>';
     }).join('');
   }
   function render(){
