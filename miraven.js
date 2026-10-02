@@ -5,6 +5,38 @@
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var track=document.getElementById('products'),cart=document.getElementById('cart'),count=0,busy=false;
   var PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  (function(){
+    var hero=document.getElementById('hero'),cards=hero&&hero.querySelectorAll('.hero-card');
+    if(!hero||!cards.length||reduce||(window.matchMedia&&matchMedia('(pointer: coarse)').matches))return;
+    var px=0,py=0,active=null,raf=0;
+    function draw(){
+      for(var i=0;i<cards.length;i++){
+        var card=cards[i],d=Number(card.getAttribute('data-depth'))||.5,r=card.getBoundingClientRect();
+        var on=card===active;
+        var dx=on?(px-(r.left+r.width/2))/Math.max(r.width/2,1):0;
+        var dy=on?(py-(r.top+r.height/2))/Math.max(r.height/2,1):0;
+        dx=Math.max(-1,Math.min(1,dx));dy=Math.max(-1,Math.min(1,dy));
+        var ox=Number(card.dataset.x)||0,oy=Number(card.dataset.y)||0,orx=Number(card.dataset.rx)||0,ory=Number(card.dataset.ry)||0;
+        var nx=dx*7*d,ny=dy*5*d,nrx=-dy*12*d,nry=dx*16*d;
+        ox+=(nx-ox)*.1;oy+=(ny-oy)*.1;orx+=(nrx-orx)*.1;ory+=(nry-ory)*.1;
+        card.dataset.x=ox;card.dataset.y=oy;card.dataset.rx=orx;card.dataset.ry=ory;
+        card.style.setProperty('--mx',ox.toFixed(2)+'px');card.style.setProperty('--my',oy.toFixed(2)+'px');
+        card.style.setProperty('--rx',orx.toFixed(2)+'deg');card.style.setProperty('--ry',ory.toFixed(2)+'deg');
+      }
+      raf=requestAnimationFrame(draw);
+    }
+    function move(e){
+      px=e.clientX;py=e.clientY;var hit=null,best=Infinity;
+      for(var i=0;i<cards.length;i++){
+        var r=cards[i].getBoundingClientRect();
+        if(px>=r.left&&px<=r.right&&py>=r.top&&py<=r.bottom){var q=Math.abs(px-(r.left+r.width/2))+Math.abs(py-(r.top+r.height/2));if(q<best){best=q;hit=cards[i]}}
+      }
+      if(active!==hit){if(active)active.classList.remove('is-hovered');active=hit;if(active)active.classList.add('is-hovered')}
+      if(!raf)raf=requestAnimationFrame(draw);
+    }
+    function reset(){if(active)active.classList.remove('is-hovered');active=null}
+    hero.addEventListener('pointermove',move,{passive:true});hero.addEventListener('pointerleave',reset,{passive:true});
+  })();
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function thumb(u){var m=/^https?:\/\/static\.tildacdn\.com\/(.+)\/([^\/]+)$/.exec(u||'');return m?'https://thb.tildacdn.com/'+m[1]+'/-/resize/480x/'+m[2]:u}
   function fmt(n){return Math.round(n).toLocaleString('ru-RU').replace(/ /g,' ')}

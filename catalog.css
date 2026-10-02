@@ -48,6 +48,7 @@
 
 /* фильтры */
 .filters{position:relative;min-width:0}
+@media (min-width:981px){.filters{position:sticky;top:calc(var(--hdr,72px) + 20px);max-height:calc(100dvh - var(--hdr,72px) - 40px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 60%,transparent) transparent}}
 .f-foot{display:none}
 .f-group{border-bottom:1px solid var(--stone);padding-block:4px}
 .f-sw{border-top:1px solid var(--stone)}
