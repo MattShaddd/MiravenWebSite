@@ -954,3 +954,7 @@ html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!i
 /* сумма и доставка теперь показаны в закреплённой строке у кнопки, дубль в списке убран */
 .t706__cartpage .t706__cartpage-totals{display:none!important}
 .t706__cartpage .t706__cartpage-info{margin-bottom:6px!important}
+
+/* шторки и подтверждение заказа всегда поверх окон Тильды (корзина/оплата имеют очень большой z-index) */
+.sh{z-index:2147483000!important}
+.toast{z-index:2147483100!important}
