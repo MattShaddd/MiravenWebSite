@@ -643,14 +643,36 @@
   document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in')});
 
     // КОРЗИНА В ШТОРКЕ
-  // Окно «Ваш заказ» Тильды оформляется как шторка (стили в miraven.css, тот же вид, что у MV.sheet). Содержимое не переносим:
-  // скрипты Тильды ищут поля и блоки внутри своего окна, поэтому логика остаётся штатной.
+  // Корзина Тильды оформляется как шторка (стили в miraven.css, тот же вид, что у MV.sheet). Содержимое остаётся внутри блока Тильды:
+  // её скрипты ищут поля, доставку и оплату внутри своих контейнеров, поэтому логика остаётся штатной.
   (function(){
     function prep(){
+      // режим «окно»: крестик в шапку шторки
       var top=document.querySelector('.t706__cartwin-top'),cl=document.querySelector('.t706__cartwin-close');
-      if(top&&cl&&cl.parentNode!==top)top.appendChild(cl); // крестик в шапку шторки
+      if(top&&cl&&cl.parentNode!==top)top.appendChild(cl);
+      // режим «страница»: оборачиваем шапку и содержимое в коробку шторки (остаются внутри .t706__cartpage)
+      var pg=document.querySelector('.t706__cartpage');
+      if(pg&&!pg.querySelector('.mv-cp')){
+        var tp=pg.querySelector('.t706__cartpage-top'),ct=pg.querySelector('.t706__cartpage-content');
+        if(tp&&ct){
+          var box=document.createElement('div');box.className='mv-cp';
+          pg.insertBefore(box,tp);box.appendChild(tp);box.appendChild(ct);
+          pg.addEventListener('click',function(e){if(e.target===pg){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}}); // клик по подложке закрывает
+        }
+      }
     }
-    prep();window.addEventListener('load',function(){prep();setTimeout(prep,1200)});
+    // сразу страница заказа, без боковой панели Тильды
+    function hook(){
+      if(typeof window.tcart__openCart!=='function'||window.tcart__openCart.__mv)return false;
+      var o=window.tcart__openCart;
+      window.tcart__openCart=function(){
+        if(window.tcart_fullscreen&&typeof window.tcart__openCartFullscreen==='function'&&document.querySelector('.t706__cartpage')){prep();return window.tcart__openCartFullscreen()}
+        return o.apply(this,arguments);
+      };
+      window.tcart__openCart.__mv=1;return true;
+    }
+    prep();if(!hook()){var n=0,t=setInterval(function(){prep();if(hook()||++n>80)clearInterval(t)},150)}
+    window.addEventListener('load',function(){prep();hook();setTimeout(function(){prep();hook()},1200)});
   })();
   // Подтверждение заказа: Тильда подставляет сохранённые данные (адрес, ФИО, телефон) и сразу уводит на оплату.
   // Перед отправкой показываем сводку «Проверьте заказ», где можно поправить данные или подтвердить.
@@ -920,14 +942,36 @@
   })();
   // КОНЕЦ ШТОРОК
   // КОРЗИНА В ШТОРКЕ
-  // Окно «Ваш заказ» Тильды оформляется как шторка (стили в miraven.css, тот же вид, что у MV.sheet). Содержимое не переносим:
-  // скрипты Тильды ищут поля и блоки внутри своего окна, поэтому логика остаётся штатной.
+  // Корзина Тильды оформляется как шторка (стили в miraven.css, тот же вид, что у MV.sheet). Содержимое остаётся внутри блока Тильды:
+  // её скрипты ищут поля, доставку и оплату внутри своих контейнеров, поэтому логика остаётся штатной.
   (function(){
     function prep(){
+      // режим «окно»: крестик в шапку шторки
       var top=document.querySelector('.t706__cartwin-top'),cl=document.querySelector('.t706__cartwin-close');
-      if(top&&cl&&cl.parentNode!==top)top.appendChild(cl); // крестик в шапку шторки
+      if(top&&cl&&cl.parentNode!==top)top.appendChild(cl);
+      // режим «страница»: оборачиваем шапку и содержимое в коробку шторки (остаются внутри .t706__cartpage)
+      var pg=document.querySelector('.t706__cartpage');
+      if(pg&&!pg.querySelector('.mv-cp')){
+        var tp=pg.querySelector('.t706__cartpage-top'),ct=pg.querySelector('.t706__cartpage-content');
+        if(tp&&ct){
+          var box=document.createElement('div');box.className='mv-cp';
+          pg.insertBefore(box,tp);box.appendChild(tp);box.appendChild(ct);
+          pg.addEventListener('click',function(e){if(e.target===pg){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}}); // клик по подложке закрывает
+        }
+      }
     }
-    prep();window.addEventListener('load',function(){prep();setTimeout(prep,1200)});
+    // сразу страница заказа, без боковой панели Тильды
+    function hook(){
+      if(typeof window.tcart__openCart!=='function'||window.tcart__openCart.__mv)return false;
+      var o=window.tcart__openCart;
+      window.tcart__openCart=function(){
+        if(window.tcart_fullscreen&&typeof window.tcart__openCartFullscreen==='function'&&document.querySelector('.t706__cartpage')){prep();return window.tcart__openCartFullscreen()}
+        return o.apply(this,arguments);
+      };
+      window.tcart__openCart.__mv=1;return true;
+    }
+    prep();if(!hook()){var n=0,t=setInterval(function(){prep();if(hook()||++n>80)clearInterval(t)},150)}
+    window.addEventListener('load',function(){prep();hook();setTimeout(function(){prep();hook()},1200)});
   })();
   // Подтверждение заказа: Тильда подставляет сохранённые данные (адрес, ФИО, телефон) и сразу уводит на оплату.
   // Перед отправкой показываем сводку «Проверьте заказ», где можно поправить данные или подтвердить.
