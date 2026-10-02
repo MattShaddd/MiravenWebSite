@@ -37,7 +37,7 @@ html{scroll-behavior:smooth}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold) 50%,transparent);opacity:.55}
 
 /* ---------- site mock ---------- */
-.site{background:var(--white);overflow-x:clip}
+.site{overflow-x:clip}
 .wrap{padding-inline:max(20px,calc((100vw - 1280px) / 2))}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--white)}
 .sec{padding-block:clamp(56px,8vw,104px)}
