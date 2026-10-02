@@ -671,6 +671,52 @@
       };
       window.tcart__openCart.__mv=1;return true;
     }
+    // ---- анимации по контексту: появление кнопки промокода, ошибок, списков, полей, смена количества и суммы ----
+    (function(){
+      var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(rm)return;
+      var seen=new WeakMap(),ready=false;
+      var APPEAR='.t-input-group,.t-inputpromocode__btn,.t-form__errorbox-middle,.t706__auth,.t-radio__wrapper-delivery,.t-radio__wrapper-payment,#addresses-wrapper,.searchbox-list';
+      function vis(e){return !!(e.offsetWidth||e.offsetHeight||(e.getClientRects&&e.getClientRects().length))}
+      function play(e,c){e.classList.remove(c);void e.offsetWidth;e.classList.add(c);setTimeout(function(){e.classList.remove(c)},800)}
+      function check(e){
+        if(!e.matches||!e.matches(APPEAR))return;
+        var v=vis(e),was=seen.get(e);seen.set(e,v);
+        if(ready&&v&&was===false)play(e,e.classList.contains('t-inputpromocode__btn')?'mv-pop':'mv-in');
+      }
+      function bumpText(e,c){play(e,c)}
+      function attach(){
+        var pg=document.querySelector('.t706__cartpage');if(!pg||pg.__mvAnim)return false;pg.__mvAnim=1;
+        pg.querySelectorAll(APPEAR).forEach(function(e){seen.set(e,vis(e))});
+        new MutationObserver(function(ms){
+          ms.forEach(function(m){
+            var t=m.target;
+            if(m.type==='attributes'){check(t);return}
+            if(m.type==='characterData'){t=t.parentElement;if(!t)return}
+            if(!ready)return;
+            // текст ошибки появился
+            var er=t.closest&&t.closest('.t-input-error');
+            if(er&&er.textContent.trim()){play(er,'mv-shake');return}
+            // количество и суммы
+            var q=t.closest&&t.closest('.t706__product-quantity,.t706__cartwin-totalamount,.t706__cartwin-prodamount,.t706__cartwin-prodamount-price,.t706__cartwin-totalamount-info_value');
+            if(q){play(q,'mv-bump');return}
+            if(m.type==='childList'){
+              m.addedNodes.forEach(function(n){
+                if(n.nodeType!==1)return;
+                if(n.parentElement&&n.parentElement.matches('.searchbox-list,.t-input-group,#customdelivery,#addresses-wrapper,.t-input-block')&&!n.matches('input,svg,style,script,.t706__search-icon'))play(n,'mv-in');
+                n.querySelectorAll&&n.querySelectorAll(APPEAR).forEach(function(x){seen.set(x,vis(x))});
+              });
+            }
+          });
+        }).observe(pg,{attributes:true,attributeFilter:['style','class','hidden'],childList:true,subtree:true,characterData:true});
+        // при открытии окна строки списка появляются по очереди
+        new MutationObserver(function(){
+          if(pg.classList.contains('t706__cartpage_showed')){pg.classList.add('mv-opening');ready=false;setTimeout(function(){ready=true},900);setTimeout(function(){pg.classList.remove('mv-opening')},1000)}
+          else ready=false;
+        }).observe(pg,{attributes:true,attributeFilter:['class']});
+        return true;
+      }
+      if(!attach()){var n=0,t=setInterval(function(){if(attach()||++n>80)clearInterval(t)},200)}
+    })();
     // форма заказа всегда раскрыта: в нашей шторке один столбец на любом экране (двухшаговый режим Тильды для телефона не нужен,
     // иначе при смене размера окна часть полей оставалась скрытой)
     var fobs=null;
@@ -990,6 +1036,52 @@
       };
       window.tcart__openCart.__mv=1;return true;
     }
+    // ---- анимации по контексту: появление кнопки промокода, ошибок, списков, полей, смена количества и суммы ----
+    (function(){
+      var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(rm)return;
+      var seen=new WeakMap(),ready=false;
+      var APPEAR='.t-input-group,.t-inputpromocode__btn,.t-form__errorbox-middle,.t706__auth,.t-radio__wrapper-delivery,.t-radio__wrapper-payment,#addresses-wrapper,.searchbox-list';
+      function vis(e){return !!(e.offsetWidth||e.offsetHeight||(e.getClientRects&&e.getClientRects().length))}
+      function play(e,c){e.classList.remove(c);void e.offsetWidth;e.classList.add(c);setTimeout(function(){e.classList.remove(c)},800)}
+      function check(e){
+        if(!e.matches||!e.matches(APPEAR))return;
+        var v=vis(e),was=seen.get(e);seen.set(e,v);
+        if(ready&&v&&was===false)play(e,e.classList.contains('t-inputpromocode__btn')?'mv-pop':'mv-in');
+      }
+      function bumpText(e,c){play(e,c)}
+      function attach(){
+        var pg=document.querySelector('.t706__cartpage');if(!pg||pg.__mvAnim)return false;pg.__mvAnim=1;
+        pg.querySelectorAll(APPEAR).forEach(function(e){seen.set(e,vis(e))});
+        new MutationObserver(function(ms){
+          ms.forEach(function(m){
+            var t=m.target;
+            if(m.type==='attributes'){check(t);return}
+            if(m.type==='characterData'){t=t.parentElement;if(!t)return}
+            if(!ready)return;
+            // текст ошибки появился
+            var er=t.closest&&t.closest('.t-input-error');
+            if(er&&er.textContent.trim()){play(er,'mv-shake');return}
+            // количество и суммы
+            var q=t.closest&&t.closest('.t706__product-quantity,.t706__cartwin-totalamount,.t706__cartwin-prodamount,.t706__cartwin-prodamount-price,.t706__cartwin-totalamount-info_value');
+            if(q){play(q,'mv-bump');return}
+            if(m.type==='childList'){
+              m.addedNodes.forEach(function(n){
+                if(n.nodeType!==1)return;
+                if(n.parentElement&&n.parentElement.matches('.searchbox-list,.t-input-group,#customdelivery,#addresses-wrapper,.t-input-block')&&!n.matches('input,svg,style,script,.t706__search-icon'))play(n,'mv-in');
+                n.querySelectorAll&&n.querySelectorAll(APPEAR).forEach(function(x){seen.set(x,vis(x))});
+              });
+            }
+          });
+        }).observe(pg,{attributes:true,attributeFilter:['style','class','hidden'],childList:true,subtree:true,characterData:true});
+        // при открытии окна строки списка появляются по очереди
+        new MutationObserver(function(){
+          if(pg.classList.contains('t706__cartpage_showed')){pg.classList.add('mv-opening');ready=false;setTimeout(function(){ready=true},900);setTimeout(function(){pg.classList.remove('mv-opening')},1000)}
+          else ready=false;
+        }).observe(pg,{attributes:true,attributeFilter:['class']});
+        return true;
+      }
+      if(!attach()){var n=0,t=setInterval(function(){if(attach()||++n>80)clearInterval(t)},200)}
+    })();
     // форма заказа всегда раскрыта: в нашей шторке один столбец на любом экране (двухшаговый режим Тильды для телефона не нужен,
     // иначе при смене размера окна часть полей оставалась скрытой)
     var fobs=null;
