@@ -481,3 +481,21 @@ html[data-mv-theme="dark"] .t706__product-minus img,html[data-mv-theme="dark"] .
 .t706__orderform .t-input-phonemask__wrap{display:flex;align-items:center;border:1px solid var(--stone)!important;height:50px!important;padding:0!important;box-shadow:none!important}
 .t706__orderform .t-input-phonemask__wrap:focus-within{border-color:var(--gold)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 22%,transparent)!important}
 .t706__orderform .t-input-phonemask__select{padding-left:12px}
+
+/* ===== меню кабинета в шапке сайта (после входа) ===== */
+.tlk-userbar{position:fixed!important;left:-300px!important;top:0!important;opacity:0!important;pointer-events:none!important}
+.tlk-userbar__popup{position:fixed!important;top:76px!important;right:max(16px,calc((100vw - 1280px) / 2))!important;left:auto!important;bottom:auto!important;width:min(300px,calc(100vw - 32px))!important;background:var(--white)!important;color:var(--ink)!important;border:1px solid var(--stone)!important;border-radius:20px!important;box-shadow:0 30px 60px -30px rgba(0,0,0,.55)!important;font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important;overflow:hidden}
+.tlk-userbar__popup *{font-family:inherit!important}
+.tlk-userbar__popup-wrap,.tlk-userbar__popup-content,.tlk-userbar__popup-container{background:transparent!important;color:inherit!important}
+.tlk-userbar__popup-login{padding:6px 4px 12px!important;border-bottom:1px solid var(--stone)!important}
+.tlk-userbar__popup-name{font-family:"Lora",Georgia,serif!important;font-weight:600!important;font-size:17px!important;color:var(--head)!important;text-decoration:none!important}
+.tlk-userbar__popup-name:hover{color:var(--gold-text)!important}
+.tlk-userbar__popup-cabinet{color:var(--muted)!important;font-size:13px!important}
+.tlk-userbar__popup-cabinet:hover{color:var(--gold-text)!important}
+.tlk-userbar__popup-logout{border-radius:50%!important;transition:background .2s}
+.tlk-userbar__popup-logout:hover{background:var(--mist)!important}
+.tlk-userbar__popup-store-item{border-radius:12px!important;transition:background .2s}
+.tlk-userbar__popup-store-item:hover{background:var(--mist)!important}
+.tlk-userbar__popup-courses-link,.tlk-userbar__popup-title{color:var(--ink)!important;font-weight:500!important;text-decoration:none!important;font-size:15px!important}
+.tlk-userbar__popup-store-item:hover .tlk-userbar__popup-courses-link{color:var(--gold-text)!important}
+.tlk-userbar__popup-text{color:var(--muted)!important}

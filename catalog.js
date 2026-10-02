@@ -469,6 +469,14 @@
     // ссылка вида /members/login: её перехватывает Тильда и открывает попап (без неё остаётся переход на страницу)
     var url='/members/login?redirecturl='+encodeURIComponent(location.pathname.replace(/^\//,'')+location.search);
     document.querySelectorAll('a[href="#openmembersbar"]').forEach(function(a){a.href=url});
+    // вошёл: иконка в шапке открывает меню кабинета (плавающую кнопку Тильды прячем в CSS)
+    var ubOpen=false;
+    document.addEventListener('click',function(){ubOpen=!!document.querySelector('.tlk-userbar__popup-show')},true);
+    if(accBtn)accBtn.addEventListener('click',function(e){
+      var ub=document.querySelector('.tlk-userbar__user-image');
+      if(!ub)return; // не вошёл: родной попап входа
+      e.preventDefault();e.stopPropagation();ub.click();
+    });
 
     var site=document.querySelector('.site'),CSS_URL='https://mattshaddd.github.io/MiravenWebSite/members.css';
     function vars(){

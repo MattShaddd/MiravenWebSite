@@ -80,7 +80,7 @@ button[onclick*="CloseModal"] line{stroke:var(--m-ink)!important;stroke-width:1.
 .tlk-form__item{margin-bottom:6px}
 
 /* ===== личный кабинет (после входа) ===== */
-.tlk-userbar{top:84px!important}
+.tlk-userbar{top:20px!important}
 .tlk-userbar__user,.tlk-userbar__user-image{border-radius:50%!important}
 .tlk-userbar__user{background:var(--m-ink)!important;color:var(--m-bg)!important;box-shadow:0 10px 24px -12px rgba(0,0,0,.5)!important}
 .tlk-userbar__popup,.tlk-userbar__popup-container,.tlk-userbar__popup-content,.tlk-popup__container{background:var(--m-bg)!important;color:var(--m-ink)!important;border-radius:20px!important}
@@ -104,3 +104,29 @@ button[onclick*="CloseModal"] line{stroke:var(--m-ink)!important;stroke-width:1.
 .tlk-tooltip,.tlk-tooltip_theme_dark{border-radius:10px!important}
 .tlk-page-error__title{font-family:"Lora",Georgia,serif!important;color:var(--m-head)!important}
 .tlk-loader__icon span{background:var(--m-gold)!important}
+
+/* ===== страницы кабинета: Личный кабинет, Мои заказы, Адреса, Купленные товары, Профиль ===== */
+#allrecords{--background-color:var(--m-bg)!important;--text-color:var(--m-ink)!important;--text-hover-color:var(--m-gold-text)!important;--box-background-color:var(--m-mist)!important;--box-background-color__no-transparency:var(--m-mist)!important;--box-radius:20px!important;--border-color:var(--m-stone)!important;--font-size:16px}
+body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!important;font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important}
+#allrecords [class*="tmst-"],#allrecords [class*="tlk-resources"]{font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important}
+.tlk-resources__wrap,.tmst-orders-list__item,.tmst-addresses__card,.tmst-purchased__product,.tmst-order-details__main-info-content,.tmst-order-details__header,.tmst-profile-content-wrapper,.tmst-main__card:not(.tmst-main__active-orders-card){background:var(--m-mist)!important;border:1px solid var(--m-stone)!important;border-radius:20px!important;box-shadow:none!important;color:var(--m-ink)!important;transition:border-color .3s,transform .4s cubic-bezier(.2,.8,.2,1)}
+.tmst-orders-list__item:hover,.tmst-addresses__card:hover,.tmst-purchased__product:hover{border-color:var(--m-gold)!important}
+.tmst-main__card__title,.tmst-main__card__header a,.tlk-resources__title,.tmst-order-details__title,.tmst-title{font-family:"Lora",Georgia,serif!important;font-weight:600!important;font-size:20px!important;color:var(--m-head)!important;text-decoration:none!important}
+.tlk-resources__title span,.tmst-main__order__profile-email,.tmst-breadcrumbs__item,.tmst-breadcrumbs__divider,.tlk-resources__empty-text{color:var(--m-muted)!important}
+.tmst-breadcrumbs__item_current{color:var(--m-ink)!important}
+.tmst-breadcrumbs__home svg *,.tmst-breadcrumbs__home path{fill:var(--m-muted)!important}
+.tmst-breadcrumbs__home:hover svg *{fill:var(--m-gold-text)!important}
+.tmst-main__order__profile-name{font-weight:500;color:var(--m-ink)!important}
+.tmst-main__card__link,#allrecords [data-field="tlk-link"]{color:var(--m-ink)!important;font-weight:500;text-decoration:none!important;transition:color .2s}
+.tmst-main__card__link:hover,#allrecords [data-field="tlk-link"]:hover{color:var(--m-gold-text)!important}
+.tmst-main__card__link_secondary{color:var(--m-muted)!important}
+.tmst-main__card__link svg *{stroke:currentColor}
+.tmst-products__image{border-radius:12px!important}
+.tmst-products__image_more{background:var(--m-bg)!important;border:1px solid var(--m-stone);color:var(--m-muted)!important}
+.tlk-resources__empty-image line,.tlk-resources__empty-image polyline{stroke:var(--m-muted)!important}
+.tmst-orders-list__status,.tmst-badge{border-radius:999px!important}
+/* футер кабинета (Tilda-блок) */
+#rec1285626401{background:var(--m-mist)!important;border-top:1px solid var(--m-stone)}
+#rec1285626401 .t457__copyright,#rec1285626401 .t457__li a,#rec1285626401 a{color:var(--m-gold-text)!important}
+#rec1285626401 .t457__li a:hover{color:var(--m-ink)!important}
+#rec1285626401 [style*="background"]{background:transparent!important}
