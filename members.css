@@ -178,3 +178,9 @@
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-upload__default-preview svg{color:var(--m-bg)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-profile__item img{border:1px solid var(--m-stone)}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-profile-content-wrapper .tlk-input-error{color:var(--error-color)!important;font-size:13px}
+
+/* заголовки в шрифте сайта (перебиваем общее правило с #allrecords) и без плавающей корзины Тильды */
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-profile-title, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-main__card__title, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tlk-resources__title, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-order-details__title, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords .tmst-title{font-family:"Lora",Georgia,serif!important;text-align:left!important;font-weight:600!important;color:var(--m-head)!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .t706__carticon_showed{display:none!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar{top:14px!important;right:16px!important}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__user-image{width:44px!important;height:44px!important}

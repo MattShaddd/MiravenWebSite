@@ -178,3 +178,9 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 .tlk-upload__default-preview svg{color:var(--m-bg)!important}
 .tlk-profile__item img{border:1px solid var(--m-stone)}
 .tmst-profile-content-wrapper .tlk-input-error{color:var(--error-color)!important;font-size:13px}
+
+/* заголовки в шрифте сайта (перебиваем общее правило с #allrecords) и без плавающей корзины Тильды */
+#allrecords .tmst-profile-title,#allrecords .tmst-main__card__title,#allrecords .tlk-resources__title,#allrecords .tmst-order-details__title,#allrecords .tmst-title{font-family:"Lora",Georgia,serif!important;text-align:left!important;font-weight:600!important;color:var(--m-head)!important}
+.t706__carticon,.t706__carticon_showed{display:none!important}
+.tlk-userbar{top:14px!important;right:16px!important}
+.tlk-userbar__user-image{width:44px!important;height:44px!important}
