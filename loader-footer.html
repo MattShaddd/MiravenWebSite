@@ -1,0 +1,15 @@
+<!-- Миравен: глобальный FOOTER. Вставляется в T123 на отдельной странице-футере, выбранной в настройках сайта Tilda. -->
+<div id="miraven-footer-root"></div>
+<script>
+(function(){
+  var BASE='https://mattshaddd.github.io/MiravenWebSite/';
+  function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(f);return r.text()})}
+  var root=document.getElementById('miraven-footer-root');
+  Promise.all([get('footer.css'),get('footer.html')]).then(function(a){
+    var st=document.createElement('style');st.textContent=a[0];document.head.appendChild(st);
+    root.innerHTML=a[1].split('{{BASE}}').join(BASE);
+  }).catch(function(){
+    root.innerHTML='<p style="padding:24px 20px;text-align:center;font-family:sans-serif">Не удалось загрузить подвал.</p>';
+  });
+})();
+</script>

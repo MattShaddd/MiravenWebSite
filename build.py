@@ -8,6 +8,7 @@
   2. catalog.js    = catalog.src.js + блоки «вход» и «тема» из miraven.js
   3. dist/miraven-tilda-T123.html   главная одним блоком (без загрузчика)
   4. dist/catalog-tilda-T123.html   каталог одним блоком (без загрузчика)
+  5. dist/footer-tilda-T123.html    глобальный футер одним блоком (без загрузчика)
 """
 import os, re, sys
 
@@ -27,7 +28,6 @@ home_js = rd('miraven.js')
 header = re.search(r'<header class="top wrap">.*?</header>', home_html, re.S).group(0)
 header = re.sub(r'\s*<form class="srch".*?</form>', '', header, flags=re.S)
 mnav = re.search(r'<nav class="mnav".*?</nav>', home_html, re.S).group(0)
-footer = re.search(r'<footer class="foot">.*?</footer>', home_html, re.S).group(0)
 
 def relink(s):
     s = s.replace('href="#catalog" class="on"', 'href="/newstore" class="on"')
@@ -43,7 +43,7 @@ header = re.sub(r'\s*<button class="icon-btn burger".*?</button>', '', header, f
 mnav = ''  # на странице каталога меню разделов не нужно
 
 # в мобильном меню «Каталог» — текущая страница
-catalog_html = '<div class="site">\n' + relink(header) + '\n' + relink(mnav) + '\n\n' + rd('catalog.main.html') + '\n' + relink(footer) + '\n</div>\n'
+catalog_html = '<div class="site">\n' + relink(header) + '\n' + relink(mnav) + '\n\n' + rd('catalog.main.html') + '\n</div>\n'
 wr('catalog.html', catalog_html)
 
 # ---------- catalog.js ----------
@@ -109,4 +109,5 @@ def inline(css_files, html, js, extra_head=''):
 wr('dist/miraven-tilda-T123.html', inline(['miraven.css'], home_html.replace('{{BASE}}', base), home_js))
 cat_inline = inline(['miraven.css', 'catalog.css'], catalog_html.replace('{{BASE}}', base).replace('{{HOME}}', home), 'window.MV_HOME=%r;\n' % home + cjs)
 wr('dist/catalog-tilda-T123.html', cat_inline)
+wr('dist/footer-tilda-T123.html', inline(['footer.css'], rd('footer.html').replace('{{BASE}}', base), ''))
 print('ok; logos from', base, '; home =', home)

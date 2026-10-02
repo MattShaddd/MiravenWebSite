@@ -169,19 +169,6 @@ html{scroll-behavior:smooth}
 .faq details[open] summary::after{transform:rotate(225deg);margin-top:-2px}
 .faq details p{padding-bottom:20px;color:var(--muted);max-width:60ch}
 
-/* footer */
-.foot{background:var(--mist);color:var(--muted);padding-block:64px 32px;border-top:1px solid var(--stone)}
-.foot > .wrap{position:relative}
-.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;align-items:start}
-.foot .brand .wmk{display:block;width:min(100%,300px);height:auto}
-.foot .tag{font-family:var(--f-story);font-style:italic;color:var(--gold-text)!important}
-.foot .tag{margin-top:12px;font-size:15px}
-.foot h4{margin:0 0 14px;font-size:13px;font-weight:600;color:var(--head)}
-.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15px}
-.foot a{text-decoration:none}
-.foot a:hover{color:var(--gold-text)}
-.fine{margin-top:44px;padding-top:20px;border-top:1px solid var(--stone);font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
-
 /* ---------- container queries ---------- */
 @media (max-width: 860px){
   .nav{display:none}
@@ -194,8 +181,6 @@ html{scroll-behavior:smooth}
   .about,.faq-grid{grid-template-columns:1fr}
   .reviews{grid-template-columns:1fr;gap:14px}
   .about .photo{max-width:420px;width:100%}
-  .foot-grid{grid-template-columns:1fr 1fr}
-  .foot-grid > :first-child{grid-column:1/-1}
 }
 @media (max-width: 440px){
   .hero .sub{font-size:16px}
@@ -209,7 +194,6 @@ html{scroll-behavior:smooth}
 .site[data-theme="dark"]{
   --white:#15131A; --mist:#1D1A24; --stone:#2F2B38; --ink:#EFE9DF; --muted:#9D97A7;
   --head:#E8E1D4; --gold:#CC9A3C; --gold-text:#D8AD5E; color-scheme:dark}
-.foot{background:var(--mist)}
 
 /* кнопка темы */
 .theme-btn{overflow:hidden}
@@ -401,12 +385,6 @@ a.icon-btn{text-decoration:none}
   .faq-grid>div:first-child{gap:10px}
   .faq summary{padding:14px 32px 14px 0;font-size:15px}
   .faq details p{padding-bottom:14px;font-size:14px}
-  /* подвал */
-  .foot{padding-block:36px 20px}
-  .foot-grid{gap:20px}
-  .foot .brand .wmk{width:min(100%,220px)}
-  .foot ul{font-size:14px;gap:6px}
-  .fine{margin-top:24px;padding-top:14px;font-size:12px}
   /* спокойнее анимация появления */
   .rv{transform:translateY(14px)}
 }
@@ -419,7 +397,6 @@ a.icon-btn{text-decoration:none}
 .soc-q{padding:0 16px 0 12px}
 .soc-nav{margin-top:14px;border:0}
 .mnav .soc a{padding-block:0;border-bottom:1px solid var(--stone);font-size:14px}
-.foot .soc a{color:var(--ink)}
 @media (max-width:600px){.soc{margin-top:12px;gap:8px}.soc a{min-width:38px;height:38px}}
 
 /* об авторе: фото слева, текст справа */
