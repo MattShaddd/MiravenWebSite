@@ -292,3 +292,6 @@ body.qv-lock{overflow:hidden}
 .qv-add,.qv-add span{white-space:nowrap}
 .qv-add{gap:10px;min-width:0}
 .qv-price,.qv-old,.price{white-space:nowrap}
+
+/* без хлебных крошек: шапка уже содержит «Главная / Каталог» */
+.cat-hero{padding-block:clamp(24px,3.4vw,44px) clamp(16px,2vw,24px);gap:0}
