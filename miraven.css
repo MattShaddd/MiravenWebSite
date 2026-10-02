@@ -421,3 +421,7 @@ a.icon-btn{text-decoration:none}
 .mnav .soc a{padding-block:0;border-bottom:1px solid var(--stone);font-size:14px}
 .foot .soc a{color:var(--ink)}
 @media (max-width:600px){.soc{margin-top:12px;gap:8px}.soc a{min-width:38px;height:38px}}
+
+/* об авторе: фото слева, текст справа */
+.about .about-two{grid-template-columns:1fr;gap:18px}
+@media (max-width:600px){.about .photo{aspect-ratio:4/3;max-width:none}}
