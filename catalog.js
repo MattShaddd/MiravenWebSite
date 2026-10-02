@@ -449,11 +449,7 @@
       var ed=selEd(cur),k=gallery(cur).indexOf(ed.img);if(k>-1)slideTo(k);
       paintBuy();return;
     }
-    var sl=e.target.closest('.qv-slide');if(sl&&!coarse){
-      var im=sl.querySelector('img'),on=sl.classList.toggle('zoom');
-      if(on){var rc=im.getBoundingClientRect();im.style.transformOrigin=((e.clientX-rc.left)/rc.width*100)+'% '+((e.clientY-rc.top)/rc.height*100)+'%'}
-      return;
-    }
+    var sl=e.target.closest('.qv-slide');if(sl){lbOpen(gallery(cur),curIdx());return}
     var a=e.target.closest('[data-qv]');if(!a)return;
     switch(a.dataset.qv){
       case 'x':closeQV();break;
@@ -481,10 +477,6 @@
       }
     }
   });
-  qv.addEventListener('mousemove',function(e){
-    var im=e.target.closest&&e.target.closest('.qv-slide.zoom img');if(!im)return;
-    var rc=im.getBoundingClientRect();im.style.transformOrigin=Math.max(0,Math.min(100,(e.clientX-rc.left)/rc.width*100))+'% '+Math.max(0,Math.min(100,(e.clientY-rc.top)/rc.height*100))+'%';
-  });
   document.addEventListener('keydown',function(e){
     if(qv.hidden)return;
     if(e.key==='Escape'){closeQV();return}
@@ -502,6 +494,98 @@
   });
   /* свайп вниз по фото закрывает на телефоне не нужен: есть крестик и системная «назад» */
 
+
+
+  /* ---------- полноэкранный просмотр фото ---------- */
+  var lb=null,lbS=1,lbX=0,lbY=0,lbPt={},lbPinch=0,lbStart=1,lbTap=0,lbDrag=null;
+  function lbSlide(){return lb&&lb.querySelector('.lb-slides')}
+  function lbIdx(){var s=lbSlide();return s?Math.round(s.scrollLeft/(s.clientWidth||1)):0}
+  function lbImg(){var s=lbSlide();return s&&s.children[lbIdx()]&&s.children[lbIdx()].querySelector('img')}
+  function lbApply(){var im=lbImg();if(!im)return;im.style.transform='translate('+lbX+'px,'+lbY+'px) scale('+lbS+')';lb.classList.toggle('zoomed',lbS>1.02)}
+  function lbReset(){lbS=1;lbX=lbY=0;lbPt={};lbPinch=0;lbApply()}
+  function lbClamp(){var im=lbImg();if(!im)return;var w=im.clientWidth*lbS,h=im.clientHeight*lbS,mx=Math.max(0,(w-lb.clientWidth)/2),my=Math.max(0,(h-lb.clientHeight)/2);lbX=Math.max(-mx,Math.min(mx,lbX));lbY=Math.max(-my,Math.min(my,lbY))}
+  function lbZoomAt(cx,cy,to){
+    var im=lbImg();if(!im)return;
+    if(to<=1.02){lbReset();return}
+    var r=im.getBoundingClientRect(),ox=cx-(r.left+r.width/2),oy=cy-(r.top+r.height/2),k=to/lbS;
+    lbX=lbX-ox*(k-1);lbY=lbY-oy*(k-1);lbS=to;lbClamp();lbApply();
+  }
+  function lbCount(){var c=lb.querySelector('.lb-count'),n=lbSlide().children.length;c.textContent=n>1?(lbIdx()+1)+' / '+n:''}
+  function lbOpen(urls,idx){
+    if(!urls||!urls.length)return;
+    if(!lb){
+      lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');lb.setAttribute('aria-label','Просмотр фото');lb.hidden=true;
+      lb.innerHTML='<div class="lb-slides"></div><div class="lb-count"></div><button type="button" class="lb-x" data-lb="x" aria-label="Закрыть">'+X+'</button><button type="button" class="lb-nav lb-p" data-lb="p" aria-label="Предыдущее фото">'+CHEV_L+'</button><button type="button" class="lb-nav lb-n" data-lb="n" aria-label="Следующее фото">'+CHEV_R+'</button>';
+      (document.querySelector('.site')||document.body).appendChild(lb);
+      var sl=lbSlide();
+      sl.addEventListener('scroll',function(){cancelAnimationFrame(lb._r);lb._r=requestAnimationFrame(function(){lbCount();if(lbS!==1)lbReset()})},{passive:true});
+      lb.addEventListener('click',function(e){
+        var b=e.target.closest('[data-lb]');
+        if(b){var d=b.dataset.lb;if(d==='x')lbClose();else{var s2=lbSlide(),k=lbIdx()+(d==='n'?1:-1);k=Math.max(0,Math.min(s2.children.length-1,k));s2.scrollTo({left:k*s2.clientWidth,behavior:reduce?'auto':'smooth'})}return}
+        if(Date.now()-lbTap<350&&e.target.closest('img')){lbTap=0;return} // второй клик двойного — обработает dblclick
+        lbTap=Date.now();
+        if(!e.target.closest('img')&&lbS<=1.02)lbClose(); // клик по тёмному фону
+      });
+      lb.addEventListener('dblclick',function(e){if(!e.target.closest('img'))return;lbZoomAt(e.clientX,e.clientY,lbS>1.02?1:2.6)});
+      lb.addEventListener('wheel',function(e){if(!e.target.closest('img'))return;e.preventDefault();var to=Math.max(1,Math.min(5,lbS*(e.deltaY<0?1.2:1/1.2)));lbZoomAt(e.clientX,e.clientY,to)},{passive:false});
+      // перетаскивание и щипок
+      lb.addEventListener('pointerdown',function(e){
+        if(!e.target.closest('img'))return;lbPt[e.pointerId]={x:e.clientX,y:e.clientY};
+        var ids=Object.keys(lbPt);
+        if(ids.length===2){var a=lbPt[ids[0]],b=lbPt[ids[1]];lbPinch=Math.hypot(a.x-b.x,a.y-b.y);lbStart=lbS;lb.classList.add('pinch')}
+        else if(lbS>1.02){lbDrag={x:e.clientX,y:e.clientY,ox:lbX,oy:lbY}}
+        try{e.target.setPointerCapture(e.pointerId)}catch(x){}
+        if(e.pointerType==='touch'&&!e.isPrimary)return;
+        if(e.pointerType==='touch'&&Date.now()-lbTap<300&&ids.length===1){lbZoomAt(e.clientX,e.clientY,lbS>1.02?1:2.6);lbTap=0}else if(e.pointerType==='touch')lbTap=Date.now();
+      });
+      lb.addEventListener('pointermove',function(e){
+        if(!lbPt[e.pointerId])return;lbPt[e.pointerId]={x:e.clientX,y:e.clientY};
+        var ids=Object.keys(lbPt);
+        if(ids.length===2&&lbPinch){var a=lbPt[ids[0]],b=lbPt[ids[1]],d=Math.hypot(a.x-b.x,a.y-b.y);lbS=Math.max(1,Math.min(5,lbStart*d/lbPinch));lbClamp();lbApply()}
+        else if(lbDrag&&lbS>1.02){lbX=lbDrag.ox+(e.clientX-lbDrag.x);lbY=lbDrag.oy+(e.clientY-lbDrag.y);lbClamp();lbApply()}
+      });
+      var up=function(e){delete lbPt[e.pointerId];lbDrag=null;if(Object.keys(lbPt).length<2){lbPinch=0;lb.classList.remove('pinch')}if(lbS<1.05)lbReset()};
+      lb.addEventListener('pointerup',up);lb.addEventListener('pointercancel',up);
+    }
+    var sc=lbSlide();
+    sc.innerHTML=urls.map(function(u){return '<div class="lb-slide"><img src="'+esc(thumb(u,1600))+'" data-full="'+esc(u)+'" alt="" draggable="false" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full"></div>'}).join('');
+    lb.classList.toggle('single',urls.length<2);
+    lb.hidden=false;lbReset();
+    requestAnimationFrame(function(){sc.scrollLeft=idx*sc.clientWidth;lbCount();requestAnimationFrame(function(){lb.classList.add('on')})});
+    lb._from=document.activeElement;
+    setTimeout(function(){var x=lb.querySelector('.lb-x');x&&x.focus({preventScroll:true})},60);
+  }
+  function lbClose(){
+    if(!lb||lb.hidden)return;
+    var k=lbIdx();lb.classList.remove('on');
+    setTimeout(function(){if(!lb.classList.contains('on')){lb.hidden=true;lbSlide().innerHTML='';lbReset()}},reduce?0:320);
+    var s=$('qvSlides');if(s)s.scrollTo({left:k*s.clientWidth,behavior:'auto'});
+    if(lb._from&&lb._from.focus)try{lb._from.focus({preventScroll:true})}catch(e){}
+  }
+  document.addEventListener('keydown',function(e){
+    if(!lb||lb.hidden)return;
+    if(e.key==='Escape'){e.stopImmediatePropagation();e.preventDefault();lbClose();return}
+    if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.stopImmediatePropagation();e.preventDefault();var s=lbSlide(),k=Math.max(0,Math.min(s.children.length-1,lbIdx()+(e.key==='ArrowRight'?1:-1)));s.scrollTo({left:k*s.clientWidth,behavior:reduce?'auto':'smooth'})}
+  },true);
+
+  /* ---------- свайп влево/вправо листает товары (телефон) ---------- */
+  (function(){
+    var tx=0,ty=0,on=false,stage=false,canPrev=false,canNext=false;
+    qv.addEventListener('touchstart',function(e){
+      var t=e.touches[0];tx=t.clientX;ty=t.clientY;
+      on=e.touches.length===1&&!e.target.closest('.qv-rel-track,.qv-seg,.qv-qty,input,select,.qv-top');
+      stage=!!e.target.closest('.qv-stage');
+      if(stage){var n=($('qvSlides')||{children:[]}).children.length,k=curIdx();canPrev=k===0;canNext=k>=n-1}
+    },{passive:true});
+    qv.addEventListener('touchend',function(e){
+      if(!on||!cur)return;on=false;
+      var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
+      if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.6)return;
+      var dir=dx<0?1:-1;
+      if(stage&&((dir===1&&!canNext)||(dir===-1&&!canPrev)))return; // внутри галереи листаются фото
+      step(dir);
+    },{passive:true});
+  })();
 
   /* ---------- сортировка шторкой («Расположить», телефон) ---------- */
   var SORTS=[['def','По умолчанию','Как расположили мы'],['pa','Сначала дешевле','По возрастанию цены'],['pd','Сначала дороже','По убыванию цены'],['az','По названию','От А до Я']];
