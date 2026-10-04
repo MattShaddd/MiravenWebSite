@@ -18,6 +18,18 @@
   --r:18px;           /* фото, карточки */
   --r-lg:26px;        /* крупные фото */
 }
+@supports (view-transition-name: none){
+  ::view-transition-group(root){background:transparent!important}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.34s;animation-timing-function:cubic-bezier(.2,.8,.2,1);mix-blend-mode:normal}
+  [data-mv-route="catalog"]::view-transition-old(root){animation-name:mvRouteOutLeft}
+  [data-mv-route="catalog"]::view-transition-new(root){animation-name:mvRouteInRight}
+  [data-mv-route="home"]::view-transition-old(root){animation-name:mvRouteOutRight}
+  [data-mv-route="home"]::view-transition-new(root){animation-name:mvRouteInLeft}
+  @keyframes mvRouteOutLeft{to{opacity:0;transform:scale(.99)}}
+  @keyframes mvRouteInRight{from{opacity:0;transform:scale(.99)}}
+  @keyframes mvRouteOutRight{to{opacity:0;transform:scale(.99)}}
+  @keyframes mvRouteInLeft{from{opacity:0;transform:scale(.99)}}
+}
 .site,.site *,.site *::before,.site *::after{box-sizing:border-box}
 .site{position:relative;background:radial-gradient(ellipse 78% 68% at 50% 44%,transparent 24%,rgba(14,11,18,.08) 52%,rgba(14,11,18,.28) 76%,rgba(10,8,14,.52) 100%) fixed,var(--white);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 html{scroll-behavior:smooth}
@@ -651,7 +663,7 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 @media (max-width:760px){
   #searchBtn{display:none}
   /* поиск: кнопка едет только за счёт transform (без анимации left), а подпись сворачивается тем же временем и кривой, поэтому всё идёт одним плавным движением */
-  .sfab{position:fixed!important;inset:auto auto calc(14px + env(safe-area-inset-bottom,0px)) 50%!important;z-index:40;height:54px;min-width:54px;margin:0!important;padding:0 16px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:0;font-family:var(--f-body);font-size:16px;font-weight:600;box-sizing:border-box;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);translate:-50% 0;pointer-events:auto;transition:opacity .18s ease-out}
+  .sfab{position:fixed!important;inset:auto auto calc(14px + env(safe-area-inset-bottom,0px)) 50%!important;z-index:40;height:54px;min-width:54px;margin:0!important;padding:0 16px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:0;font-family:var(--f-body);font-size:16px;font-weight:600;box-sizing:border-box;box-shadow:none;translate:-50% 0;pointer-events:auto;transition:opacity .18s ease-out}
   .sfab svg{width:22px;height:22px;flex:none}
   .sfab span{display:inline-block;max-width:80px;padding:0 6px 0 10px;overflow:hidden;white-space:nowrap}
   .sfab.left{left:14px!important;translate:0 0}
@@ -1084,6 +1096,7 @@ html[data-mv-theme="light"] .site:not([data-theme="dark"]) .btn-ink{box-shadow:i
 /* телефон: фиксированный фон (background-attachment:fixed) на мобильных браузерах отстаёт от скролла и открывает полосу снизу.
    Рисуем виньетку обычным фоном страницы, а под ней держим сплошной цвет темы на html */
 html,body{background:var(--white)!important}
+html[data-mv-theme="dark"],html[data-mv-theme="dark"] body{background:#121017!important}
 @media (max-width:900px),(hover:none){
   .site,.site[data-theme="dark"],.site:not([data-theme="dark"]){background-attachment:scroll!important}
 }
@@ -1111,6 +1124,7 @@ html,body{background:var(--white)!important}
 
 /* телефон: у окон нет крестиков, закрываются свайпом вниз (или касанием по затемнению) */
 @media (max-width:760px){
+  .top{top:0!important}
   .sh-x,.cab-x,.lb-x,.qv-btn[data-qv="x"],
   .t706__cartpage .t706__cartpage-close,.t706__cartwin .t706__cartwin-close,.t706__cartwin .t706__cartwin-close-wrapper{display:none!important}
   .sh-head{padding-right:22px}
@@ -1157,7 +1171,8 @@ html,body{background:var(--white)!important}
 .cat-title p{color:var(--muted);max-width:46ch}
 
 /* панель: категории + поиск + сортировка */
-.cat-bar{position:sticky;top:calc(var(--hdr) - 1px);z-index:9;background:var(--white);border-block:1px solid var(--stone);transition:box-shadow .3s,background-color .3s}
+.cat-bar{position:sticky;top:calc(var(--hdr) - 1px);z-index:9;background:transparent;border-block:1px solid var(--stone);transition:box-shadow .3s,background-color .3s}
+html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background:#1E1B26;border-color:rgba(255,255,255,.12)}
 .cat-bar.stuck{box-shadow:0 12px 30px -24px rgba(0,0,0,.5)}
 .cat-bar-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
 .cat-bar .tabs{margin:0;flex:0 1 auto;min-width:0}
@@ -1236,7 +1251,7 @@ html,body{background:var(--white)!important}
 .pc:hover .pc-ph img{transform:scale(1.04)}
 .pc.sold .pc-ph img{opacity:.45}
 .pc.sold:hover .pc-ph img.alt{opacity:0}
-.pc-link{position:absolute;inset:0;z-index:2;border-radius:inherit}
+.pc-link{position:absolute;inset:0;z-index:2;border-radius:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .pc-badges{position:absolute;left:10px;top:10px;z-index:3;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
 .bdg{font-size:12px;font-weight:600;line-height:1;border-radius:999px;padding:6px 10px;background:var(--white);color:var(--ink);letter-spacing:.01em}
 .bdg.sale{background:var(--gold);color:#17151B}
@@ -2254,6 +2269,12 @@ body.qv-lock{overscroll-behavior:none}
     var a=e.target.closest('a[href^="#p-"]');
     if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){e.preventDefault();openQV(a.getAttribute('href').slice(3))}
   });
+  // Safari/Telegram WebView иногда не отправляет click по полноэкранной ссылке-картинке.
+  grid.addEventListener('touchend',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#p-"]');
+    if(!a||e.target.closest('.add,.stp'))return;
+    e.preventDefault();e.stopPropagation();openQV(a.getAttribute('href').slice(3));
+  },{passive:false});
 
   /* ---------- просмотрщик ---------- */
   var qv=$('qv'),cur=null,sel={},qty=1,gi=0,pushed=false,lastFocus=null;

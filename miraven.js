@@ -2,6 +2,7 @@
   /* Бесшовный переход главная → каталог. Тестовые адреса меняются здесь после запуска новой структуры URL. */
   (function(){
     if(window.MVRouter)return;
+    try{history.scrollRestoration='manual'}catch(e){}
     var BASE='https://mattshaddd.github.io/MiravenWebSite/',HOME='/newmain',CATALOG='/newstore',busy=false;
     function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw Error(f);return r.text()})}
     function styles(css){var s=document.querySelector('style[data-mv-route-css]');if(!s){s=document.createElement('style');s.setAttribute('data-mv-route-css','');document.head.appendChild(s)}s.textContent=css}
@@ -9,7 +10,7 @@
     function go(url,replace){if(busy)return Promise.resolve();busy=true;var root=document.getElementById('miraven-root');if(!root){busy=false;return Promise.reject()}
       var catalog=url===CATALOG;
       return Promise.all(catalog?[get('miraven.css'),get('catalog.css'),get('image-viewer.css'),get('catalog.html'),get('image-viewer.js'),get('catalog.js')]:[get('miraven.css'),get('image-viewer.css'),get('miraven.html'),get('image-viewer.js'),get('miraven.js')]).then(function(a){
-        var swap=function(){document.documentElement.dataset.mvRoute=catalog?'catalog':'home';styles(catalog?a[0]+'\n'+a[1]+'\n'+a[2]:a[0]+'\n'+a[1]);root.innerHTML=(catalog?a[3]:a[2]).split('{{BASE}}').join(BASE).split('{{HOME}}').join(HOME);window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;run(catalog?a[4]+'\n'+a[5]:a[3]+'\n'+a[4]);window.scrollTo(0,0);if(replace)history.replaceState({mvRoute:1},'',url);else history.pushState({mvRoute:1},'',url);busy=false};
+        var swap=function(){document.documentElement.dataset.mvRoute=catalog?'catalog':'home';styles(catalog?a[0]+'\n'+a[1]+'\n'+a[2]:a[0]+'\n'+a[1]);root.innerHTML=(catalog?a[3]:a[2]).split('{{BASE}}').join(BASE).split('{{HOME}}').join(HOME);window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;run(catalog?a[4]+'\n'+a[5]:a[3]+'\n'+a[4]);window.scrollTo(0,0);requestAnimationFrame(function(){window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0});if(replace)history.replaceState({mvRoute:1},'',url);else history.pushState({mvRoute:1},'',url);busy=false};
         if(document.startViewTransition)document.startViewTransition(swap);else swap();
       }).catch(function(){busy=false});
     }
