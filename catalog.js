@@ -726,7 +726,7 @@
         lbTap=Date.now();
         if(!e.target.closest('img')&&lbS<=1.02)lbClose(); // клик по тёмному фону
       });
-      lb.addEventListener('dblclick',function(e){if(!e.target.closest('img'))return;lbZoomAt(e.clientX,e.clientY,lbS>1.02?1:2.6)});
+      // Масштабирование двойным кликом отключено: фотографии открываются общим MVImageViewer.
       lb.addEventListener('wheel',function(e){if(!e.target.closest('img'))return;e.preventDefault();var to=Math.max(1,Math.min(5,lbS*(e.deltaY<0?1.2:1/1.2)));lbZoomAt(e.clientX,e.clientY,to)},{passive:false});
       // перетаскивание и щипок
       lb.addEventListener('pointerdown',function(e){
