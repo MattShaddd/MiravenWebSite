@@ -195,6 +195,25 @@
     movePill(b);b.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
     S.cat=b.dataset.cat;resetShown();
   });
+  /* телефон: свайп влево/вправо по списку товаров переключает категорию */
+  (function(){
+    var mq=window.matchMedia('(max-width:760px)'),x0,y0,t0,ok=false,area=document.querySelector('.cat-layout');
+    if(!area)return;
+    area.addEventListener('touchstart',function(e){
+      ok=mq.matches&&e.touches.length===1&&qv.hidden&&!e.target.closest('input,select,textarea,.filters,.sh,[data-qv]');
+      if(ok){x0=e.touches[0].clientX;y0=e.touches[0].clientY;t0=Date.now()}
+    },{passive:true});
+    area.addEventListener('touchend',function(e){
+      if(!ok)return;ok=false;
+      var t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;
+      if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.6||Date.now()-t0>600)return;
+      var L=[].slice.call(tabs.querySelectorAll('[data-cat]')),i=L.findIndex(function(b){return b.getAttribute('aria-pressed')==='true'}),n=i+(dx<0?1:-1);
+      if(i<0||n<0||n>=L.length)return;
+      L[n].click();
+      if(!reduce&&grid.animate)grid.animate([{opacity:.2,transform:'translateX('+(dx<0?36:-36)+'px)'},{opacity:1,transform:'none'}],{duration:260,easing:'cubic-bezier(.2,.8,.2,1)'});
+    },{passive:true});
+    area.addEventListener('touchcancel',function(){ok=false},{passive:true});
+  })();
   window.addEventListener('resize',pillInit);if(document.fonts)document.fonts.ready.then(pillInit);
 
   /* ---------- фильтры (боковая панель / шторка) ---------- */
@@ -235,7 +254,7 @@
     if(!fsheet){
       var home=$('filters'),fb=$('fbody'),ff=home.querySelector('.f-foot');
       fsheet=MV.sheet({title:'Фильтры',className:'sh-filters',body:fb,footer:ff,
-        onOpen:function(){$('fbtn').setAttribute('aria-expanded','true')},
+        onOpen:function(a){a.setBody(fb);a.setFooter(ff);$('fbtn').setAttribute('aria-expanded','true')},
         onClose:function(){home.appendChild(fb);home.appendChild(ff);$('fbtn').setAttribute('aria-expanded','false')}});
     }
     if(on)fsheet.open();else fsheet.close();
