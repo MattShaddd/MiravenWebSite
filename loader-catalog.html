@@ -10,7 +10,7 @@
   window.MV_HOME=HOME;
   function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(f);return r.text()})}
   var root=document.getElementById('miraven-root');
-  Promise.all([get('miraven.css?v=7c3a45d'),get('catalog.css?v=7c3a45d'),get('image-viewer.css'),get('catalog.html'),get('image-viewer.js'),get('catalog.js')]).then(function(a){
+  Promise.all([get('miraven.css?v=qv-close-1'),get('catalog.css?v=qv-close-1'),get('image-viewer.css'),get('catalog.html'),get('image-viewer.js'),get('catalog.js')]).then(function(a){
     var st=document.createElement('style');st.textContent=a[0]+'\n'+a[1]+'\n'+a[2];document.head.appendChild(st);
     root.innerHTML=a[3].split('{{BASE}}').join(BASE).split('{{HOME}}').join(HOME);
     var sc=document.createElement('script');sc.textContent=a[4]+'\n'+a[5];document.body.appendChild(sc);

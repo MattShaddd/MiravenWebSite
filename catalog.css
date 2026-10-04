@@ -244,9 +244,9 @@ body.qv-lock{overscroll-behavior:none}
   .qv-title{font-size:28px}
   .qv-foot{position:fixed;left:0;right:0;bottom:0;z-index:7;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
   .qv-gocart{display:none}
-  .qv-top .qv-btn[data-qv="x"]{width:auto;min-width:0;height:42px;padding:0 16px;border-radius:999px;gap:7px;font-size:14px;font-family:var(--f-body);font-weight:500}
-  .qv-top .qv-btn[data-qv="x"] svg{display:none}
-  .qv-top .qv-btn[data-qv="x"]::after{content:'Назад';display:block}
+  .qv-top .qv-btn[data-qv="x"]{width:42px;min-width:42px;height:42px;padding:0;border-radius:50%}
+  .qv-top .qv-btn[data-qv="x"] svg{display:block}
+  .qv-top .qv-btn[data-qv="x"]::after{content:none;display:none}
   .qv-slide{padding:18px}
   .qv-slide.zoom img{transform:none}
 }

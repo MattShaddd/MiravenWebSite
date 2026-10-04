@@ -702,7 +702,7 @@
     function base(){var i=document.querySelector('img[src*="logo-header.webp"]');return i?i.src.replace(/logo-header\.webp.*$/,''):''}
     function load(){
       if(p)return p;var b=base();if(!b)return Promise.reject(new Error('base'));
-      var css=document.createElement('link');css.rel='stylesheet';css.href=b+'catalog.css?v=7c3a45d';document.head.appendChild(css);
+      var css=document.createElement('link');css.rel='stylesheet';css.href=b+'catalog.css?v=qv-close-1';document.head.appendChild(css);
       p=fetch(b+'qv.js',{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error('qv');return r.text()}).then(function(t){
         var s=document.createElement('script');s.textContent=t;document.body.appendChild(s);if(!MV.qvOpen)throw new Error('qv init');
       }).catch(function(e){p=null;throw e});

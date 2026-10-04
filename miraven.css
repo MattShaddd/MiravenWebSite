@@ -1129,7 +1129,7 @@ html[data-mv-theme="dark"],html[data-mv-theme="dark"] body{background:#121017!im
 /* телефон: у окон нет крестиков, закрываются свайпом вниз (или касанием по затемнению) */
 @media (max-width:760px){
   .top{top:0!important}
-  .sh-x,.cab-x,.lb-x,.qv-btn[data-qv="x"],
+  .sh-x,.cab-x,.lb-x,
   .t706__cartpage .t706__cartpage-close,.t706__cartwin .t706__cartwin-close,.t706__cartwin .t706__cartwin-close-wrapper{display:none!important}
   .sh-head{padding-right:22px}
   .t706__cartpage .t706__cartpage-heading{padding-right:0!important}
