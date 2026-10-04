@@ -124,7 +124,7 @@
     var b=e.target.closest('.add');if(!b)return;
     e.preventDefault();
     var i=items.filter(function(x){return x.uid===b.dataset.uid})[0];if(!i)return;
-    if(i.multi){location.href=i.url;return}
+    if(i.multi){if(window.MV&&MV.viewProduct)MV.viewProduct(i.uid).catch(function(){location.href=i.url});else location.href=i.url;return}
     if(b.classList.contains('done'))return;
     addToCart(i,b);
   },true);
@@ -661,6 +661,30 @@
   function pillInit(){var a=tabs.querySelector('[aria-pressed="true"]');if(a)movePill(a,true)}
   pillInit();load();window.addEventListener('resize',pillInit);if(document.fonts)document.fonts.ready.then(pillInit);
 
+  // ПРОСМОТР ТОВАРА НА ГЛАВНОЙ
+  // Карточка товара открывается шторкой прямо здесь (код шторки лежит в qv.js, подгружается заранее), без перехода в каталог.
+  (function(){
+    var MV=window.MV=window.MV||{},p=null;
+    function base(){var i=document.querySelector('img[src*="logo-header.webp"]');return i?i.src.replace(/logo-header\.webp.*$/,''):''}
+    function load(){
+      if(p)return p;var b=base();if(!b)return Promise.reject(new Error('base'));
+      var css=document.createElement('link');css.rel='stylesheet';css.href=b+'catalog.css';document.head.appendChild(css);
+      p=fetch(b+'qv.js',{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error('qv');return r.text()}).then(function(t){
+        var s=document.createElement('script');s.textContent=t;document.body.appendChild(s);if(!MV.qvOpen)throw new Error('qv init');
+      }).catch(function(e){p=null;throw e});
+      return p;
+    }
+    MV.viewProduct=function(uid){return load().then(function(){return MV.qvOpen(uid)})};
+    function warm(){load().catch(function(){})}
+    if('requestIdleCallback' in window)requestIdleCallback(function(){setTimeout(warm,1500)},{timeout:6000});else setTimeout(warm,4000);
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href*="#p-"]');if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+      var m=/#p-(\d+)/.exec(a.getAttribute('href'));if(!m)return;
+      e.preventDefault();
+      MV.viewProduct(m[1]).catch(function(){location.href=a.href});
+    });
+  })();
+  // КОНЕЦ ПРОСМОТРА ТОВАРА НА ГЛАВНОЙ
   // блеск лого: маска из самой картинки
   var shine=document.querySelector('.logo-shine');
   if(shine){var li=shine.querySelector('img');shine.style.setProperty('--logo','url("'+li.src+'")');if(!reduce)requestAnimationFrame(function(){shine.classList.add('go')})}

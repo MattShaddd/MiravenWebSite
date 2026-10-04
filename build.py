@@ -64,6 +64,57 @@ for blk in (sheet, cartsheet, fab):
 cjs = rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
+# ---------- qv.js: просмотр товара для главной (те же куски кода, что и в каталоге) ----------
+src = rd('catalog.src.js')
+def cut(a, z):
+    i = src.index(a); j = src.index(z, i)
+    return src[i:j]
+qv_parts = [
+    cut('  var API=', '  /* ---------- фильтрация ---------- */'),   # константы, утилиты, данные
+    cut('  function partName', '  function match('),
+    cut('  function cartProducts()', '  var STP='),                  # состояние корзины Тильды
+    cut('  function fly(b){', '  /* быстрое добавление с карточки */'),  # добавление в корзину
+    cut('  /* ---------- просмотрщик ---------- */', '  /* ---------- сортировка шторкой'),  # шторка товара, просмотр фото, свайпы
+]
+qv_pre = """(function(){
+  'use strict';
+  /* Автоматически собирается из catalog.src.js скриптом build.py (python build.py). Вручную не править. */
+  window.MV=window.MV||{};
+  // разметка шторки и подсказки (в каталоге она лежит в самой странице)
+  (function(){
+    var host=document.querySelector('.site')||document.body;
+    if(!document.getElementById('qv')){var q=document.createElement('div');q.className='qv';q.id='qv';q.hidden=true;q.setAttribute('role','dialog');q.setAttribute('aria-modal','true');q.setAttribute('aria-label','Просмотр товара');q.tabIndex=-1;host.appendChild(q)}
+    if(!document.getElementById('toast')){var t=document.createElement('div');t.className='toast';t.id='toast';t.setAttribute('role','status');t.setAttribute('aria-live','polite');host.appendChild(t)}
+  })();
+"""
+qv_mid = """
+  /* ---------- склейка с главной страницей ---------- */
+  API.rec='1278451251'; // блок магазина на главной
+  var curList=[];
+  function paintCards(){}
+  function updBadge(){}
+  var cartEl=$('cart');
+  function bump(){if(!cartEl)return;cartEl.classList.remove('bump');void cartEl.offsetWidth;cartEl.classList.add('bump')}
+  function openCart(){if(window.tcart__openCart)tcart__openCart();else if(document.querySelector('.t706__carticon'))document.querySelector('.t706__carticon').click()}
+"""
+qv_post = """
+  var loading=null;
+  function ready(){
+    if(loading)return loading;
+    loading=loadAll().then(function(all){
+      items=all.map(norm);items.forEach(function(i){byUid[i.uid]=i});curList=items.slice();
+    }).catch(function(e){loading=null;throw e});
+    return loading;
+  }
+  MV.qvReady=ready;
+  MV.qvOpen=function(uid){return ready().then(function(){if(!byUid[uid])throw new Error('нет товара');openQV(String(uid))})};
+  ready().catch(function(){});
+})();
+"""
+# предобъявления нужны до кода, который их использует: curList и пр. кладём перед блоком корзины
+qv_js = qv_pre + qv_parts[0] + qv_mid + ''.join(qv_parts[1:]) + qv_post
+wr('qv.js', qv_js)
+
 
 # ---------- members.css: стили кабинета и входа, действуют только на страницах Members ----------
 SCOPE = ':where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap))'
