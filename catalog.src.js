@@ -358,6 +358,7 @@
   }
   /* быстрое добавление с карточки */
   grid.addEventListener('click',function(e){
+    if(e.defaultPrevented)return;
     var st=e.target.closest('.stp button');if(st){
       e.preventDefault();var it0=byUid[st.parentNode.dataset.uid];if(!it0)return;
       if(st.dataset.s==='m')cartMinus(it0,it0.eds[0],null);
@@ -370,7 +371,8 @@
       addToCart(it,it.eds[0],1,null,b);
       return;
     }
-    var a=e.target.closest('a[href^="#p-"]');
+    var a=e.target.closest('a[href^="#p-"]'),card=e.target.closest('.pc[data-uid]');
+    if(!a&&card)a={getAttribute:function(){return '#p-'+card.dataset.uid}};
     if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){if(tap.justOpened){tap.justOpened=false;return}e.preventDefault();openQV(a.getAttribute('href').slice(3))}
   });
   var tap={x:0,y:0,a:null,moved:false};
@@ -378,6 +380,18 @@
   grid.addEventListener('pointermove',function(e){if(!tap.a||e.pointerType!=='touch')return;if(Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>10)tap.moved=true},{passive:true});
   grid.addEventListener('pointerup',function(e){if(e.pointerType!=='touch'||!tap.a)return;var a=tap.a,m=tap.moved;tap.a=null;if(!m){e.preventDefault();e.stopPropagation();tap.justOpened=true;openQV(a.getAttribute('href').slice(3))}},{passive:false});
   grid.addEventListener('pointercancel',function(){tap.a=null},{passive:true});
+  // Android Telegram WebView может не доставить событие до делегата grid, если палец отпущен над вложенным img.
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('.pc-link[href^="#p-"]'),card=e.target.closest&&e.target.closest('.pc[data-uid]');
+    if(!a&&card)a={getAttribute:function(){return '#p-'+card.dataset.uid}};
+    if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+    e.preventDefault();e.stopImmediatePropagation();openQV(a.getAttribute('href').slice(3));
+  },true);
+  var docTap={x:0,y:0,card:null,moved:false};
+  document.addEventListener('pointerdown',function(e){if(e.pointerType!=='touch')return;var c=e.target.closest&&e.target.closest('.pc[data-uid]');if(!c||e.target.closest('.add,.stp')){docTap.card=null;return}docTap.x=e.clientX;docTap.y=e.clientY;docTap.card=c;docTap.moved=false},{passive:true});
+  document.addEventListener('pointermove',function(e){if(docTap.card&&e.pointerType==='touch'&&Math.hypot(e.clientX-docTap.x,e.clientY-docTap.y)>10)docTap.moved=true},{passive:true});
+  document.addEventListener('pointerup',function(e){if(e.pointerType!=='touch'||!docTap.card)return;var c=docTap.card,m=docTap.moved;docTap.card=null;if(!m){e.preventDefault();e.stopImmediatePropagation();tap.justOpened=true;openQV(c.dataset.uid)}},{passive:false});
+  document.addEventListener('pointercancel',function(){docTap.card=null},{passive:true});
 
   /* ---------- просмотрщик ---------- */
   var qv=$('qv'),cur=null,sel={},qty=1,gi=0,pushed=false,lastFocus=null;
