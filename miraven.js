@@ -735,10 +735,13 @@
       var buttons=[].slice.call(media.querySelectorAll('[data-review-photo]'));
       MVImageViewer.open({items:photos(media),index:buttons.indexOf(button),from:button});
     }
+    function bindPhotos(root){
+      root.querySelectorAll('[data-review-photo]').forEach(function(button){button.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openPhoto(button)})});
+    }
     function show(post){
       if(!sheet)sheet=MV.sheet({title:'Отзыв покупателя',className:'sh-review'});
       var copy=post.cloneNode(true);copy.classList.remove('rv','in','is-open');copy.classList.add('review-detail');copy.removeAttribute('style');var oldButton=copy.querySelector('.review-expand');if(oldButton)oldButton.remove();
-      var name=((copy.querySelector('.review-author')||{}).textContent||'покупателя').trim();
+      bindPhotos(copy);var name=((copy.querySelector('.review-author')||{}).textContent||'покупателя').trim();
       sheet.setTitle('Отзыв от «'+name+'»');sheet.setBody(copy);sheet.open();
     }
     document.addEventListener('click',function(e){var button=e.target.closest&&e.target.closest('[data-review-photo]');if(!button)return;e.preventDefault();e.stopPropagation();openPhoto(button)},true);
@@ -746,6 +749,7 @@
       var openButton=document.createElement('button');openButton.type='button';openButton.className='review-expand';openButton.textContent='Читать отзыв';
       post.querySelector('.review-text').insertAdjacentElement('afterend',openButton);openButton.addEventListener('click',function(){show(post)});
       post.addEventListener('click',function(e){if(e.target.closest('a,button'))return;show(post)});
+      bindPhotos(post);
     });
   })();
 
