@@ -812,7 +812,6 @@
 
   /* ---------- оболочка: шапка, меню, вход, тема ---------- */
   // плавное сжатие/разворот панели категорий (высота + перелёт каждой плашки)
-  var compactAnimating=false;
   function setCompact(on){
     if(bar.classList.contains('compact')===on)return;
     var inner=bar.querySelector('.cat-bar-in'),btns=[].slice.call(tabs.children).filter(function(b){return b.tagName==='BUTTON'});
@@ -821,7 +820,8 @@
     if(on)revealActive(true);
     if(reduce||!inner.animate||!window.matchMedia('(max-width:760px)').matches)return;
     var h1=inner.offsetHeight;
-    if(h0!==h1&&!compactAnimating){compactAnimating=true;inner.style.overflow='hidden';inner.style.willChange='height';var a=inner.animate([{height:h0+'px'},{height:h1+'px'}],{duration:300,easing:'cubic-bezier(.2,.8,.2,1)'});a.onfinish=a.oncancel=function(){inner.style.overflow='';inner.style.willChange='';compactAnimating=false}}
+    // Не запускаем Web Animations на каждом пересечении sticky-порога: это вызывало лаги скролла.
+    inner.style.height='';inner.style.overflow='';
   }
   var topEl=document.querySelector('.top'),bar=$('catBar');
   var hdrNow=-1;
