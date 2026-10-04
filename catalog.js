@@ -391,7 +391,7 @@
       return;
     }
     var b=e.target.closest('.add');if(b){
-      e.preventDefault();var it=byUid[b.dataset.uid];if(!it)return;
+      e.preventDefault();if(b.classList.contains('stp'))return;var it=byUid[b.dataset.uid];if(!it)return;
       if(it.multi){openQV(it.uid);return}
       addToCart(it,it.eds[0],1,null,b);
       return;

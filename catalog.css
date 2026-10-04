@@ -97,9 +97,16 @@
 .bdg.sale{background:var(--gold);color:#17151B}
 .bdg.new{background:var(--ink);color:var(--white)}
 .pc .add{z-index:4;right:10px;bottom:10px}
-.pc .add.stp{padding:0;gap:0;overflow:hidden;background:var(--ink);color:var(--white)}
+.pc .add.stp{padding:0;gap:0;overflow:visible;background:var(--ink);color:var(--white)}
 .pc .add.stp:hover{background:var(--ink)}
-.pc .add.stp button{border:0;background:none;color:inherit;font:inherit;font-size:17px;line-height:1;width:34px;height:100%;cursor:pointer;transition:background .2s}
+.pc .add.stp button{border:0;background:none;color:inherit;font:inherit;font-size:17px;line-height:1;width:34px;height:100%;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .2s}
+.pc .add.stp button{position:relative;border-radius:0}
+.pc .add.stp button[data-s="m"]{border-radius:18px 0 0 18px}
+.pc .add.stp button[data-s="p"]{border-radius:0 18px 18px 0}
+/* невидимая зона нажатия шире самой кнопки: -12px сверху, снизу и снаружи, до середины числа */
+.pc .add.stp button::before{content:"";position:absolute;top:-12px;bottom:-12px;left:0;right:0}
+.pc .add.stp button[data-s="m"]::before{left:-14px;right:-11px}
+.pc .add.stp button[data-s="p"]::before{left:-11px;right:-14px}
 .pc .add.stp button:hover{background:rgba(255,255,255,.16)}
 .pc .add.stp b{min-width:22px;text-align:center;font-weight:600;font-size:13px}
 .pc .add.stp.lim button[data-s="p"]{opacity:.35}
