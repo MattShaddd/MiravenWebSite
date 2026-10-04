@@ -1094,6 +1094,7 @@ html[data-mv-theme="light"] .site:not([data-theme="dark"]) .btn-ink{box-shadow:i
 /* телефон: фиксированный фон (background-attachment:fixed) на мобильных браузерах отстаёт от скролла и открывает полосу снизу.
    Рисуем виньетку обычным фоном страницы, а под ней держим сплошной цвет темы на html */
 html,body{background:var(--white)!important}
+html[data-mv-theme="dark"],html[data-mv-theme="dark"] body{background:#121017!important}
 @media (max-width:900px),(hover:none){
   .site,.site[data-theme="dark"],.site:not([data-theme="dark"]){background-attachment:scroll!important}
 }
