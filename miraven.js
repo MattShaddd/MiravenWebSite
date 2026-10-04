@@ -1,4 +1,10 @@
 (function(){
+  (function(){
+    if(!/Telegram/i.test(navigator.userAgent||''))return;
+    document.documentElement.classList.add('mv-telegram-webview');
+    function sync(){var v=window.visualViewport,t=v&&isFinite(v.offsetTop)?v.offsetTop:0;document.documentElement.style.setProperty('--mv-vv-top',Math.max(0,t)+'px')}
+    sync();if(window.visualViewport){visualViewport.addEventListener('resize',sync,{passive:true});visualViewport.addEventListener('scroll',sync,{passive:true})}
+  })();
   /* Бесшовный переход главная → каталог. Тестовые адреса меняются здесь после запуска новой структуры URL. */
   (function(){
     if(window.MVRouter)return;
