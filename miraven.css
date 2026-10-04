@@ -194,6 +194,11 @@ html{scroll-behavior:smooth}
 .review-head small,.review-time{display:block;color:var(--muted);font-size:12px}
 .review-text{max-width:62ch;color:var(--head);font-size:16px;line-height:1.55;padding-inline-end:58px}
 .review-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden}
+.review-post.is-open .review-text{display:block;overflow:visible}
+.review-head,.review-text,.review-sticker{cursor:pointer}
+.review-expand{justify-self:start;padding:0;border:0;border-bottom:1px solid var(--gold);background:transparent;color:var(--gold-text);font:inherit;font-size:13px;line-height:1.4;cursor:pointer}
+.review-expand:hover{color:var(--head);border-color:var(--head)}
+.review-expand:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:2px}
 .review-sticker{position:absolute;inset-block-start:76px;inset-inline-end:22px;display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:color-mix(in srgb,var(--gold) 12%,var(--mist));font-size:26px;transform:rotate(5deg);box-shadow:var(--hi),0 8px 20px -12px rgba(0,0,0,.45)}
 .review-media{display:grid;gap:3px;border-radius:18px;overflow:hidden;background:var(--stone)}
 .review-media button{position:relative;display:block;min-width:0;min-height:0;padding:0;border:0;background:var(--stone);cursor:zoom-in;overflow:hidden}

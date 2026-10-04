@@ -726,6 +726,16 @@
     });
   })();
 
+  // каждый отзыв раскрывает собственный полный текст
+  document.querySelectorAll('.review-post').forEach(function(post){
+    var text=post.querySelector('.review-text');if(!text)return;
+    var button=document.createElement('button');button.type='button';button.className='review-expand';button.textContent='Читать полностью';button.setAttribute('aria-expanded','false');
+    text.insertAdjacentElement('afterend',button);
+    function toggle(){var open=post.classList.toggle('is-open');button.textContent=open?'Свернуть':'Читать полностью';button.setAttribute('aria-expanded',String(open))}
+    button.addEventListener('click',toggle);
+    post.addEventListener('click',function(e){if(e.target.closest('a,button,.review-media'))return;toggle()});
+  });
+
   // фотографии в отзывах: полноэкранный просмотр, стрелки, клавиатура и свайп
   (function(){
     var box=document.getElementById('reviewLightbox');if(!box)return;
