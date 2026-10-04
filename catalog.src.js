@@ -169,9 +169,9 @@
     grid.insertAdjacentHTML('beforeend',curList.slice(from,S.shown).map(function(it,k){return card(it,k)}).join(''));
     more.hidden=curList.length<=S.shown;
   }
-  function resetShown(){
+  function resetShown(toTop){
     S.shown=PAGE;renderGrid();
-    if(bar&&bar.classList.contains('stuck')){var lay=document.querySelector('.cat-layout');window.scrollTo({top:Math.max(0,lay.getBoundingClientRect().top+window.scrollY-topEl.offsetHeight-bar.offsetHeight-12),behavior:reduce?'auto':'smooth'})}
+    if(bar&&bar.classList.contains('stuck')){var lay=document.querySelector('.cat-layout');window.scrollTo({top:toTop===true?0:Math.max(0,lay.getBoundingClientRect().top+window.scrollY-topEl.offsetHeight-bar.offsetHeight-12),behavior:reduce?'auto':'smooth'})}
   }
 
   /* ---------- вкладки ---------- */
@@ -198,7 +198,7 @@
     if(b.getAttribute('aria-pressed')==='true')return;
     tabs.querySelectorAll('[data-cat]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
     movePill(b);revealActive(false);
-    S.cat=b.dataset.cat;resetShown();
+    S.cat=b.dataset.cat;resetShown(true);
   });
   /* телефон: свайп влево/вправо по списку товаров переключает категорию */
   (function(){
