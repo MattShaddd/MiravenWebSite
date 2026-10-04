@@ -812,6 +812,8 @@
   var scrolledNow=null;
   function onScroll(){var sc=window.scrollY>8;if(sc!==scrolledNow){scrolledNow=sc;topEl.classList.toggle('scrolled',sc);hdr()}var sn=$('barSent');if(sn&&bar)setCompact(sn.getBoundingClientRect().top<=topEl.offsetHeight);if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
   var scrollRaf=0;window.addEventListener('scroll',function(){if(scrollRaf)return;scrollRaf=requestAnimationFrame(function(){scrollRaf=0;onScroll()})},{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
+  /* шапка меняет высоту плавно (после класса scrolled), поэтому следим за её размером, а не измеряем один раз в момент переключения: иначе под шапкой оставалась щель */
+  if(window.ResizeObserver&&topEl)new ResizeObserver(function(){hdr()}).observe(topEl);else if(topEl)topEl.addEventListener('transitionend',hdr);
   var mn=$('mnav'),bg=$('burger');if(mn&&bg){bg.addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true})}
   function searchOpen(on){
     bar.classList.toggle('searching',on);document.documentElement.classList.toggle('mv-searching',on);
