@@ -1032,3 +1032,10 @@ html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!i
   background:radial-gradient(ellipse 78% 68% at 50% 44%,transparent 30%,rgba(150,105,55,.07) 58%,rgba(120,80,40,.17) 80%,rgba(100,65,30,.3) 100%) fixed,var(--white);
 }
 html[data-mv-theme="light"] .site:not([data-theme="dark"]) .btn-ink{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 1px 2px rgba(60,35,15,.3),0 10px 22px -10px rgba(90,55,25,.55)}
+
+/* телефон: фиксированный фон (background-attachment:fixed) на мобильных браузерах отстаёт от скролла и открывает полосу снизу.
+   Рисуем виньетку обычным фоном страницы, а под ней держим сплошной цвет темы на html */
+html,body{background:var(--white)!important}
+@media (max-width:900px),(hover:none){
+  .site,.site[data-theme="dark"],.site:not([data-theme="dark"]){background-attachment:scroll!important}
+}
