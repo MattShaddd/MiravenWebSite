@@ -14,8 +14,9 @@
       }).catch(function(){busy=false});
     }
     window.MVRouter={go:go};
-    document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||(u.pathname!==CATALOG&&u.pathname!==HOME))return;e.preventDefault();go(u.pathname,false)},true);
-    window.addEventListener('popstate',function(){if(location.pathname===CATALOG||location.pathname===HOME)go(location.pathname,true)});
+    function routePath(p){return (p||'/').replace(/\/+$/,'')||'/'}
+    document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;var u=new URL(a.href,location.href),p=routePath(u.pathname);if(u.origin!==location.origin||(p!==routePath(CATALOG)&&p!==routePath(HOME)))return;e.preventDefault();e.stopImmediatePropagation();go(p,false)},true);
+    window.addEventListener('popstate',function(){var p=routePath(location.pathname);if(p===routePath(CATALOG)||p===routePath(HOME))go(p,true)});
   })();
   // Production Tilda loader historically fetched only miraven.js/miraven.css.
   // Keep the shared image viewer available even when its dedicated assets are omitted.
