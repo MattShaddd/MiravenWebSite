@@ -726,7 +726,7 @@
         lbTap=Date.now();
         if(!e.target.closest('img')&&lbS<=1.02)lbClose(); // клик по тёмному фону
       });
-      // Масштабирование двойным кликом отключено: фотографии открываются общим MVImageViewer.
+      lb.addEventListener('dblclick',function(e){if(!e.target.closest('img'))return;lbZoomAt(e.clientX,e.clientY,lbS>1.02?1:2.6)});
       lb.addEventListener('wheel',function(e){if(!e.target.closest('img'))return;e.preventDefault();var to=Math.max(1,Math.min(5,lbS*(e.deltaY<0?1.2:1/1.2)));lbZoomAt(e.clientX,e.clientY,to)},{passive:false});
       // перетаскивание и щипок
       lb.addEventListener('pointerdown',function(e){
@@ -820,10 +820,10 @@
     if(on)revealActive(true);
     if(reduce||!inner.animate||!window.matchMedia('(max-width:760px)').matches)return;
     var h1=inner.offsetHeight;
-    if(h0!==h1){inner.style.overflow='hidden';var a=inner.animate([{height:h0+'px'},{height:h1+'px'}],{duration:440,easing:'cubic-bezier(.2,.8,.2,1)'});a.onfinish=a.oncancel=function(){inner.style.overflow=''}}
+    if(h0!==h1){inner.style.overflow='hidden';inner.style.willChange='height';var a=inner.animate([{height:h0+'px'},{height:h1+'px'}],{duration:560,easing:'cubic-bezier(.22,.75,.2,1)'});a.onfinish=a.oncancel=function(){inner.style.overflow='';inner.style.willChange=''}}
     btns.forEach(function(b,i){
       var r1=b.getBoundingClientRect(),dx=r0[i].left-r1.left,dy=r0[i].top-r1.top;
-      if(Math.abs(dx)>1||Math.abs(dy)>1)b.animate([{transform:'translate('+dx+'px,'+dy+'px)',opacity:Math.abs(dy)>60?0:1},{transform:'none',opacity:1}],{duration:480,easing:'cubic-bezier(.2,.8,.2,1)'});
+      if(Math.abs(dx)>1||Math.abs(dy)>1){b.style.willChange='transform,opacity';b.animate([{transform:'translate('+dx+'px,'+dy+'px)',opacity:Math.abs(dy)>60?0:1},{transform:'none',opacity:1}],{duration:560,easing:'cubic-bezier(.22,.75,.2,1)'}).onfinish=function(){b.style.willChange=''}}
     });
   }
   var topEl=document.querySelector('.top'),bar=$('catBar');
