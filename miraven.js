@@ -1,4 +1,15 @@
 (function(){
+  // Production Tilda loader historically fetched only miraven.js/miraven.css.
+  // Keep the shared image viewer available even when its dedicated assets are omitted.
+  (function(){
+    var base='https://mattshaddd.github.io/MiravenWebSite/';
+    if(!document.querySelector('link[data-mv-viewer-css]')){
+      var link=document.createElement('link');link.rel='stylesheet';link.href=base+'image-viewer.css?v=2d7ca7a';link.setAttribute('data-mv-viewer-css','');document.head.appendChild(link);
+    }
+    if(!window.MVImageViewer&&!document.querySelector('script[data-mv-viewer-js]')){
+      var script=document.createElement('script');script.src=base+'image-viewer.js?v=2d7ca7a';script.async=false;script.setAttribute('data-mv-viewer-js','');document.head.appendChild(script);
+    }
+  })();
   /* Android Chrome: при открытой клавиатуре и скрытии адресной строки над клавиатурой оставалась пустая полоса. Пусть клавиатура меняет размер страницы целиком, а не только видимой области */
   try{var vm=document.querySelector('meta[name=viewport]');if(vm&&!/interactive-widget/.test(vm.content))vm.setAttribute('content',vm.content+',interactive-widget=resizes-content')}catch(e){}
   var API={part:'683137745982',rec:'1278451251'};
