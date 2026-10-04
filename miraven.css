@@ -603,11 +603,12 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 .sfab{display:none}
 @media (max-width:760px){
   #searchBtn{display:none}
-  .sfab{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;height:54px;min-width:54px;padding:0 22px 0 18px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:600;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);transform:translateX(-50%);transition:left .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1),padding .5s cubic-bezier(.2,.8,.2,1),opacity .3s}
+  /* поиск: кнопка едет только за счёт transform (без анимации left), а подпись сворачивается тем же временем и кривой, поэтому всё идёт одним плавным движением */
+  .sfab{--sfe:cubic-bezier(.32,.72,0,1);--sfd:.55s;position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;height:54px;min-width:54px;padding:0 16px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:0;font-size:16px;font-weight:600;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);transform:translateX(calc(50vw - 14px - 50%));will-change:transform;transition:transform var(--sfd) var(--sfe),opacity .3s}
   .sfab svg{width:22px;height:22px;flex:none}
-  .sfab span{display:inline-block;max-width:80px;overflow:hidden;white-space:nowrap;transition:max-width .5s cubic-bezier(.2,.8,.2,1),opacity .3s}
-  .sfab.left{left:14px;transform:none;padding:0 16px;gap:0}
-  .sfab.left span{max-width:0;opacity:0}
+  .sfab span{display:inline-block;max-width:80px;padding:0 6px 0 10px;overflow:hidden;white-space:nowrap;transition:max-width var(--sfd) var(--sfe),padding var(--sfd) var(--sfe),opacity calc(var(--sfd) * .6) ease}
+  .sfab.left{transform:translateX(0)}
+  .sfab.left span{max-width:0;padding:0;opacity:0}
   .sfab:active{filter:brightness(1.1)}
   .mv-searching .sfab{opacity:0;pointer-events:none}
 }
