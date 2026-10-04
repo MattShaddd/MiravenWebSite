@@ -717,6 +717,29 @@
   var ap=document.getElementById('aboutPhoto');
   if(ap&&!reduce){var ticking=false;window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){ticking=false;if(!ap.classList.contains('in'))return;var r=ap.getBoundingClientRect(),c=(r.top+r.height/2-innerHeight/2)/innerHeight;ap.style.transform='translateY('+(c*-28).toFixed(1)+'px)'})},{passive:true})}
 
+  // фотографии в отзывах: полноэкранный просмотр, стрелки, клавиатура и свайп
+  (function(){
+    var box=document.getElementById('reviewLightbox');if(!box)return;
+    var photo=box.querySelector('img'),cap=box.querySelector('figcaption'),prev=box.querySelector('.review-lb-prev'),next=box.querySelector('.review-lb-next'),close=box.querySelector('.review-lb-close');
+    var list=[],at=0,last=null,startX=0;
+    function paint(){
+      var b=list[at],im=b&&b.querySelector('img');if(!im)return;
+      photo.src=im.currentSrc||im.src;cap.textContent=(at+1)+' / '+list.length;
+      prev.hidden=next.hidden=list.length<2;
+    }
+    function open(b){
+      var media=b.closest('.review-media');list=[].slice.call(media.querySelectorAll('[data-review-photo]'));at=list.indexOf(b);last=b;paint();box.hidden=false;document.documentElement.style.overflow='hidden';box.focus();
+    }
+    function shut(){box.hidden=true;photo.removeAttribute('src');document.documentElement.style.overflow='';if(last)last.focus()}
+    function step(n){if(list.length<2)return;at=(at+n+list.length)%list.length;paint()}
+    document.querySelectorAll('[data-review-photo]').forEach(function(b){b.addEventListener('click',function(){open(b)})});
+    close.addEventListener('click',shut);prev.addEventListener('click',function(){step(-1)});next.addEventListener('click',function(){step(1)});
+    box.addEventListener('click',function(e){if(e.target===box)shut()});
+    box.addEventListener('pointerdown',function(e){startX=e.clientX});
+    box.addEventListener('pointerup',function(e){var dx=e.clientX-startX;if(Math.abs(dx)>48)step(dx<0?1:-1)});
+    document.addEventListener('keydown',function(e){if(box.hidden)return;if(e.key==='Escape')shut();else if(e.key==='ArrowLeft')step(-1);else if(e.key==='ArrowRight')step(1)});
+  })();
+
   // плавное раскрытие вопросов
   document.querySelectorAll('.faq details').forEach(function(d){
     var sum=d.querySelector('summary'),ans=d.querySelector('.ans');
