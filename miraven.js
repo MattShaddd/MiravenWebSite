@@ -236,6 +236,7 @@
       if(!cab){
         cab=document.createElement('div');cab.className='cab';cab.setAttribute('role','dialog');cab.setAttribute('aria-modal','true');cab.setAttribute('aria-label','Личный кабинет');cab.hidden=true;
         cab.innerHTML='<div class="cab-box"></div>';(document.querySelector('.site')||document.body).appendChild(cab);
+        if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:cab,box:function(){return cab.querySelector('.cab-box')},scroller:function(){return cab.querySelector('.cab-body')},handle:'.cab-top,.cab-tabs',close:cabClose});
         cab.addEventListener('click',function(e){
           if(e.target===cab){cabClose();return}
           var a=e.target.closest('[data-cab]');if(!a)return;
@@ -346,7 +347,61 @@
       };
       el.addEventListener('click',function(e){if(e.target===el||e.target.closest('.sh-x'))api.close()});
       api.setTitle(o.title);api.setBody(o.body);api.setFooter(o.footer);
+      MV.swipeDismiss({on:el,box:box,scroller:body,handle:'.sh-head,.sh-grab',close:api.close});
       return api;
+    };
+    /* закрытие жестом (телефон): шторку тянут вниз, фон гаснет вслед за пальцем, дальше она уезжает сама.
+       o.on: оверлей, o.box: двигаемый элемент (или функция), o.scroller: прокручиваемый блок (тянуть можно, пока он наверху),
+       o.handle: селектор зоны, откуда тянуть можно всегда, o.close: закрыть, o.enabled: можно ли сейчас */
+    MV.swipeDismiss=function(o){
+      var el=o.on,st=null,small=window.matchMedia&&matchMedia('(max-width:760px)');
+      function get(v){return typeof v==='function'?v():v}
+      function scrolledUp(t,b){
+        for(var n=t;n&&n!==b.parentNode;n=n.parentNode){
+          if(n.nodeType!==1)continue;
+          if(n.scrollTop>1){var oy=getComputedStyle(n).overflowY;if(oy==='auto'||oy==='scroll'||n===get(o.scroller))return true}
+        }
+        return false;
+      }
+      el.addEventListener('touchstart',function(e){
+        st=null;var b=get(o.box),t=e.target;
+        if(!small||!small.matches||!b||e.touches.length!==1||(o.enabled&&!o.enabled()))return;
+        if(!b.contains(t)||(t.closest&&t.closest('input,select,textarea,.searchbox-list,.qv-seg,.qv-rel-track,.qv-slides,[data-noswipe]')))return;
+        if(!(o.handle&&t.closest&&t.closest(o.handle))&&scrolledUp(t,b))return;
+        var q=e.touches[0];st={x:q.clientX,y:q.clientY,t:Date.now(),b:b,dy:0,drag:false,op:el.style.opacity,h:b.getBoundingClientRect().height||600};
+      },{passive:true});
+      el.addEventListener('touchmove',function(e){
+        if(!st)return;var q=e.touches[0],dx=q.clientX-st.x,dy=q.clientY-st.y;
+        if(!st.drag){
+          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>8||dy<-8){st=null;return}
+          if(dy<=8)return;
+          st.drag=true;st.b.style.transition='none';el.style.transition='none';
+        }
+        if(e.cancelable)e.preventDefault();
+        var y=Math.max(0,dy-8);st.dy=y;
+        // за пальцем идёт с лёгким сопротивлением, фон гаснет по мере сдвига
+        st.b.style.transform='translateY('+y+'px)';
+        el.style.opacity=String(Math.max(.25,1-y/(st.h*.9)));
+      },{passive:false});
+      function end(){
+        if(!st)return;var s=st;st=null;if(!s.drag)return;
+        var dt=Math.max(1,Date.now()-s.t),v=s.dy/dt,dismiss=s.dy>Math.min(140,s.h*.3)||(v>.6&&s.dy>40);
+        var b=s.b;
+        if(dismiss){
+          var rest=Math.max(s.h-s.dy,0),dur=Math.max(.16,Math.min(.34,rest/Math.max(v,.9)/1000+.12));
+          b.style.transition='transform '+dur+'s cubic-bezier(.3,0,.8,.6)';el.style.transition='opacity '+dur+'s linear';
+          b.style.transform='translateY(100%)';el.style.opacity='0';
+          setTimeout(function(){
+            o.close();
+            setTimeout(function(){b.style.transition='';b.style.transform='';el.style.transition='';el.style.opacity=s.op},650);
+          },dur*1000);
+        }else{
+          b.style.transition='transform .38s cubic-bezier(.2,.9,.25,1)';el.style.transition='opacity .3s';
+          b.style.transform='translateY(0)';el.style.opacity=s.op||'1';
+          setTimeout(function(){b.style.transition='';b.style.transform='';el.style.transition='';el.style.opacity=s.op},400);
+        }
+      }
+      el.addEventListener('touchend',end,{passive:true});el.addEventListener('touchcancel',end,{passive:true});
     };
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stack.length){stack[stack.length-1].close()}});
   })();
@@ -367,6 +422,7 @@
           var box=document.createElement('div');box.className='mv-cp';
           pg.insertBefore(box,tp);box.appendChild(tp);box.appendChild(ct);
           pg.addEventListener('click',function(e){if(e.target===pg){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}}); // клик по подложке закрывает
+          if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:pg,box:box,scroller:box,handle:'.t706__cartpage-top',close:function(){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}});
         }
       }
     }

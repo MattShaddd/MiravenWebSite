@@ -462,3 +462,7 @@ body.qv-lock{overflow:hidden}
   .pc .add.stp button:hover{background:none}
   .pc .add.stp button:active{background:rgba(255,255,255,.16)}
 }
+
+/* всплывающая подсказка над кнопкой «−» на карточке */
+.pc-chip{position:absolute;right:10px;bottom:56px;z-index:6;pointer-events:none;padding:5px 11px;border-radius:999px;background:var(--gold);color:#17151B;font-size:13px;font-weight:600;line-height:1.2;white-space:nowrap;box-shadow:0 8px 18px -8px rgba(0,0,0,.5)}
+@media (max-width:760px){.pc-chip{right:6px;bottom:46px}}

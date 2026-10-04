@@ -1056,3 +1056,28 @@ html,body{background:var(--white)!important}
 .t706__cartpage .t706__cartpage-content>.t706__cartpage-info{order:1!important}
 .t706__cartpage .t706__cartpage-content>.t706__cartpage-open-form-wrap{order:2!important}
 .t706__cartpage .t706__cartpage-content>.t706__cartpage-form{order:3!important}
+
+/* полоса под шапкой окна «Ваш заказ» */
+.t706__cartpage .mv-cp .t706__cartpage-top{margin:0 -22px 6px!important;padding:6px 22px 12px!important;border-bottom:1px solid var(--stone)!important}
+@media (max-width:760px){.t706__cartpage .mv-cp .t706__cartpage-top{margin-inline:-22px!important}}
+
+/* телефон: у окон нет крестиков, закрываются свайпом вниз (или касанием по затемнению) */
+@media (max-width:760px){
+  .sh-x,.cab-x,.lb-x,.qv-btn[data-qv="x"],
+  .t706__cartpage .t706__cartpage-close,.t706__cartwin .t706__cartwin-close,.t706__cartwin .t706__cartwin-close-wrapper{display:none!important}
+  .sh-head{padding-right:22px}
+  .t706__cartpage .t706__cartpage-heading{padding-right:0!important}
+}
+
+/* телефон: размытие подложки (backdrop-filter) на весь экран очень дорого для слабых телефонов, особенно при свайпе окна. Заменяем более плотной заливкой */
+@media (max-width:760px),(hover:none){
+  .sh,.qv,.cab,.lb,.t706__cartwin,.t706__cartpage,.tlk-authModal{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .sh,.cab,.qv{background:rgba(23,19,28,.62)}
+  .t706__cartwin,.t706__cartpage{background:rgba(23,19,28,.62)!important}
+}
+
+/* телефон, главная: у парящих карточек убираем размытие и бегущий блик, которые постоянно перерисовываются */
+@media (max-width:760px){
+  .hero-card{filter:none!important}
+  .hero-card-face::after{animation:none!important}
+}

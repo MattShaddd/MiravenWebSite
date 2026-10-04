@@ -39,7 +39,61 @@
       };
       el.addEventListener('click',function(e){if(e.target===el||e.target.closest('.sh-x'))api.close()});
       api.setTitle(o.title);api.setBody(o.body);api.setFooter(o.footer);
+      MV.swipeDismiss({on:el,box:box,scroller:body,handle:'.sh-head,.sh-grab',close:api.close});
       return api;
+    };
+    /* закрытие жестом (телефон): шторку тянут вниз, фон гаснет вслед за пальцем, дальше она уезжает сама.
+       o.on: оверлей, o.box: двигаемый элемент (или функция), o.scroller: прокручиваемый блок (тянуть можно, пока он наверху),
+       o.handle: селектор зоны, откуда тянуть можно всегда, o.close: закрыть, o.enabled: можно ли сейчас */
+    MV.swipeDismiss=function(o){
+      var el=o.on,st=null,small=window.matchMedia&&matchMedia('(max-width:760px)');
+      function get(v){return typeof v==='function'?v():v}
+      function scrolledUp(t,b){
+        for(var n=t;n&&n!==b.parentNode;n=n.parentNode){
+          if(n.nodeType!==1)continue;
+          if(n.scrollTop>1){var oy=getComputedStyle(n).overflowY;if(oy==='auto'||oy==='scroll'||n===get(o.scroller))return true}
+        }
+        return false;
+      }
+      el.addEventListener('touchstart',function(e){
+        st=null;var b=get(o.box),t=e.target;
+        if(!small||!small.matches||!b||e.touches.length!==1||(o.enabled&&!o.enabled()))return;
+        if(!b.contains(t)||(t.closest&&t.closest('input,select,textarea,.searchbox-list,.qv-seg,.qv-rel-track,.qv-slides,[data-noswipe]')))return;
+        if(!(o.handle&&t.closest&&t.closest(o.handle))&&scrolledUp(t,b))return;
+        var q=e.touches[0];st={x:q.clientX,y:q.clientY,t:Date.now(),b:b,dy:0,drag:false,op:el.style.opacity,h:b.getBoundingClientRect().height||600};
+      },{passive:true});
+      el.addEventListener('touchmove',function(e){
+        if(!st)return;var q=e.touches[0],dx=q.clientX-st.x,dy=q.clientY-st.y;
+        if(!st.drag){
+          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>8||dy<-8){st=null;return}
+          if(dy<=8)return;
+          st.drag=true;st.b.style.transition='none';el.style.transition='none';
+        }
+        if(e.cancelable)e.preventDefault();
+        var y=Math.max(0,dy-8);st.dy=y;
+        // за пальцем идёт с лёгким сопротивлением, фон гаснет по мере сдвига
+        st.b.style.transform='translateY('+y+'px)';
+        el.style.opacity=String(Math.max(.25,1-y/(st.h*.9)));
+      },{passive:false});
+      function end(){
+        if(!st)return;var s=st;st=null;if(!s.drag)return;
+        var dt=Math.max(1,Date.now()-s.t),v=s.dy/dt,dismiss=s.dy>Math.min(140,s.h*.3)||(v>.6&&s.dy>40);
+        var b=s.b;
+        if(dismiss){
+          var rest=Math.max(s.h-s.dy,0),dur=Math.max(.16,Math.min(.34,rest/Math.max(v,.9)/1000+.12));
+          b.style.transition='transform '+dur+'s cubic-bezier(.3,0,.8,.6)';el.style.transition='opacity '+dur+'s linear';
+          b.style.transform='translateY(100%)';el.style.opacity='0';
+          setTimeout(function(){
+            o.close();
+            setTimeout(function(){b.style.transition='';b.style.transform='';el.style.transition='';el.style.opacity=s.op},650);
+          },dur*1000);
+        }else{
+          b.style.transition='transform .38s cubic-bezier(.2,.9,.25,1)';el.style.transition='opacity .3s';
+          b.style.transform='translateY(0)';el.style.opacity=s.op||'1';
+          setTimeout(function(){b.style.transition='';b.style.transform='';el.style.transition='';el.style.opacity=s.op},400);
+        }
+      }
+      el.addEventListener('touchend',end,{passive:true});el.addEventListener('touchcancel',end,{passive:true});
     };
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stack.length){stack[stack.length-1].close()}});
   })();
@@ -50,6 +104,7 @@
   var ORDER=['Открытки','Наборы открыток','Свечи','Наклейки на карты','Разное','Новинки','Распродажа'];
   var FGROUPS=['Фандом','Материал','Оборот','Формат'];
   var PAGE=24;
+  var TOUCH=window.matchMedia&&matchMedia('(hover:none)').matches; /* на телефоне второе фото не показывается (нет наведения), поэтому и не грузим */
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarse=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
   var $=function(id){return document.getElementById(id)};
@@ -172,14 +227,28 @@
     if(q)return '<div class="add stp'+(q>=maxQty(it.eds[0])?' lim':'')+'" data-uid="'+it.uid+'" data-q="'+q+'" role="group" aria-label="В корзине: '+esc(it.title)+'">'+STP.replace('<b></b>','<b>'+q+'</b>')+'</div>';
     return '<button class="add" type="button" data-uid="'+it.uid+'" data-q="0" aria-label="В корзину: '+esc(it.title)+'">'+PLUS+'<span>В корзину</span></button>';
   }
+  /* обратная связь на «−»: число прокручивается, над кнопкой всплывает «−1», телефон коротко вибрирует. Палец закрывает число, поэтому подсказка выше */
+  function rollNum(b,down){
+    if(reduce||!b.animate)return;
+    b.animate([{transform:'translateY('+(down?'-55%':'55%')+')',opacity:0},{transform:'none',opacity:1}],{duration:260,easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+  function chip(card,text,anchor){
+    if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}
+    var ph=card.querySelector('.pc-ph');if(!ph)return;
+    var old=ph.querySelector('.pc-chip');if(old)old.remove();
+    var c=document.createElement('span');c.className='pc-chip';c.textContent=text;c.setAttribute('aria-hidden','true');ph.appendChild(c);
+    if(reduce||!c.animate){setTimeout(function(){c.remove()},900);return}
+    c.animate([{opacity:0,transform:'translateY(10px) scale(.85)'},{opacity:1,transform:'translateY(0) scale(1)',offset:.22},{opacity:1,transform:'translateY(-6px) scale(1)',offset:.72},{opacity:0,transform:'translateY(-16px) scale(.95)'}],{duration:1100,easing:'ease-out'}).onfinish=function(){c.remove()};
+  }
   function paintCards(){
     try{document.querySelectorAll('.pc[data-uid]').forEach(function(c){
       var it=byUid[c.dataset.uid],el=c.querySelector('.add');if(!it||!el||it.sold)return;
       if(it.multi){var w=cardBtn(it),t=document.createElement('div');t.innerHTML=w;var sp=el.querySelector('span');if(sp)sp.textContent=t.querySelector('span').textContent;return}
       var q=itemQty(it);if(String(q)===el.dataset.q)return;
       var t2=document.createElement('div');t2.innerHTML=cardBtn(it);
-      if(q&&el.classList.contains('stp')){el.dataset.q=q;el.querySelector('b').textContent=q}
-      else el.replaceWith(t2.firstChild);
+      var was=parseInt(el.dataset.q,10)||0;
+      if(q&&el.classList.contains('stp')){el.dataset.q=q;var nb=el.querySelector('b');nb.textContent=q;rollNum(nb,q<was);if(q<was)chip(c,'−'+(was-q),el)}
+      else{el.replaceWith(t2.firstChild);if(!q&&was)chip(c,'Убрано из корзины',null)}
       var ne=c.querySelector('.add');if(ne&&ne.classList.contains('stp'))ne.classList.toggle('lim',q>=maxQty(it.eds[0]));
     })}catch(e){}
   }
@@ -189,7 +258,7 @@
     return '<article class="pc'+(it.sold?' sold':'')+'" style="--i:'+Math.min(k,11)+'" data-uid="'+it.uid+'"><div class="pc-ph">'+
       '<a class="pc-link" href="#p-'+it.uid+'" aria-label="'+esc(it.title)+'"></a>'+
       (it.img?'<img src="'+esc(thumb(it.img,520))+'" data-full="'+esc(it.img)+'" alt="'+esc(it.title)+'" loading="lazy" decoding="async" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+
-      (it.img2&&!it.sold?'<img class="alt" src="'+esc(thumb(it.img2,520))+'" alt="" loading="lazy" decoding="async">':'')+
+      (it.img2&&!it.sold&&!TOUCH?'<img class="alt" src="'+esc(thumb(it.img2,520))+'" alt="" loading="lazy" decoding="async">':'')+
       badges(it)+btn+'</div><div class="pc-meta"><small>'+esc(it.t||partName(it))+'</small><h3><a href="#p-'+it.uid+'">'+esc(it.n)+'</a></h3></div><span class="price">'+price+'</span></article>';
   }
   var grid=$('grid'),more=$('more'),curList=[];
@@ -594,6 +663,7 @@
       lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');lb.setAttribute('aria-label','Просмотр фото');lb.hidden=true;
       lb.innerHTML='<div class="lb-slides"></div><div class="lb-count"></div><button type="button" class="lb-x" data-lb="x" aria-label="Закрыть">'+X+'</button><button type="button" class="lb-nav lb-p" data-lb="p" aria-label="Предыдущее фото">'+CHEV_L+'</button><button type="button" class="lb-nav lb-n" data-lb="n" aria-label="Следующее фото">'+CHEV_R+'</button>';
       (document.querySelector('.site')||document.body).appendChild(lb);
+      if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:lb,box:function(){return lb.querySelector('.lb-slides')},enabled:function(){return lbS<=1.02},close:lbClose});
       var sl=lbSlide();
       sl.addEventListener('scroll',function(){cancelAnimationFrame(lb._r);lb._r=requestAnimationFrame(function(){lbCount();if(lbS!==1)lbReset()})},{passive:true});
       lb.addEventListener('click',function(e){
@@ -645,6 +715,7 @@
     if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.stopImmediatePropagation();e.preventDefault();var s=lbSlide(),k=Math.max(0,Math.min(s.children.length-1,lbIdx()+(e.key==='ArrowRight'?1:-1)));s.scrollTo({left:k*s.clientWidth,behavior:reduce?'auto':'smooth'})}
   },true);
 
+  if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:qv,box:function(){return qv.querySelector('.qv-box')},scroller:function(){return qv.querySelector('.qv-box')},handle:'.qv-top',enabled:function(){return !qv.hidden},close:closeQV});
   /* ---------- свайп влево/вправо листает товары (телефон) ---------- */
   (function(){
     var tx=0,ty=0,on=false,stage=false,canPrev=false,canNext=false;
@@ -704,8 +775,9 @@
   }
   var topEl=document.querySelector('.top'),bar=$('catBar');
   function hdr(){var h=topEl?topEl.offsetHeight:68;document.documentElement.style.setProperty('--hdr',h+'px')}
-  function onScroll(){topEl.classList.toggle('scrolled',window.scrollY>8);hdr();var sn=$('barSent');if(sn&&bar)setCompact(sn.getBoundingClientRect().top<=topEl.offsetHeight);if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
-  window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
+  var scrolledNow=null;
+  function onScroll(){var sc=window.scrollY>8;if(sc!==scrolledNow){scrolledNow=sc;topEl.classList.toggle('scrolled',sc);hdr()}var sn=$('barSent');if(sn&&bar)setCompact(sn.getBoundingClientRect().top<=topEl.offsetHeight);if(bar){var r=bar.getBoundingClientRect();bar.classList.toggle('stuck',r.top<=(topEl.offsetHeight+1))}}
+  var scrollRaf=0;window.addEventListener('scroll',function(){if(scrollRaf)return;scrollRaf=requestAnimationFrame(function(){scrollRaf=0;onScroll()})},{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
   var mn=$('mnav'),bg=$('burger');if(mn&&bg){bg.addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true})}
   function searchOpen(on){
     bar.classList.toggle('searching',on);document.documentElement.classList.toggle('mv-searching',on);
@@ -737,6 +809,7 @@
           var box=document.createElement('div');box.className='mv-cp';
           pg.insertBefore(box,tp);box.appendChild(tp);box.appendChild(ct);
           pg.addEventListener('click',function(e){if(e.target===pg){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}}); // клик по подложке закрывает
+          if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:pg,box:box,scroller:box,handle:'.t706__cartpage-top',close:function(){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}});
         }
       }
     }
@@ -1003,6 +1076,7 @@
       if(!cab){
         cab=document.createElement('div');cab.className='cab';cab.setAttribute('role','dialog');cab.setAttribute('aria-modal','true');cab.setAttribute('aria-label','Личный кабинет');cab.hidden=true;
         cab.innerHTML='<div class="cab-box"></div>';(document.querySelector('.site')||document.body).appendChild(cab);
+        if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:cab,box:function(){return cab.querySelector('.cab-box')},scroller:function(){return cab.querySelector('.cab-body')},handle:'.cab-top,.cab-tabs',close:cabClose});
         cab.addEventListener('click',function(e){
           if(e.target===cab){cabClose();return}
           var a=e.target.closest('[data-cab]');if(!a)return;
@@ -1113,7 +1187,61 @@
       };
       el.addEventListener('click',function(e){if(e.target===el||e.target.closest('.sh-x'))api.close()});
       api.setTitle(o.title);api.setBody(o.body);api.setFooter(o.footer);
+      MV.swipeDismiss({on:el,box:box,scroller:body,handle:'.sh-head,.sh-grab',close:api.close});
       return api;
+    };
+    /* закрытие жестом (телефон): шторку тянут вниз, фон гаснет вслед за пальцем, дальше она уезжает сама.
+       o.on: оверлей, o.box: двигаемый элемент (или функция), o.scroller: прокручиваемый блок (тянуть можно, пока он наверху),
+       o.handle: селектор зоны, откуда тянуть можно всегда, o.close: закрыть, o.enabled: можно ли сейчас */
+    MV.swipeDismiss=function(o){
+      var el=o.on,st=null,small=window.matchMedia&&matchMedia('(max-width:760px)');
+      function get(v){return typeof v==='function'?v():v}
+      function scrolledUp(t,b){
+        for(var n=t;n&&n!==b.parentNode;n=n.parentNode){
+          if(n.nodeType!==1)continue;
+          if(n.scrollTop>1){var oy=getComputedStyle(n).overflowY;if(oy==='auto'||oy==='scroll'||n===get(o.scroller))return true}
+        }
+        return false;
+      }
+      el.addEventListener('touchstart',function(e){
+        st=null;var b=get(o.box),t=e.target;
+        if(!small||!small.matches||!b||e.touches.length!==1||(o.enabled&&!o.enabled()))return;
+        if(!b.contains(t)||(t.closest&&t.closest('input,select,textarea,.searchbox-list,.qv-seg,.qv-rel-track,.qv-slides,[data-noswipe]')))return;
+        if(!(o.handle&&t.closest&&t.closest(o.handle))&&scrolledUp(t,b))return;
+        var q=e.touches[0];st={x:q.clientX,y:q.clientY,t:Date.now(),b:b,dy:0,drag:false,op:el.style.opacity,h:b.getBoundingClientRect().height||600};
+      },{passive:true});
+      el.addEventListener('touchmove',function(e){
+        if(!st)return;var q=e.touches[0],dx=q.clientX-st.x,dy=q.clientY-st.y;
+        if(!st.drag){
+          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>8||dy<-8){st=null;return}
+          if(dy<=8)return;
+          st.drag=true;st.b.style.transition='none';el.style.transition='none';
+        }
+        if(e.cancelable)e.preventDefault();
+        var y=Math.max(0,dy-8);st.dy=y;
+        // за пальцем идёт с лёгким сопротивлением, фон гаснет по мере сдвига
+        st.b.style.transform='translateY('+y+'px)';
+        el.style.opacity=String(Math.max(.25,1-y/(st.h*.9)));
+      },{passive:false});
+      function end(){
+        if(!st)return;var s=st;st=null;if(!s.drag)return;
+        var dt=Math.max(1,Date.now()-s.t),v=s.dy/dt,dismiss=s.dy>Math.min(140,s.h*.3)||(v>.6&&s.dy>40);
+        var b=s.b;
+        if(dismiss){
+          var rest=Math.max(s.h-s.dy,0),dur=Math.max(.16,Math.min(.34,rest/Math.max(v,.9)/1000+.12));
+          b.style.transition='transform '+dur+'s cubic-bezier(.3,0,.8,.6)';el.style.transition='opacity '+dur+'s linear';
+          b.style.transform='translateY(100%)';el.style.opacity='0';
+          setTimeout(function(){
+            o.close();
+            setTimeout(function(){b.style.transition='';b.style.transform='';el.style.transition='';el.style.opacity=s.op},650);
+          },dur*1000);
+        }else{
+          b.style.transition='transform .38s cubic-bezier(.2,.9,.25,1)';el.style.transition='opacity .3s';
+          b.style.transform='translateY(0)';el.style.opacity=s.op||'1';
+          setTimeout(function(){b.style.transition='';b.style.transform='';el.style.transition='';el.style.opacity=s.op},400);
+        }
+      }
+      el.addEventListener('touchend',end,{passive:true});el.addEventListener('touchcancel',end,{passive:true});
     };
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stack.length){stack[stack.length-1].close()}});
   })();
@@ -1134,6 +1262,7 @@
           var box=document.createElement('div');box.className='mv-cp';
           pg.insertBefore(box,tp);box.appendChild(tp);box.appendChild(ct);
           pg.addEventListener('click',function(e){if(e.target===pg){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}}); // клик по подложке закрывает
+          if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:pg,box:box,scroller:box,handle:'.t706__cartpage-top',close:function(){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}});
         }
       }
     }
