@@ -178,7 +178,7 @@ html{scroll-behavior:smooth}
 .about-copy .divider::before{display:none}.about-copy .divider::after{flex:0 0 64px}
 
 /* reviews */
-.reviews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1240px;margin-inline:auto;align-items:start}
+.reviews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1240px;margin-inline:auto;align-items:stretch}
 .reviews:not(.is-expanded) .review-post:nth-child(n+4){display:none}
 .review-post{position:relative;display:grid;gap:13px;min-width:0;padding:18px;border:1px solid var(--stone);border-radius:22px;background:linear-gradient(155deg,var(--card-a),var(--card-b));box-shadow:var(--hi),var(--sh-1);overflow:hidden}
 .review-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}
@@ -193,7 +193,7 @@ html{scroll-behavior:smooth}
 .review-author:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
 .review-head small,.review-time{display:block;color:var(--muted);font-size:12px}
 .review-text{max-width:62ch;color:var(--head);font-size:16px;line-height:1.55;padding-inline-end:58px}
-.reviews:not(.is-expanded) .review-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden}
+.review-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden}
 .review-sticker{position:absolute;inset-block-start:76px;inset-inline-end:22px;display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:color-mix(in srgb,var(--gold) 12%,var(--mist));font-size:26px;transform:rotate(5deg);box-shadow:var(--hi),0 8px 20px -12px rgba(0,0,0,.45)}
 .review-media{display:grid;gap:3px;border-radius:18px;overflow:hidden;background:var(--stone)}
 .review-media button{position:relative;display:block;min-width:0;min-height:0;padding:0;border:0;background:var(--stone);cursor:zoom-in;overflow:hidden}
