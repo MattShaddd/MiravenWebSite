@@ -1049,3 +1049,10 @@ html,body{background:var(--white)!important}
   .t706__cartwin .t706__product-minus:active,.t706__cartwin .t706__product-plus:active,.t706__cartwin .t706__product-del:active,
   .t706__cartpage .t706__product-minus:active,.t706__cartpage .t706__product-plus:active,.t706__cartpage .t706__product-del:active{background:var(--ink);color:var(--white);border-color:var(--ink)!important}
 }
+
+/* порядок блоков в шторке заказа. Стили Тильды (tilda-cart-fullscreen) подгружаются позже наших и ставят форме order:1,
+   поэтому после обновления страницы с набранной корзиной товары падали под форму. Фиксируем порядок жёстко */
+.t706__cartpage .t706__cartpage-content{flex-direction:column!important}
+.t706__cartpage .t706__cartpage-content>.t706__cartpage-info{order:1!important}
+.t706__cartpage .t706__cartpage-content>.t706__cartpage-open-form-wrap{order:2!important}
+.t706__cartpage .t706__cartpage-content>.t706__cartpage-form{order:3!important}
