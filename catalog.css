@@ -466,3 +466,18 @@ body.qv-lock{overflow:hidden}
 /* всплывающая подсказка над кнопкой «−» на карточке */
 .pc-chip{position:absolute;right:10px;bottom:56px;z-index:6;pointer-events:none;padding:5px 11px;border-radius:999px;background:var(--gold);color:#17151B;font-size:13px;font-weight:600;line-height:1.2;white-space:nowrap;box-shadow:0 8px 18px -8px rgba(0,0,0,.5)}
 @media (max-width:760px){.pc-chip{right:6px;bottom:46px}}
+
+/* телефон: карточка товара оформлена как шторка (как остальные окна): снизу, с ручкой, тянется вверх на весь экран и вниз закрывается */
+.qv-grab{display:none}
+@media (max-width:760px){
+  .qv{display:flex;align-items:flex-end;justify-content:center}
+  .qv-box{height:92dvh;max-height:none;border-radius:26px 26px 0 0;border:0;box-shadow:0 -30px 60px -30px rgba(0,0,0,.5);transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .qv.on .qv-box{transform:none}
+  .qv-box.mv-full{height:calc(100dvh - 10px)}
+  .qv-grab{display:block;position:absolute;left:0;right:0;top:0;height:34px;z-index:5;touch-action:none}
+  .qv-grab::after{content:"";position:absolute;left:50%;top:10px;width:56px;height:6px;margin-left:-28px;border-radius:3px;background:rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(0,0,0,.18)}
+  .qv-top{top:10px}
+  /* кнопка «В корзину» липнет к низу шторки (fixed ломается, когда шторку двигают пальцем) */
+  .qv-foot{position:sticky;left:auto;right:auto;bottom:0}
+  .qv-scroll{padding-bottom:24px}
+}
