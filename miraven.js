@@ -16,7 +16,7 @@
     }
     window.MVRouter={go:go};
     function routePath(p){return (p||'/').replace(/\/+$/,'')||'/'}
-    document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;var u=new URL(a.href,location.href),p=routePath(u.pathname);if(u.origin!==location.origin||(p!==routePath(CATALOG)&&p!==routePath(HOME)))return;e.preventDefault();e.stopImmediatePropagation();go(p+(p===routePath(CATALOG)?u.hash:''),false)},true);
+    document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;var u=new URL(a.href,location.href),p=routePath(u.pathname);if(u.origin!==location.origin||(p!==routePath(CATALOG)&&p!==routePath(HOME)))return;if(p===routePath(CATALOG)&&/^#p-\d+/.test(u.hash))return;e.preventDefault();e.stopImmediatePropagation();go(p+(p===routePath(CATALOG)?u.hash:''),false)},true);
     window.addEventListener('popstate',function(){var p=routePath(location.pathname);if(p===routePath(CATALOG)||p===routePath(HOME))go(p+(p===routePath(CATALOG)?location.hash:''),true)});
   })();
   // Production Tilda loader historically fetched only miraven.js/miraven.css.
@@ -141,7 +141,8 @@
     if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}
     b.classList.add('done');b.innerHTML=CHECK+'<span>В корзине</span>';
     setTimeout(function(){b.classList.remove('done');b.innerHTML=PLUS+'<span>В корзину</span>'},2200);
-    fly(b);
+    updBadge();
+    requestAnimationFrame(function(){setTimeout(function(){fly(b)},0)});
   }
   function fly(b){
     var to=cart.getBoundingClientRect(),from=b.getBoundingClientRect();
