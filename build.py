@@ -23,6 +23,7 @@ home = re.search(r"HOME='([^']+)'", rd('loader-catalog.html')).group(1)
 
 home_html = rd('miraven.html')
 home_js = rd('miraven.js')
+viewer_js = rd('image-viewer.js')
 
 # ---------- catalog.html ----------
 header = re.search(r'<header class="top wrap">.*?</header>', home_html, re.S).group(0)
@@ -161,8 +162,8 @@ def inline(css_files, html, js, extra_head=''):
     return ('<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             '<link rel="stylesheet" href="%s">\n<style>%s</style>\n\n%s\n\n<script>%s</script>\n') % (font, css, html, js)
 
-wr('dist/miraven-tilda-T123.html', inline(['miraven.css'], home_html.replace('{{BASE}}', base), home_js))
-cat_inline = inline(['miraven.css', 'catalog.css'], catalog_html.replace('{{BASE}}', base).replace('{{HOME}}', home), 'window.MV_HOME=%r;\n' % home + cjs)
+wr('dist/miraven-tilda-T123.html', inline(['miraven.css', 'image-viewer.css'], home_html.replace('{{BASE}}', base), viewer_js+'\n'+home_js))
+cat_inline = inline(['miraven.css', 'catalog.css', 'image-viewer.css'], catalog_html.replace('{{BASE}}', base).replace('{{HOME}}', home), 'window.MV_HOME=%r;\n' % home + viewer_js+'\n'+cjs)
 wr('dist/catalog-tilda-T123.html', cat_inline)
 wr('dist/footer-tilda-T123.html', inline(['footer.css'], rd('footer.html').replace('{{BASE}}', base), ''))
 print('ok; logos from', base, '; home =', home)

@@ -7,10 +7,10 @@
 
   function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(f);return r.text()})}
   var root=document.getElementById('miraven-root');
-  Promise.all([get('miraven.css'),get('miraven.html'),get('miraven.js')]).then(function(a){
-    var st=document.createElement('style');st.textContent=a[0];document.head.appendChild(st);
-    root.innerHTML=a[1].split('{{BASE}}').join(BASE);
-    var sc=document.createElement('script');sc.textContent=a[2];document.body.appendChild(sc);
+  Promise.all([get('miraven.css'),get('image-viewer.css'),get('miraven.html'),get('image-viewer.js'),get('miraven.js')]).then(function(a){
+    var st=document.createElement('style');st.textContent=a[0]+'\n'+a[1];document.head.appendChild(st);
+    root.innerHTML=a[2].split('{{BASE}}').join(BASE);
+    var sc=document.createElement('script');sc.textContent=a[3]+'\n'+a[4];document.body.appendChild(sc);
   }).catch(function(){
     root.innerHTML='<p style="padding:40px 20px;text-align:center;font-family:sans-serif">Не удалось загрузить страницу. <a href="/store">Открыть каталог</a></p>';
   });

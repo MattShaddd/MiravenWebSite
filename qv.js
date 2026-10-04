@@ -274,7 +274,7 @@
       var ed=selEd(cur),k=gallery(cur).indexOf(ed.img);if(k>-1)slideTo(k);
       paintBuy();return;
     }
-    var sl=e.target.closest('.qv-slide');if(sl){lbOpen(gallery(cur),curIdx());return}
+    var sl=e.target.closest('.qv-slide');if(sl){lbOpen(gallery(cur),curIdx(),sl);return}
     var a=e.target.closest('[data-qv]');if(!a)return;
     switch(a.dataset.qv){
       case 'x':closeQV();break;
@@ -336,8 +336,12 @@
     lbX=lbX-ox*(k-1);lbY=lbY-oy*(k-1);lbS=to;lbClamp();lbApply();
   }
   function lbCount(){var c=lb.querySelector('.lb-count'),n=lbSlide().children.length;c.textContent=n>1?(lbIdx()+1)+' / '+n:''}
-  function lbOpen(urls,idx){
+  function lbOpen(urls,idx,trigger){
     if(!urls||!urls.length)return;
+    if(window.MVImageViewer){
+      MVImageViewer.open({items:urls.map(function(u){return{src:thumb(u,1600),full:u,alt:cur?cur.title:''}}),index:idx,from:trigger,onChange:function(k){var s=$('qvSlides');if(s)s.scrollTo({left:k*s.clientWidth,behavior:'auto'})}});
+      return;
+    }
     if(!lb){
       lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');lb.setAttribute('aria-label','Просмотр фото');lb.hidden=true;
       lb.innerHTML='<div class="lb-slides"></div><div class="lb-count"></div><button type="button" class="lb-x" data-lb="x" aria-label="Закрыть">'+X+'</button><button type="button" class="lb-nav lb-p" data-lb="p" aria-label="Предыдущее фото">'+CHEV_L+'</button><button type="button" class="lb-nav lb-n" data-lb="n" aria-label="Следующее фото">'+CHEV_R+'</button>';

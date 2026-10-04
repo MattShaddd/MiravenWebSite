@@ -624,12 +624,13 @@
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
     var site=document.querySelector('.site');if(!site)return;
+    var layer=document.createElement('div');layer.className='mv-fab-layer';document.body.appendChild(layer);
     var fab=document.createElement('button');fab.type='button';fab.className='fab';fab.setAttribute('aria-label','Открыть корзину');
     fab.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-.8.8H7.200a1 1 0 0 1-.8-.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="fab-sum"></span><i class="fab-n"></i>';
-    site.appendChild(fab);
+    layer.appendChild(fab);
     var sf=document.createElement('button');sf.type='button';sf.className='sfab';sf.setAttribute('aria-label','Поиск');
     sf.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><span>Поиск</span>';
-    site.appendChild(sf);
+    layer.appendChild(sf);
     sf.addEventListener('click',function(){var b=document.getElementById('searchBtn');if(b)b.click()});
     var last='';
     function read(){var n=0,s=0;try{var t=window.tcart;if(!(t&&t.products)){t=JSON.parse(localStorage.getItem('tcart')||'{}')}n=+t.total||0;s=+t.prodamount||+t.amount||0}catch(e){}return{n:n,s:s}}
@@ -726,37 +727,22 @@
     });
   })();
 
-  // каждый отзыв раскрывает собственный полный текст
-  document.querySelectorAll('.review-post').forEach(function(post){
-    var text=post.querySelector('.review-text');if(!text)return;
-    var button=document.createElement('button');button.type='button';button.className='review-expand';button.textContent='Читать полностью';button.setAttribute('aria-expanded','false');
-    text.insertAdjacentElement('afterend',button);
-    function toggle(){var open=post.classList.toggle('is-open');button.textContent=open?'Свернуть':'Читать полностью';button.setAttribute('aria-expanded',String(open))}
-    button.addEventListener('click',toggle);
-    post.addEventListener('click',function(e){if(e.target.closest('a,button,.review-media'))return;toggle()});
-  });
-
-  // фотографии в отзывах: полноэкранный просмотр, стрелки, клавиатура и свайп
+  // полный отзыв открывается тем же адаптивным окном MV.sheet, что и остальные модалки сайта
   (function(){
-    var box=document.getElementById('reviewLightbox');if(!box)return;
-    var photo=box.querySelector('img'),cap=box.querySelector('figcaption'),prev=box.querySelector('.review-lb-prev'),next=box.querySelector('.review-lb-next'),close=box.querySelector('.review-lb-close');
-    var list=[],at=0,last=null,startX=0;
-    function paint(){
-      var b=list[at],im=b&&b.querySelector('img');if(!im)return;
-      photo.src=im.currentSrc||im.src;cap.textContent=(at+1)+' / '+list.length;
-      prev.hidden=next.hidden=list.length<2;
+    var sheet=null;
+    function photos(media){return[].slice.call(media.querySelectorAll('[data-review-photo]')).map(function(b){var img=b.querySelector('img');return{src:img.currentSrc||img.src,full:img.src,alt:img.alt}})}
+    function show(post){
+      if(!sheet)sheet=MV.sheet({title:'Отзыв покупателя',className:'sh-review'});
+      var copy=post.cloneNode(true);copy.classList.remove('rv','in','is-open');copy.classList.add('review-detail');copy.removeAttribute('style');var oldButton=copy.querySelector('.review-expand');if(oldButton)oldButton.remove();
+      copy.querySelectorAll('[data-review-photo]').forEach(function(b){b.addEventListener('click',function(){var media=b.closest('.review-media'),buttons=[].slice.call(media.querySelectorAll('[data-review-photo]'));window.MVImageViewer.open({items:photos(media),index:buttons.indexOf(b),from:b})})});
+      sheet.setTitle((copy.querySelector('.review-author')||{}).textContent||'Отзыв покупателя');sheet.setBody(copy);sheet.open();
     }
-    function open(b){
-      var media=b.closest('.review-media');list=[].slice.call(media.querySelectorAll('[data-review-photo]'));at=list.indexOf(b);last=b;paint();box.hidden=false;document.documentElement.style.overflow='hidden';box.focus();
-    }
-    function shut(){box.hidden=true;photo.removeAttribute('src');document.documentElement.style.overflow='';if(last)last.focus()}
-    function step(n){if(list.length<2)return;at=(at+n+list.length)%list.length;paint()}
-    document.querySelectorAll('[data-review-photo]').forEach(function(b){b.addEventListener('click',function(){open(b)})});
-    close.addEventListener('click',shut);prev.addEventListener('click',function(){step(-1)});next.addEventListener('click',function(){step(1)});
-    box.addEventListener('click',function(e){if(e.target===box)shut()});
-    box.addEventListener('pointerdown',function(e){startX=e.clientX});
-    box.addEventListener('pointerup',function(e){var dx=e.clientX-startX;if(Math.abs(dx)>48)step(dx<0?1:-1)});
-    document.addEventListener('keydown',function(e){if(box.hidden)return;if(e.key==='Escape')shut();else if(e.key==='ArrowLeft')step(-1);else if(e.key==='ArrowRight')step(1)});
+    document.querySelectorAll('.review-post').forEach(function(post){
+      var openButton=document.createElement('button');openButton.type='button';openButton.className='review-expand';openButton.textContent='Читать отзыв';
+      post.querySelector('.review-text').insertAdjacentElement('afterend',openButton);openButton.addEventListener('click',function(){show(post)});
+      post.addEventListener('click',function(e){if(e.target.closest('a,button'))return;show(post)});
+      post.querySelectorAll('[data-review-photo]').forEach(function(b){b.addEventListener('click',function(){var media=b.closest('.review-media'),buttons=[].slice.call(media.querySelectorAll('[data-review-photo]'));window.MVImageViewer.open({items:photos(media),index:buttons.indexOf(b),from:b})})});
+    });
   })();
 
   // плавное раскрытие вопросов
