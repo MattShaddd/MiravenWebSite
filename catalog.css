@@ -147,7 +147,7 @@
 .qv-slides{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain}
 .qv-slides::-webkit-scrollbar{display:none}
 .qv-slide{flex:0 0 100%;height:100%;scroll-snap-align:center;display:grid;place-items:center;padding:clamp(14px,2.4vw,34px);overflow:hidden;cursor:zoom-in}
-.qv-slide img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 24px 40px -28px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.2,.8,.2,1);user-select:none;-webkit-user-drag:none}
+.qv-slide img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 24px 40px -28px rgba(0,0,0,.5);transition:none;user-select:none;-webkit-user-drag:none}
 .qv-slide.zoom{cursor:zoom-out}
 .qv-slide.zoom img{transform:scale(2.2);transition:transform .25s}
 .qv-arrows button{position:absolute;top:50%;margin-top:-21px;z-index:4}
@@ -231,7 +231,8 @@ body.qv-lock{overscroll-behavior:none}
   .qv-box{width:100%;height:100%;border-radius:0;border:0;display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain}
   .qv-gal{display:block;flex:none;height:min(78vw,60vh);min-height:300px}
   .qv-stage{position:absolute;inset:0}
-  .qv-arrows{display:none}
+  .qv-arrows{display:block}
+  .qv-arrows .qv-btn{width:42px;height:42px;min-width:42px;min-height:42px}
   .qv-count{display:none}
   .qv-dots{display:flex;position:absolute;left:0;right:0;bottom:12px;z-index:4;justify-content:center;gap:6px;pointer-events:none}
   .qv-dots i{width:7px;height:7px;border-radius:50%;background:var(--ink);opacity:.25;transition:opacity .25s,transform .25s}

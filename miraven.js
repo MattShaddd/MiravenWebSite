@@ -118,6 +118,7 @@
     if(typeof window.tcart__addProduct!=='function'){location.href=i.url;return}
     var t6=document.querySelector('.t706');if(t6)t6.setAttribute('data-opencart-onorder','no');
     tcart__addProduct(Y);
+    if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}
     b.classList.add('done');b.innerHTML=CHECK+'<span>В корзине</span>';
     setTimeout(function(){b.classList.remove('done');b.innerHTML=PLUS+'<span>В корзину</span>'},2200);
     fly(b);
