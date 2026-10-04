@@ -186,13 +186,18 @@
     h+='<button type="button" class="tab-tool" data-tool="sort" aria-label="Сортировка" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5v14M4.500 15.500L8 19l3.500-3.500M16 19V5M12.500 8.500L16 5l3.500 3.500"/></svg></button><button type="button" class="tab-tool" data-tool="filters" aria-label="Фильтры"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><i class="tt-n" hidden>0</i></button>';
     tabs.querySelectorAll('button').forEach(function(x){x.remove()});tabs.insertAdjacentHTML('beforeend',h);pillInit();sortPaint();
   }
+  /* в сжатой панели (одна строка с прокруткой) докручиваем плашки до активной категории */
+  function revealActive(instant){
+    var a=tabs.querySelector('[data-cat][aria-pressed="true"]');if(!a||tabs.scrollWidth<=tabs.clientWidth)return;
+    tabs.scrollTo({left:Math.max(0,a.offsetLeft-(tabs.clientWidth-a.offsetWidth)/2),behavior:instant||reduce?'auto':'smooth'});
+  }
   tabs.addEventListener('click',function(e){
     var b=e.target.closest('button');if(!b)return;
     if(b.dataset.tool==='sort'){sortOpen(true);return}
     if(b.dataset.tool==='filters'){openF(!fsOpen());return}
     if(b.getAttribute('aria-pressed')==='true')return;
     tabs.querySelectorAll('[data-cat]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
-    movePill(b);b.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
+    movePill(b);revealActive(false);
     S.cat=b.dataset.cat;resetShown();
   });
   /* телефон: свайп влево/вправо по списку товаров переключает категорию */
@@ -647,6 +652,7 @@
     var inner=bar.querySelector('.cat-bar-in'),btns=[].slice.call(tabs.children).filter(function(b){return b.tagName==='BUTTON'});
     var h0=inner.offsetHeight,r0=btns.map(function(b){return b.getBoundingClientRect()});
     bar.classList.toggle('compact',on);
+    if(on)revealActive(true);
     if(reduce||!inner.animate||!window.matchMedia('(max-width:760px)').matches)return;
     var h1=inner.offsetHeight;
     if(h0!==h1){inner.style.overflow='hidden';var a=inner.animate([{height:h0+'px'},{height:h1+'px'}],{duration:440,easing:'cubic-bezier(.2,.8,.2,1)'});a.onfinish=a.oncancel=function(){inner.style.overflow=''}}
