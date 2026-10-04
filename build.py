@@ -57,6 +57,10 @@ sa = home_js.index('  // МОДАЛЬНЫЕ ШТОРКИ'); sb = home_js.index('
 sheet = home_js[sa:sb]
 ca = home_js.index('  // КОРЗИНА В ШТОРКЕ'); cb = home_js.index('  // КОНЕЦ КОРЗИНЫ В ШТОРКЕ')
 cartsheet = home_js[ca:cb]
+# вырезка «вход / регистрация» захватывает шторки, корзину и плавающие кнопки, а они вставляются отдельно: без вычитания всё попадало в каталог дважды
+for blk in (sheet, cartsheet, fab):
+    assert blk in auth
+    auth = auth.replace(blk, '')
 cjs = rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 

@@ -933,8 +933,8 @@ html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!i
 .mv-pop{animation:mvPop .42s cubic-bezier(.2,.8,.2,1) both}
 .mv-shake{animation:mvShake .45s ease both}
 .mv-bump{display:inline-block;animation:mvBump .4s cubic-bezier(.2,.8,.2,1)}
-.t706__cartpage_showed{animation:mvFade .3s ease both}
-.t706__cartpage_showed .mv-cp{animation:mvSheetUp .5s cubic-bezier(.2,.8,.2,1) both}
+.t706__cartpage_showed{animation:mvFade .3s ease backwards}
+.t706__cartpage_showed .mv-cp{animation:mvSheetUp .5s cubic-bezier(.2,.8,.2,1) backwards}
 .t706__cartpage.mv-opening .t706__product{animation:mvFadeUp .45s cubic-bezier(.2,.8,.2,1) both}
 .t706__cartpage.mv-opening .t706__product:nth-child(2){animation-delay:.06s}
 .t706__cartpage.mv-opening .t706__product:nth-child(3){animation-delay:.12s}
@@ -1085,3 +1085,12 @@ html,body{background:var(--white)!important}
 /* полоска-ручка у окон: заметнее и с большой зоной касания. Тянуть вверх: окно раскрывается на весь экран, вниз: закрывается */
 .sh-grab,.mv-cp::before{width:56px;height:6px;border-radius:3px;background:color-mix(in srgb,var(--muted) 70%,transparent);margin:10px auto 2px}
 .sh-box.mv-full,.mv-cp.mv-full{height:calc(100dvh - 10px);max-height:calc(100dvh - 10px)!important}
+
+/* анимации открытия больше не держат конечное значение (fill-mode both перебивал бы сдвиг и высоту окна при жесте) */
+.mv-cp::before{display:none!important}
+.mv-grab{display:block;position:relative;height:28px;touch-action:none;cursor:grab}
+.mv-grab::after{content:"";position:absolute;left:50%;top:10px;width:56px;height:6px;margin-left:-28px;border-radius:3px;background:color-mix(in srgb,var(--muted) 70%,transparent)}
+@media (min-width:761px){.mv-grab{display:none}}
+.sh-grab{position:relative;touch-action:none}
+.sh-grab::before{content:"";position:absolute;inset:-14px -44px}
+.sh-head,.t706__cartpage .t706__cartpage-top{touch-action:none}

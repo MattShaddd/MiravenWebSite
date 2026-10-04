@@ -454,6 +454,7 @@
         var tp=pg.querySelector('.t706__cartpage-top'),ct=pg.querySelector('.t706__cartpage-content');
         if(tp&&ct){
           var box=document.createElement('div');box.className='mv-cp';
+          var gr=document.createElement('div');gr.className='mv-grab';gr.setAttribute('aria-hidden','true');box.appendChild(gr);
           pg.insertBefore(box,tp);box.appendChild(tp);box.appendChild(ct);
           pg.addEventListener('click',function(e){if(e.target===pg){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}}); // клик по подложке закрывает
           if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:pg,box:box,scroller:box,handle:'.t706__cartpage-top',expand:true,close:function(){var x=pg.querySelector('.t706__cartpage-close');x&&x.click()}});
