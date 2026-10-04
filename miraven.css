@@ -17,7 +17,7 @@
   --r-lg:26px;        /* крупные фото */
 }
 @supports (view-transition-name: none){
-  ::view-transition-group(root){background:var(--white)}
+  ::view-transition-group(root){background:transparent!important}
   ::view-transition-old(root),::view-transition-new(root){animation-duration:.34s;animation-timing-function:cubic-bezier(.2,.8,.2,1);mix-blend-mode:normal}
   [data-mv-route="catalog"]::view-transition-old(root){animation-name:mvRouteOutLeft}
   [data-mv-route="catalog"]::view-transition-new(root){animation-name:mvRouteInRight}
