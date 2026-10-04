@@ -457,3 +457,8 @@ body.qv-lock{overflow:hidden}
   .cat-bar .tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--white)}
   .cat-bar-in{align-items:center}
 }
+
+@media (hover:none){
+  .pc .add.stp button:hover{background:none}
+  .pc .add.stp button:active{background:rgba(255,255,255,.16)}
+}

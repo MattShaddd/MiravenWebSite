@@ -1039,3 +1039,13 @@ html,body{background:var(--white)!important}
 @media (max-width:900px),(hover:none){
   .site,.site[data-theme="dark"],.site:not([data-theme="dark"]){background-attachment:scroll!important}
 }
+
+/* сенсорные экраны: :hover «залипает» после касания, поэтому кнопки +/−/× в корзине оставались зажатыми. Подсветка только при наведении мышью, на тач — кратко при нажатии */
+.t706__product-minus,.t706__product-plus,.t706__product-del{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media (hover:none){
+  .t706__cartwin .t706__product-minus:hover,.t706__cartwin .t706__product-plus:hover,.t706__cartwin .t706__product-del:hover,
+  .t706__cartpage .t706__product-minus:hover,.t706__cartpage .t706__product-plus:hover,.t706__cartpage .t706__product-del:hover{background:transparent;color:var(--ink);border-color:var(--stone)!important}
+  .t706__product-minus:hover img,.t706__product-plus:hover img,.t706__product-del:hover img{opacity:.55}
+  .t706__cartwin .t706__product-minus:active,.t706__cartwin .t706__product-plus:active,.t706__cartwin .t706__product-del:active,
+  .t706__cartpage .t706__product-minus:active,.t706__cartpage .t706__product-plus:active,.t706__cartpage .t706__product-del:active{background:var(--ink);color:var(--white);border-color:var(--ink)!important}
+}
