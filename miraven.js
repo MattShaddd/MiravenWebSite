@@ -717,6 +717,15 @@
   var ap=document.getElementById('aboutPhoto');
   if(ap&&!reduce){var ticking=false;window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){ticking=false;if(!ap.classList.contains('in'))return;var r=ap.getBoundingClientRect(),c=(r.top+r.height/2-innerHeight/2)/innerHeight;ap.style.transform='translateY('+(c*-28).toFixed(1)+'px)'})},{passive:true})}
 
+  // компактный список отзывов: две карточки сначала, полный список по кнопке
+  (function(){
+    var list=document.getElementById('reviewsList'),more=document.getElementById('reviewsMore');if(!list||!more)return;
+    more.addEventListener('click',function(){
+      var open=list.classList.toggle('is-expanded');more.setAttribute('aria-expanded',String(open));more.textContent=open?'Свернуть отзывы':'Смотреть все отзывы';
+      if(!open)document.getElementById('reviews').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+    });
+  })();
+
   // фотографии в отзывах: полноэкранный просмотр, стрелки, клавиатура и свайп
   (function(){
     var box=document.getElementById('reviewLightbox');if(!box)return;
