@@ -630,15 +630,15 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 /* ===== плавающая корзина на телефоне ===== */
 .fab{display:none}
 @media (max-width:760px){
-  .fab{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;height:54px;padding:0 20px 0 16px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;gap:10px;font-family:var(--f-body);font-size:16px;font-weight:600;box-sizing:border-box;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);transform:translateY(90px) scale(.9);opacity:0;pointer-events:none;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .3s}
-  .fab.on{transform:none;opacity:1;pointer-events:auto}
-  .fab:active{transform:scale(.96)}
+  .fab{position:fixed!important;inset:auto 14px calc(14px + env(safe-area-inset-bottom,0px)) auto!important;z-index:40;height:54px;margin:0!important;padding:0 20px 0 16px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;gap:10px;font-family:var(--f-body);font-size:16px;font-weight:600;box-sizing:border-box;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease-out,visibility 0s linear .18s}
+  .fab.on{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+  .fab:active{scale:.96}
   .fab:focus-visible,.sfab:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
   .fab svg{width:22px;height:22px;flex:none}
   .fab-sum{font-variant-numeric:tabular-nums;white-space:nowrap}
   .fab-n{position:absolute;top:-6px;left:-4px;min-width:22px;height:22px;border-radius:11px;background:var(--gold);color:#17151B;font-style:normal;font-size:12px;font-weight:700;display:grid;place-items:center;padding:0 5px;box-shadow:0 0 0 2px var(--white)}
-  .fab.bump{animation:fabBump .5s cubic-bezier(.2,.8,.2,1)}
-  @keyframes fabBump{30%{transform:scale(1.12)}60%{transform:scale(.96)}}
+  .fab.bump{animation:fabBump .35s ease-out}
+  @keyframes fabBump{30%{scale:1.08}60%{scale:.96}}
 }
 
 /* на телефоне убираем всплывающее «товар добавлен в корзину» (есть плавающая корзина) */
@@ -649,11 +649,11 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 @media (max-width:760px){
   #searchBtn{display:none}
   /* поиск: кнопка едет только за счёт transform (без анимации left), а подпись сворачивается тем же временем и кривой, поэтому всё идёт одним плавным движением */
-  .sfab{--sfe:cubic-bezier(.32,.72,0,1);--sfd:.55s;position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;height:54px;min-width:54px;padding:0 16px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:0;font-family:var(--f-body);font-size:16px;font-weight:600;box-sizing:border-box;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);transform:translateX(calc(50vw - 14px - 50%));will-change:transform;pointer-events:auto;transition:transform var(--sfd) var(--sfe),opacity .3s}
+  .sfab{position:fixed!important;inset:auto auto calc(14px + env(safe-area-inset-bottom,0px)) 50%!important;z-index:40;height:54px;min-width:54px;margin:0!important;padding:0 16px;border:0;border-radius:999px;background:var(--ink);color:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:0;font-family:var(--f-body);font-size:16px;font-weight:600;box-sizing:border-box;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);translate:-50% 0;pointer-events:auto;transition:opacity .18s ease-out}
   .sfab svg{width:22px;height:22px;flex:none}
-  .sfab span{display:inline-block;max-width:80px;padding:0 6px 0 10px;overflow:hidden;white-space:nowrap;transition:max-width var(--sfd) var(--sfe),padding var(--sfd) var(--sfe),opacity calc(var(--sfd) * .6) ease}
-  .sfab.left{transform:translateX(0)}
-  .sfab.left span{max-width:0;padding:0;opacity:0}
+  .sfab span{display:inline-block;max-width:80px;padding:0 6px 0 10px;overflow:hidden;white-space:nowrap}
+  .sfab.left{left:14px!important;translate:0 0}
+  .sfab.left span{display:none}
   .sfab:active{filter:brightness(1.1)}
   .mv-searching .sfab{opacity:0;pointer-events:none}
 }
