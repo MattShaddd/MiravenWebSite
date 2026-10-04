@@ -17,6 +17,9 @@
     root.innerHTML='<div class="mv-viewer__track"></div><div class="mv-viewer__count" aria-live="polite"></div><button class="mv-viewer__close" type="button" aria-label="Закрыть просмотр">'+X+'</button><button class="mv-viewer__arrow mv-viewer__arrow--prev" type="button" aria-label="Предыдущая фотография">'+LEFT+'</button><button class="mv-viewer__arrow mv-viewer__arrow--next" type="button" aria-label="Следующая фотография">'+RIGHT+'</button>';
     document.body.appendChild(root);track=root.querySelector('.mv-viewer__track');count=root.querySelector('.mv-viewer__count');prev=root.querySelector('.mv-viewer__arrow--prev');next=root.querySelector('.mv-viewer__arrow--next');closeBtn=root.querySelector('.mv-viewer__close');
     closeBtn.addEventListener('click',shut);prev.addEventListener('click',function(){go(index-1,true)});next.addEventListener('click',function(){go(index+1,true)});
+    var touchX=0,touchY=0;
+    track.addEventListener('touchstart',function(e){var t=e.touches&&e.touches[0];if(t){touchX=t.clientX;touchY=t.clientY}},{passive:true});
+    track.addEventListener('touchend',function(e){var t=e.changedTouches&&e.changedTouches[0];if(!t)return;var dx=t.clientX-touchX,dy=t.clientY-touchY;if(dy>84&&Math.abs(dy)>Math.abs(dx)*1.2){e.preventDefault();shut()}},{passive:false});
     track.addEventListener('scroll',function(){cancelAnimationFrame(root._sf);root._sf=requestAnimationFrame(paint)},{passive:true});
     root.addEventListener('click',function(e){if(e.target===root||e.target===track||e.target.classList.contains('mv-viewer__slide'))shut()});
     document.addEventListener('keydown',function(e){
