@@ -473,16 +473,15 @@ body.qv-lock{overscroll-behavior:none}
 .pc-chip{position:absolute;right:10px;bottom:56px;z-index:6;pointer-events:none;padding:5px 11px;border-radius:999px;background:var(--gold);color:#17151B;font-size:13px;font-weight:600;line-height:1.2;white-space:nowrap;box-shadow:0 8px 18px -8px rgba(0,0,0,.5)}
 @media (max-width:760px){.pc-chip{right:6px;bottom:46px}}
 
-/* телефон: карточка товара оформлена как шторка (как остальные окна): снизу, с ручкой, тянется вверх на весь экран и вниз закрывается */
+/* телефон: карточка товара — отдельный экран, а не модальная шторка */
 .qv-grab{display:none}
 @media (max-width:760px){
-  .qv{display:flex;align-items:flex-end;justify-content:center}
-  .qv-box{height:92dvh;max-height:none;border-radius:26px 26px 0 0;border:0;outline:1px solid rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 -30px 60px -30px rgba(0,0,0,.5);transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .qv{display:block;align-items:initial;justify-content:initial;background:var(--white);overflow:auto}
+  .qv-box{height:auto;min-height:100dvh;max-height:none;border-radius:0;border:0;outline:0;box-shadow:none;transform:none;transition:none;overflow:visible}
   .qv.on .qv-box{transform:none}
-  .qv-box.mv-full{height:calc(100dvh - 10px)}
-  .qv-grab{display:block;position:absolute;left:0;right:0;top:0;height:34px;z-index:5;touch-action:none}
-  .qv-grab::after{content:"";position:absolute;left:50%;top:10px;width:56px;height:6px;margin-left:-28px;border-radius:3px;background:rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(0,0,0,.18)}
-  .qv-top{top:10px}
+  .qv-box.mv-full{height:auto}
+  .qv-top{position:sticky;top:0;right:auto;min-height:58px;padding:8px 14px;background:color-mix(in srgb,var(--white) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--stone)}
+  .qv-top .qv-btn[data-qv="x"]{order:-1;margin-right:auto}
   /* кнопка «В корзину» липнет к низу шторки (fixed ломается, когда шторку двигают пальцем) */
   .qv-foot{position:sticky;left:auto;right:auto;bottom:0}
   .qv-scroll{padding-bottom:24px}
