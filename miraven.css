@@ -1081,3 +1081,7 @@ html,body{background:var(--white)!important}
   .hero-card{filter:none!important}
   .hero-card-face::after{animation:none!important}
 }
+
+/* полоска-ручка у окон: заметнее и с большой зоной касания. Тянуть вверх: окно раскрывается на весь экран, вниз: закрывается */
+.sh-grab,.mv-cp::before{width:56px;height:6px;border-radius:3px;background:color-mix(in srgb,var(--muted) 70%,transparent);margin:10px auto 2px}
+.sh-box.mv-full,.mv-cp.mv-full{height:calc(100dvh - 10px);max-height:calc(100dvh - 10px)!important}
