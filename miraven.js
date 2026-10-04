@@ -1,4 +1,20 @@
 (function(){
+  /* Бесшовный переход главная → каталог. Тестовые адреса меняются здесь после запуска новой структуры URL. */
+  (function(){
+    if(window.MVRouter)return;
+    var BASE='https://mattshaddd.github.io/MiravenWebSite/',HOME='/newmain',CATALOG='/newstore',busy=false;
+    function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw Error(f);return r.text()})}
+    function styles(css){var s=document.querySelector('style[data-mv-route-css]');if(!s){s=document.createElement('style');s.setAttribute('data-mv-route-css','');document.head.appendChild(s)}s.textContent=css}
+    function run(code){var s=document.createElement('script');s.textContent=code;document.body.appendChild(s);s.remove()}
+    function go(url,replace){if(busy)return Promise.resolve();busy=true;var root=document.getElementById('miraven-root');if(!root){busy=false;return Promise.reject()}
+      return Promise.all([get('miraven.css'),get('catalog.css'),get('image-viewer.css'),get('catalog.html'),get('image-viewer.js'),get('catalog.js')]).then(function(a){
+        var swap=function(){styles(a[0]+'\n'+a[1]+'\n'+a[2]);root.innerHTML=a[3].split('{{BASE}}').join(BASE).split('{{HOME}}').join(HOME);run(a[4]+'\n'+a[5]);if(replace)history.replaceState({mvRoute:1},'',url);else history.pushState({mvRoute:1},'',url);busy=false};
+        if(document.startViewTransition)document.startViewTransition(swap);else swap();
+      }).catch(function(){busy=false});
+    }
+    window.MVRouter={go:go};
+    document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname!==CATALOG)return;e.preventDefault();go(CATALOG,false)},true);
+  })();
   // Production Tilda loader historically fetched only miraven.js/miraven.css.
   // Keep the shared image viewer available even when its dedicated assets are omitted.
   (function(){
