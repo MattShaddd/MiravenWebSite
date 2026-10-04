@@ -30,7 +30,7 @@
 .sort option{background:var(--white);color:var(--ink)}
 .fbtn{position:relative;height:44px;padding:0 20px;gap:8px}
 .fbtn svg{width:18px;height:18px}
-.fcount{font-style:normal;min-width:20px;height:20px;border-radius:10px;background:var(--gold);color:#17151B;font-size:12px;font-weight:600;display:grid;place-items:center;padding:0 5px}
+.fcount{font-style:normal;min-width:20px;height:20px;border-radius:10px;background:var(--gold);color:#1E140E;font-size:12px;font-weight:600;display:grid;place-items:center;padding:0 5px}
 .fcount[hidden]{display:none}
 
 /* раскладка */
@@ -94,7 +94,7 @@
 .pc-link{position:absolute;inset:0;z-index:2;border-radius:inherit}
 .pc-badges{position:absolute;left:10px;top:10px;z-index:3;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
 .bdg{font-size:12px;font-weight:600;line-height:1;border-radius:999px;padding:6px 10px;background:var(--white);color:var(--ink);letter-spacing:.01em}
-.bdg.sale{background:var(--gold);color:#17151B}
+.bdg.sale{background:var(--gold);color:#1E140E}
 .bdg.new{background:var(--ink);color:var(--white)}
 .pc .add{z-index:4;right:10px;bottom:10px}
 .pc:hover .add span,.pc .add:focus-visible span{max-width:90px}
@@ -114,7 +114,7 @@
 .cat-foot[hidden],#more[hidden]{display:none}
 
 /* ===== просмотрщик ===== */
-.qv{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:clamp(0px,2vw,28px);background:rgba(23,19,28,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;transition:opacity .35s}
+.qv{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:clamp(0px,2vw,28px);background:rgba(24,15,10,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;transition:opacity .35s}
 .qv[hidden]{display:none}
 .qv.on{opacity:1}
 .qv:focus{outline:0}
@@ -153,7 +153,7 @@
 .qv-priceRow{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
 .qv-price{font-size:30px;font-weight:600;color:var(--head);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .qv-old{color:var(--muted);text-decoration:line-through;font-size:17px}
-.qv-off{font-size:13px;font-weight:600;border-radius:999px;background:var(--gold);color:#17151B;padding:4px 9px}
+.qv-off{font-size:13px;font-weight:600;border-radius:999px;background:var(--gold);color:#1E140E;padding:4px 9px}
 .qv-stock{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
 .qv-stock::before{content:"";width:8px;height:8px;border-radius:50%;background:#5E9A6B}
 .qv-stock.low{color:var(--gold-text)}.qv-stock.low::before{background:var(--gold)}
@@ -174,7 +174,7 @@
 .qv-qty button:disabled{opacity:.3;cursor:default}
 .qv-qty output{min-width:26px;text-align:center;font-weight:500;font-variant-numeric:tabular-nums}
 .qv-add{flex:1;height:52px;gap:12px;font-size:16px}
-.qv-add.done{background:var(--gold);color:#17151B}
+.qv-add.done{background:var(--gold);color:#1E140E}
 .qv-add:disabled{opacity:.5;cursor:default}
 .qv-add svg{width:18px;height:18px}
 .qv-gocart{font-size:14px;color:var(--gold-text);background:none;border:0;padding:0;text-align:left;text-decoration:underline;text-underline-offset:3px}
@@ -391,7 +391,7 @@ body.qv-lock{overflow:hidden}
 @media (max-width:980px){.qv-gal{height:min(100vw,62dvh)!important;min-height:280px}}
 
 /* ===== полноэкранный просмотр ===== */
-.lb{position:fixed;inset:0;z-index:110;background:rgba(10,8,14,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .3s;touch-action:none;user-select:none}
+.lb{position:fixed;inset:0;z-index:110;background:rgba(12,7,4,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .3s;touch-action:none;user-select:none}
 .lb[hidden]{display:none}
 .lb.on{opacity:1}
 .lb-slides{position:absolute;inset:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain;touch-action:pan-x}
@@ -425,3 +425,11 @@ body.qv-lock{overflow:hidden}
 .qv-short{margin:0;font-size:15px;line-height:1.4}
 .qv-crumb{line-height:1.2}
 .qv-head{gap:6px}.qv-priceRow{margin-top:2px}
+
+
+/* ---------- глубина ---------- */
+.pc-ph{box-shadow:var(--sh-1);background:linear-gradient(155deg,var(--card-a),var(--stone))}
+.pc-ph::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 -40px 50px -40px rgba(20,10,0,.35);pointer-events:none;z-index:1}
+.pc:hover .pc-ph{box-shadow:var(--hi),var(--sh-2)}
+.qv-gal{background:linear-gradient(155deg,var(--card-a),var(--mist))}
+.qv-ship{background:linear-gradient(155deg,var(--card-b),var(--mist));box-shadow:inset 0 1px 3px rgba(40,25,10,.18)}

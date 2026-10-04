@@ -17,7 +17,7 @@
   --r-lg:26px;        /* крупные фото */
 }
 .site,.site *,.site *::before,.site *::after{box-sizing:border-box}
-.site{position:relative;background:radial-gradient(ellipse 78% 68% at 50% 44%,transparent 24%,rgba(14,11,18,.08) 52%,rgba(14,11,18,.28) 76%,rgba(10,8,14,.52) 100%) fixed,var(--white);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.site{position:relative;background:radial-gradient(ellipse 78% 68% at 50% 44%,transparent 24%,rgba(16,9,5,.08) 52%,rgba(16,9,5,.28) 76%,rgba(12,7,4,.52) 100%) fixed,var(--white);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 html{scroll-behavior:smooth}
 :where(.site) img{max-width:100%}
 :where(.site) :is(h1,h2,h3){color:var(--head);font-family:var(--f-body);font-weight:600;text-wrap:balance;margin:0;line-height:1.12;letter-spacing:-.025em}
@@ -63,7 +63,7 @@ html{scroll-behavior:smooth}
 .icon-btn{width:42px;height:42px;border:0;border-radius:50%;background:transparent;display:grid;place-items:center;color:var(--ink);position:relative}
 .icon-btn:hover{background:var(--mist)}
 .icon-btn svg{width:21px;height:21px}
-.badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--gold);color:#17151B;font-size:11px;font-weight:600;display:grid;place-items:center;padding:0 4px}
+.badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--gold);color:#1E140E;font-size:11px;font-weight:600;display:grid;place-items:center;padding:0 4px}
 .burger{display:none}
 
 /* hero */
@@ -137,7 +137,7 @@ html{scroll-behavior:smooth}
 .prod:hover .add span,.add:focus-visible span{max-width:90px}
 .add:hover{background:var(--ink);color:var(--white)}
 .add:active{transform:scale(.94)}
-.add.done{background:var(--gold);color:#17151B}
+.add.done{background:var(--gold);color:#1E140E}
 .add.done svg{transform:rotate(360deg)}
 .progress{position:relative;height:2px;background:var(--stone);border-radius:2px;margin-top:18px;overflow:hidden}
 .progress i{position:absolute;inset:0 auto 0 0;width:30%;background:var(--gold);border-radius:2px;transition:width .2s linear,transform .2s linear}
@@ -210,10 +210,10 @@ html{scroll-behavior:smooth}
 
 
 /* ---------- темы: бежевая (по умолчанию) и тёмная ---------- */
-.site{transition:background-color .3s,color .3s;color:var(--ink);background:radial-gradient(ellipse 78% 68% at 50% 44%,transparent 24%,rgba(14,11,18,.08) 52%,rgba(14,11,18,.28) 76%,rgba(10,8,14,.52) 100%) fixed,var(--white)}
+.site{transition:background-color .3s,color .3s;color:var(--ink);background:radial-gradient(ellipse 78% 68% at 50% 44%,transparent 24%,rgba(16,9,5,.08) 52%,rgba(16,9,5,.28) 76%,rgba(12,7,4,.52) 100%) fixed,var(--white)}
 .site[data-theme="dark"]{
-  --white:#15131A; --mist:#1D1A24; --stone:#2F2B38; --ink:#EFE9DF; --muted:#9D97A7;
-  --head:#E8E1D4; --gold:#CC9A3C; --gold-text:#D8AD5E; color-scheme:dark}
+  --white:#1B1410; --mist:#251B15; --stone:#3B2D23; --ink:#F1E7D9; --muted:#AA9887;
+  --head:#EADCC6; --gold:#CC9A3C; --gold-text:#D8AD5E; color-scheme:dark}
 
 /* кнопка темы */
 .theme-btn{overflow:hidden}
@@ -439,8 +439,8 @@ a.icon-btn{text-decoration:none}
 }
 
 /* ===== Корзина Тильды («Ваш заказ») ===== */
-html[data-mv-theme="dark"]{--white:#15131A;--mist:#1D1A24;--stone:#2F2B38;--ink:#EFE9DF;--muted:#9D97A7;--head:#E8E1D4;--gold:#CC9A3C;--gold-text:#D8AD5E;color-scheme:dark}
-.t706__cartwin{background:rgba(23,19,28,.55)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+html[data-mv-theme="dark"]{--white:#1B1410;--mist:#251B15;--stone:#3B2D23;--ink:#F1E7D9;--muted:#AA9887;--head:#EADCC6;--gold:#CC9A3C;--gold-text:#D8AD5E;color-scheme:dark}
+.t706__cartwin{background:rgba(24,15,10,.55)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .t706__cartwin-content{background:var(--white)!important;color:var(--ink)!important;font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important;border:1px solid var(--stone);border-radius:26px!important;max-width:540px!important;padding:clamp(22px,4vw,36px)!important;box-shadow:0 50px 100px -40px rgba(0,0,0,.6)}
 .t706__cartwin-content *{font-family:inherit!important}
 .t706__cartwin-heading{font-family:"Lora",Georgia,serif!important;font-weight:600!important;font-size:clamp(26px,4vw,32px)!important;line-height:1.1!important;letter-spacing:-.01em;color:var(--head)!important;padding-bottom:6px}
@@ -505,7 +505,7 @@ html[data-mv-theme="dark"] .t706__product-minus img,html[data-mv-theme="dark"] .
 .tlk-userbar__popup-text{color:var(--muted)!important}
 
 /* ===== личный кабинет: свое окно ===== */
-.cab{position:fixed;inset:0;z-index:2147483000;display:flex;justify-content:flex-end;background:rgba(23,19,28,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .35s}
+.cab{position:fixed;inset:0;z-index:2147483000;display:flex;justify-content:flex-end;background:rgba(24,15,10,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .35s}
 .cab[hidden]{display:none}
 .cab.on{opacity:1}
 .cab-box{width:min(480px,100%);height:100%;display:flex;flex-direction:column;background:var(--white);border-left:1px solid var(--stone);box-shadow:-40px 0 80px -50px rgba(0,0,0,.6);transform:translateX(40px);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
@@ -591,7 +591,7 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
   .fab:active{transform:scale(.96)}
   .fab svg{width:22px;height:22px;flex:none}
   .fab-sum{font-variant-numeric:tabular-nums;white-space:nowrap}
-  .fab-n{position:absolute;top:-6px;left:-4px;min-width:22px;height:22px;border-radius:11px;background:var(--gold);color:#17151B;font-style:normal;font-size:12px;font-weight:700;display:grid;place-items:center;padding:0 5px;box-shadow:0 0 0 2px var(--white)}
+  .fab-n{position:absolute;top:-6px;left:-4px;min-width:22px;height:22px;border-radius:11px;background:var(--gold);color:#1E140E;font-style:normal;font-size:12px;font-weight:700;display:grid;place-items:center;padding:0 5px;box-shadow:0 0 0 2px var(--white)}
   .fab.bump{animation:fabBump .5s cubic-bezier(.2,.8,.2,1)}
   @keyframes fabBump{30%{transform:scale(1.12)}60%{transform:scale(.96)}}
 }
@@ -613,7 +613,7 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 }
 
 /* ===== модуль MV.sheet: единый формат модальных шторок ===== */
-.sh{position:fixed;inset:0;z-index:75;display:flex;align-items:flex-end;justify-content:center;background:rgba(23,19,28,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;transition:opacity .35s}
+.sh{position:fixed;inset:0;z-index:75;display:flex;align-items:flex-end;justify-content:center;background:rgba(24,15,10,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;transition:opacity .35s}
 .sh[hidden]{display:none}
 .sh.on{opacity:1}
 .sh-box{width:100%;max-height:86dvh;display:flex;flex-direction:column;background:var(--white);color:var(--ink);border-radius:26px 26px 0 0;box-shadow:0 -30px 60px -30px rgba(0,0,0,.5);overflow:hidden;transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
@@ -697,7 +697,7 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 html[data-mv-theme="dark"] .t706__cartwin .t-form__errorbox-middle .t-form__errorbox-text{color:#E58B82!important}
 
 /* ===== окно «Ваш заказ» оформлено как шторка (тот же вид, что у MV.sheet) ===== */
-.t706__cartwin{background:rgba(23,19,28,.5)!important;-webkit-backdrop-filter:blur(4px)!important;backdrop-filter:blur(4px)!important;padding:0!important;overflow:hidden!important;align-items:flex-end;justify-content:center}
+.t706__cartwin{background:rgba(24,15,10,.5)!important;-webkit-backdrop-filter:blur(4px)!important;backdrop-filter:blur(4px)!important;padding:0!important;overflow:hidden!important;align-items:flex-end;justify-content:center}
 .t706__cartwin_showed{display:flex!important}
 .t706__cartwin-content{width:100%!important;max-width:none!important;margin:0!important;max-height:86dvh;overflow:auto!important;border:0!important;border-radius:26px 26px 0 0!important;padding:0 22px calc(18px + env(safe-area-inset-bottom,0px))!important;box-shadow:0 -30px 60px -30px rgba(0,0,0,.5)!important;overscroll-behavior:contain}
 .t706__cartwin-content::before{content:"";display:block;width:44px;height:5px;border-radius:3px;background:var(--stone);margin:10px auto 2px}
@@ -784,7 +784,7 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 
 /* ===== страница заказа (режим «на весь экран») оформлена как шторка ===== */
 .t706__sidebar{display:none!important}
-.t706__cartpage{background:rgba(23,19,28,.5)!important;-webkit-backdrop-filter:blur(4px)!important;backdrop-filter:blur(4px)!important;padding:0!important;overflow:hidden!important}
+.t706__cartpage{background:rgba(24,15,10,.5)!important;-webkit-backdrop-filter:blur(4px)!important;backdrop-filter:blur(4px)!important;padding:0!important;overflow:hidden!important}
 .t706__cartpage_showed{display:flex!important;align-items:flex-end;justify-content:center}
 .mv-cp{width:100%;max-height:86dvh;overflow:auto;background:var(--white);color:var(--ink);border-radius:26px 26px 0 0;padding:0 22px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -30px 60px -30px rgba(0,0,0,.5);overscroll-behavior:contain;font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif}
 .mv-cp::before{content:"";display:block;width:44px;height:5px;border-radius:3px;background:var(--stone);margin:10px auto 2px}
@@ -890,7 +890,7 @@ html[data-mv-theme="dark"] .t706__cartpage .t-form__errorbox-middle .t-form__err
 .t706__cartpage .t-checkbox__control{display:flex!important;align-items:flex-start;gap:10px}
 .t706__cartpage .t-checkbox__indicator{flex:none;width:20px!important;height:20px!important;border:1.5px solid var(--muted)!important;background:transparent!important;border-radius:6px!important;transition:background .2s,border-color .2s}
 .t706__cartpage .t-checkbox:checked + .t-checkbox__indicator{background:var(--gold)!important;border-color:var(--gold)!important}
-.t706__cartpage .t-checkbox:checked + .t-checkbox__indicator::after{border-color:#17151B!important;border-width:0 0 2px 2px!important}
+.t706__cartpage .t-checkbox:checked + .t-checkbox__indicator::after{border-color:#1E140E!important;border-width:0 0 2px 2px!important}
 .t706__cartpage .t-checkbox__indicator::after{border-color:transparent!important}
 
 /* поля блока «Доставка»: у Тильды они с подчёркиванием и без отступов, приводим к общему виду */
@@ -969,3 +969,57 @@ html body .t706__cartpage #customdelivery .t-input-group_in{margin-bottom:14px!i
 /* шторки и подтверждение заказа всегда поверх окон Тильды (корзина/оплата имеют очень большой z-index) */
 .sh{z-index:2147483000!important}
 .toast{z-index:2147483100!important}
+
+
+/* ---------- глубина: слои, тени, градиенты ---------- */
+.site{
+  --card-a:color-mix(in srgb,var(--white) 62%,#fff);
+  --card-b:var(--mist);
+  --hi:inset 0 1px 0 rgba(255,255,255,.7);
+  --sh-1:0 1px 2px rgba(60,40,20,.08),0 6px 16px -6px rgba(60,40,20,.18);
+  --sh-2:0 2px 4px rgba(60,40,20,.08),0 22px 44px -18px rgba(60,40,20,.34);
+  --glow:radial-gradient(ellipse 60% 50% at 50% 38%,rgba(255,236,196,.55),transparent 70%);
+}
+.site[data-theme="dark"],html[data-mv-theme="dark"] .site{
+  --card-a:color-mix(in srgb,var(--mist) 84%,#fff 7%);
+  --card-b:color-mix(in srgb,var(--white) 88%,#000);
+  --hi:inset 0 1px 0 rgba(255,226,180,.09);
+  --sh-1:0 1px 2px rgba(0,0,0,.4),0 8px 20px -8px rgba(0,0,0,.6);
+  --sh-2:0 2px 4px rgba(0,0,0,.4),0 28px 54px -18px rgba(0,0,0,.8);
+  --glow:radial-gradient(ellipse 60% 50% at 50% 38%,rgba(204,154,60,.2),transparent 70%);
+}
+.site[data-theme="dark"]{background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(204,154,60,.07),transparent 70%) fixed,radial-gradient(ellipse 78% 68% at 50% 44%,transparent 24%,rgba(16,9,5,.2) 52%,rgba(16,9,5,.45) 76%,rgba(12,7,4,.7) 100%) fixed,linear-gradient(180deg,#221913,#17100C) fixed}
+
+/* шапка: парит над страницей */
+.top{background:linear-gradient(180deg,var(--card-a),var(--white));box-shadow:var(--hi),0 8px 24px -16px rgba(60,40,20,.35)}
+.site[data-theme="dark"] .top{box-shadow:var(--hi),0 10px 28px -12px rgba(0,0,0,.7)}
+.top.scrolled{box-shadow:var(--hi),0 14px 34px -14px rgba(0,0,0,.5)}
+
+/* hero: свечение за логотипом */
+.hero{background:var(--glow)}
+
+/* секции с фоном: утопленная полоса */
+.mist{background:linear-gradient(180deg,color-mix(in srgb,var(--mist) 88%,#000),var(--mist) 14%,var(--mist) 86%,color-mix(in srgb,var(--mist) 92%,#000));box-shadow:inset 0 14px 22px -16px rgba(40,25,10,.28),inset 0 -14px 22px -16px rgba(40,25,10,.2)}
+.site[data-theme="dark"] .mist{box-shadow:inset 0 16px 24px -14px rgba(0,0,0,.6),inset 0 -16px 24px -14px rgba(0,0,0,.5)}
+
+/* карточки */
+.review,.store,.reviews-cta{background:linear-gradient(155deg,var(--card-a),var(--card-b));box-shadow:var(--hi),var(--sh-1)}
+.store-online{background:linear-gradient(155deg,var(--card-b),var(--mist))}
+.review:hover,.store:hover{box-shadow:var(--hi),var(--sh-2)}
+.store{transition:border-color .3s,transform .4s cubic-bezier(.2,.8,.2,1),opacity .8s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.review{transition:border-color .3s,transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.faq details{transition:background .3s}
+.faq details[open]{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--mist) 60%,transparent))}
+
+/* кнопки: выпуклые */
+.btn-ink{background:linear-gradient(180deg,color-mix(in srgb,var(--ink) 88%,#fff),var(--ink));box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.25),0 10px 22px -10px rgba(40,25,10,.6);transition:transform .25s,box-shadow .25s,filter .2s}
+.btn-ink:hover{background:linear-gradient(180deg,color-mix(in srgb,var(--ink) 88%,#fff),var(--ink));filter:brightness(1.06);transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 2px 4px rgba(0,0,0,.25),0 16px 28px -10px rgba(40,25,10,.65)}
+.btn-ink:active{transform:translateY(0)}
+.btn-line{background:linear-gradient(180deg,var(--card-a),var(--card-b));box-shadow:inset 0 0 0 1px var(--stone),var(--hi),0 4px 12px -6px rgba(40,25,10,.3)}
+.btn-line:hover{box-shadow:inset 0 0 0 1px var(--ink),var(--hi),0 10px 20px -8px rgba(40,25,10,.4);transform:translateY(-1px)}
+.badge,.fab-n{box-shadow:0 2px 6px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+.badge{background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 82%,#fff),var(--gold))}
+
+/* карточки лежат ближе к зрителю на hero */
+.facts{box-shadow:0 -1px 0 rgba(255,255,255,.4)}
+.site[data-theme="dark"] .facts{box-shadow:0 -1px 0 rgba(255,226,180,.06)}
