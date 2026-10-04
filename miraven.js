@@ -142,7 +142,7 @@
     b.classList.add('done');b.innerHTML=CHECK+'<span>В корзине</span>';
     setTimeout(function(){b.classList.remove('done');b.innerHTML=PLUS+'<span>В корзину</span>'},2200);
     updBadge();
-    requestAnimationFrame(function(){setTimeout(function(){fly(b)},0)});
+    flyReady(b,0);
   }
   function fly(b){
     var to=cart.getBoundingClientRect(),from=b.getBoundingClientRect();
@@ -152,6 +152,7 @@
     var kf=[];for(var t=0;t<=1.0001;t+=.1){var a=(1-t)*(1-t),bb=2*(1-t)*t,c=t*t;kf.push({left:(a*x0+bb*mx+c*x1)+'px',top:(a*y0+bb*my+c*y1)+'px',transform:'scale('+(1-t*.55)+')',opacity:t>.9?.6:1})}
     dot.animate(kf,{duration:750,easing:'cubic-bezier(.3,.1,.3,1)'}).onfinish=function(){dot.remove();bump()};
   }
+  function flyReady(b,n){var r=cart.getBoundingClientRect();if(r.width>0&&r.height>0){fly(b);return}if((n||0)<12)requestAnimationFrame(function(){setTimeout(function(){flyReady(b,(n||0)+1)},20)});else bump()}
   track.addEventListener('click',function(e){
     if(moved){e.preventDefault();e.stopPropagation();moved=false;return}
     var b=e.target.closest('.add');if(!b)return;
