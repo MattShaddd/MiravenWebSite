@@ -92,7 +92,7 @@ html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background
 .pc:hover .pc-ph img{transform:scale(1.04)}
 .pc.sold .pc-ph img{opacity:.45}
 .pc.sold:hover .pc-ph img.alt{opacity:0}
-.pc-link{position:absolute;inset:0;z-index:2;border-radius:inherit}
+.pc-link{position:absolute;inset:0;z-index:2;border-radius:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .pc-badges{position:absolute;left:10px;top:10px;z-index:3;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
 .bdg{font-size:12px;font-weight:600;line-height:1;border-radius:999px;padding:6px 10px;background:var(--white);color:var(--ink);letter-spacing:.01em}
 .bdg.sale{background:var(--gold);color:#17151B}
