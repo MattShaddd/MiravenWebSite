@@ -683,6 +683,7 @@
 
   /* ---------- оболочка: шапка, меню, вход, тема ---------- */
   // плавное сжатие/разворот панели категорий (высота + перелёт каждой плашки)
+  var compactAnimating=false;
   function setCompact(on){
     if(bar.classList.contains('compact')===on)return;
     var inner=bar.querySelector('.cat-bar-in'),btns=[].slice.call(tabs.children).filter(function(b){return b.tagName==='BUTTON'});
@@ -691,11 +692,7 @@
     if(on)revealActive(true);
     if(reduce||!inner.animate||!window.matchMedia('(max-width:760px)').matches)return;
     var h1=inner.offsetHeight;
-    if(h0!==h1){inner.style.overflow='hidden';inner.style.willChange='height';var a=inner.animate([{height:h0+'px'},{height:h1+'px'}],{duration:560,easing:'cubic-bezier(.22,.75,.2,1)'});a.onfinish=a.oncancel=function(){inner.style.overflow='';inner.style.willChange=''}}
-    btns.forEach(function(b,i){
-      var r1=b.getBoundingClientRect(),dx=r0[i].left-r1.left,dy=r0[i].top-r1.top;
-      if(Math.abs(dx)>1||Math.abs(dy)>1){b.style.willChange='transform,opacity';b.animate([{transform:'translate('+dx+'px,'+dy+'px)',opacity:Math.abs(dy)>60?0:1},{transform:'none',opacity:1}],{duration:560,easing:'cubic-bezier(.22,.75,.2,1)'}).onfinish=function(){b.style.willChange=''}}
-    });
+    if(h0!==h1&&!compactAnimating){compactAnimating=true;inner.style.overflow='hidden';inner.style.willChange='height';var a=inner.animate([{height:h0+'px'},{height:h1+'px'}],{duration:300,easing:'cubic-bezier(.2,.8,.2,1)'});a.onfinish=a.oncancel=function(){inner.style.overflow='';inner.style.willChange='';compactAnimating=false}}
   }
   var topEl=document.querySelector('.top'),bar=$('catBar');
   var hdrNow=-1;
