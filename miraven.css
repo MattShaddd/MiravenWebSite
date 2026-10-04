@@ -1123,8 +1123,6 @@ html[data-mv-theme="dark"],html[data-mv-theme="dark"] body{background:#121017!im
 /* телефон: у окон нет крестиков, закрываются свайпом вниз (или касанием по затемнению) */
 @media (max-width:760px){
   .top{top:0!important}
-  html.mv-telegram-webview .top{position:fixed!important;top:var(--mv-vv-top,0px)!important;left:0;right:0;z-index:50}
-  html.mv-telegram-webview .site{padding-top:var(--hdr,68px)}
   .sh-x,.cab-x,.lb-x,.qv-btn[data-qv="x"],
   .t706__cartpage .t706__cartpage-close,.t706__cartwin .t706__cartwin-close,.t706__cartwin .t706__cartwin-close-wrapper{display:none!important}
   .sh-head{padding-right:22px}

@@ -373,12 +373,6 @@
     var a=e.target.closest('a[href^="#p-"]');
     if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){e.preventDefault();openQV(a.getAttribute('href').slice(3))}
   });
-  // Safari/Telegram WebView иногда не отправляет click по полноэкранной ссылке-картинке.
-  grid.addEventListener('touchend',function(e){
-    var a=e.target.closest&&e.target.closest('a[href^="#p-"]');
-    if(!a||e.target.closest('.add,.stp'))return;
-    e.preventDefault();e.stopPropagation();openQV(a.getAttribute('href').slice(3));
-  },{passive:false});
 
   /* ---------- просмотрщик ---------- */
   var qv=$('qv'),cur=null,sel={},qty=1,gi=0,pushed=false,lastFocus=null;
