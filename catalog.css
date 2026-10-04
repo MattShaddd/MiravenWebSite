@@ -13,6 +13,7 @@
 
 /* панель: категории + поиск + сортировка */
 .cat-bar{position:sticky;top:calc(var(--hdr) - 1px);z-index:9;background:var(--white);border-block:1px solid var(--stone);transition:box-shadow .3s,background-color .3s}
+html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background:#1E1B26;border-color:rgba(255,255,255,.12)}
 .cat-bar.stuck{box-shadow:0 12px 30px -24px rgba(0,0,0,.5)}
 .cat-bar-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
 .cat-bar .tabs{margin:0;flex:0 1 auto;min-width:0}
