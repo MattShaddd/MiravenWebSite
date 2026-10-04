@@ -513,7 +513,7 @@
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('.pc-link[href^="#p-"]'),card=e.target.closest&&e.target.closest('.pc[data-uid]');
     if(!a&&card)a={getAttribute:function(){return '#p-'+card.dataset.uid}};
-    if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+    if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
     e.preventDefault();e.stopImmediatePropagation();openQV(a.getAttribute('href').slice(3));
   },true);
   var docTap={x:0,y:0,card:null,moved:false};
