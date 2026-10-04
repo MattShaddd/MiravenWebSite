@@ -441,9 +441,12 @@ body.qv-lock{overflow:hidden}
 .qv-gal{background:linear-gradient(155deg,var(--card-a),var(--mist))}
 .qv-ship{background:linear-gradient(155deg,var(--card-b),var(--mist));box-shadow:inset 0 1px 3px rgba(40,25,10,.18)}
 
-/* десктоп: если все категории не помещаются рядом с поиском, панель инструментов переносится на вторую строку, ничего не прячется за краем */
+/* десктоп: категории плашками, как на телефоне: переносятся на следующую строку, ничего не прячется за краем */
 @media (min-width:761px){
-  .cat-bar-in{flex-wrap:wrap;row-gap:10px}
-  .cat-bar .tabs{flex:0 0 auto;max-width:100%}
-  .tools{margin-left:auto}
+  .cat-bar .tabs{flex:1 1 0;min-width:0;max-width:none;display:flex;flex-wrap:wrap;gap:8px;overflow:visible;border:0;border-radius:0;padding:0;margin:0;width:auto}
+  .cat-bar .tabs .pill{display:none}
+  .cat-bar .tabs button{padding:8px 15px;font-size:14px;border:1px solid var(--stone);transition:background .25s,color .25s,border-color .25s}
+  .cat-bar .tabs button:hover{border-color:var(--muted)}
+  .cat-bar .tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--white)}
+  .cat-bar-in{align-items:center}
 }
