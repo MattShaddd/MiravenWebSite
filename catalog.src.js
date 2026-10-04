@@ -491,6 +491,21 @@
     if(!cur)return;var i=curList.indexOf(cur)+d;if(i<0||i>=curList.length)return;
     openQV(curList[i].uid);
   }
+  /* смена товара жестом/кнопкой на телефоне: старая карточка уезжает в сторону, новая приезжает с другой */
+  var stepBusy=false;
+  function stepAnim(d){
+    if(!cur||stepBusy)return;var i=curList.indexOf(cur)+d;if(i<0||i>=curList.length)return;
+    var box=qv.querySelector('.qv-box');
+    if(reduce||!box||!box.animate||!window.matchMedia('(max-width:760px)').matches){step(d);return}
+    stepBusy=true;
+    var kids=function(){return [].slice.call(qv.querySelector('.qv-box').children).filter(function(k){return !k.classList.contains('qv-grab')&&!k.classList.contains('qv-top')})};
+    var out=kids().map(function(k){return k.animate([{transform:'none',opacity:1},{transform:'translateX('+(-d*70)+'px)',opacity:0}],{duration:150,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'})});
+    setTimeout(function(){
+      step(d);
+      kids().forEach(function(k){k.animate([{transform:'translateX('+(d*70)+'px)',opacity:0},{transform:'none',opacity:1}],{duration:300,easing:'cubic-bezier(.2,.8,.2,1)'})});
+      stepBusy=false;
+    },150);
+  }
   qv.addEventListener('click',function(e){
     if(e.target===qv){closeQV();return}
     var r=e.target.closest('[data-rel]');if(r){openQV(r.dataset.rel);return}
@@ -504,8 +519,8 @@
     var a=e.target.closest('[data-qv]');if(!a)return;
     switch(a.dataset.qv){
       case 'x':closeQV();break;
-      case 'pp':step(-1);break;
-      case 'pn':step(1);break;
+      case 'pp':stepAnim(-1);break;
+      case 'pn':stepAnim(1);break;
       case 'gp':slideTo(Math.max(0,curIdx()-1));break;
       case 'gn':slideTo(Math.min($('qvSlides').children.length-1,curIdx()+1));break;
       case 'qm':qty=Math.max(1,qty-1);paintBuy();break;
@@ -636,7 +651,7 @@
       if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.6)return;
       var dir=dx<0?1:-1;
       if(stage&&((dir===1&&!canNext)||(dir===-1&&!canPrev)))return; // внутри галереи листаются фото
-      step(dir);
+      stepAnim(dir);
     },{passive:true});
   })();
 

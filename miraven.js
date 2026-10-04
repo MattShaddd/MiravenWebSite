@@ -382,7 +382,7 @@
       el.addEventListener('touchstart',function(e){
         st=null;var b=get(o.box),t=e.target;
         if(!small||!small.matches||!b||e.touches.length!==1||(o.enabled&&!o.enabled()))return;
-        if(!b.contains(t)||(t.closest&&t.closest('input,select,textarea,.searchbox-list,.qv-seg,.qv-rel-track,.qv-slides,[data-noswipe]')))return;
+        if(!b.contains(t)||(t.closest&&t.closest('input,select,textarea,.searchbox-list,.qv-seg,.qv-rel-track,[data-noswipe]')))return;
         var q=e.touches[0],r=b.getBoundingClientRect();
         var grab=!!o.expand&&((t.closest&&!!t.closest('.sh-grab'))||q.clientY-r.top<38);
         if(!grab&&!(o.handle&&t.closest&&t.closest(o.handle))&&scrolledUp(t,b))return;
