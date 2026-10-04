@@ -371,13 +371,8 @@
       return;
     }
     var a=e.target.closest('a[href^="#p-"]');
-    if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){if(tap.justOpened){tap.justOpened=false;return}e.preventDefault();openQV(a.getAttribute('href').slice(3))}
+    if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){e.preventDefault();openQV(a.getAttribute('href').slice(3))}
   });
-  var tap={x:0,y:0,a:null,moved:false};
-  grid.addEventListener('pointerdown',function(e){if(e.pointerType!=='touch')return;var a=e.target.closest&&e.target.closest('a[href^="#p-"]');if(!a||e.target.closest('.add,.stp')){tap.a=null;return}tap.x=e.clientX;tap.y=e.clientY;tap.a=a;tap.moved=false},{passive:true});
-  grid.addEventListener('pointermove',function(e){if(!tap.a||e.pointerType!=='touch')return;if(Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>10)tap.moved=true},{passive:true});
-  grid.addEventListener('pointerup',function(e){if(e.pointerType!=='touch'||!tap.a)return;var a=tap.a,m=tap.moved;tap.a=null;if(!m){e.preventDefault();e.stopPropagation();tap.justOpened=true;openQV(a.getAttribute('href').slice(3))}},{passive:false});
-  grid.addEventListener('pointercancel',function(){tap.a=null},{passive:true});
 
   /* ---------- просмотрщик ---------- */
   var qv=$('qv'),cur=null,sel={},qty=1,gi=0,pushed=false,lastFocus=null;
