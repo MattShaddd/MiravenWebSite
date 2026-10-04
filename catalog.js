@@ -1033,13 +1033,12 @@
     // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
     var site=document.querySelector('.site');if(!site)return;
-    var layer=document.createElement('div');layer.className='mv-fab-layer';document.body.appendChild(layer);
     var fab=document.createElement('button');fab.type='button';fab.className='fab';fab.setAttribute('aria-label','Открыть корзину');
     fab.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-.8.8H7.200a1 1 0 0 1-.8-.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="fab-sum"></span><i class="fab-n"></i>';
-    layer.appendChild(fab);
+    document.body.appendChild(fab);
     var sf=document.createElement('button');sf.type='button';sf.className='sfab';sf.setAttribute('aria-label','Поиск');
     sf.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><span>Поиск</span>';
-    layer.appendChild(sf);
+    document.body.appendChild(sf);
     sf.addEventListener('click',function(){var b=document.getElementById('searchBtn');if(b)b.click()});
     var last='';
     function read(){var n=0,s=0;try{var t=window.tcart;if(!(t&&t.products)){t=JSON.parse(localStorage.getItem('tcart')||'{}')}n=+t.total||0;s=+t.prodamount||+t.amount||0}catch(e){}return{n:n,s:s}}

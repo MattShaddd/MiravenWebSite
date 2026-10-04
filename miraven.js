@@ -624,13 +624,12 @@
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
     var site=document.querySelector('.site');if(!site)return;
-    var layer=document.createElement('div');layer.className='mv-fab-layer';document.body.appendChild(layer);
     var fab=document.createElement('button');fab.type='button';fab.className='fab';fab.setAttribute('aria-label','Открыть корзину');
     fab.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-.8.8H7.200a1 1 0 0 1-.8-.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="fab-sum"></span><i class="fab-n"></i>';
-    layer.appendChild(fab);
+    document.body.appendChild(fab);
     var sf=document.createElement('button');sf.type='button';sf.className='sfab';sf.setAttribute('aria-label','Поиск');
     sf.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><span>Поиск</span>';
-    layer.appendChild(sf);
+    document.body.appendChild(sf);
     sf.addEventListener('click',function(){var b=document.getElementById('searchBtn');if(b)b.click()});
     var last='';
     function read(){var n=0,s=0;try{var t=window.tcart;if(!(t&&t.products)){t=JSON.parse(localStorage.getItem('tcart')||'{}')}n=+t.total||0;s=+t.prodamount||+t.amount||0}catch(e){}return{n:n,s:s}}
@@ -731,17 +730,22 @@
   (function(){
     var sheet=null;
     function photos(media){return[].slice.call(media.querySelectorAll('[data-review-photo]')).map(function(b){var img=b.querySelector('img');return{src:img.currentSrc||img.src,full:img.src,alt:img.alt}})}
+    function openPhoto(button){
+      var media=button.closest('.review-media');if(!media||!window.MVImageViewer)return;
+      var buttons=[].slice.call(media.querySelectorAll('[data-review-photo]'));
+      MVImageViewer.open({items:photos(media),index:buttons.indexOf(button),from:button});
+    }
     function show(post){
       if(!sheet)sheet=MV.sheet({title:'Отзыв покупателя',className:'sh-review'});
       var copy=post.cloneNode(true);copy.classList.remove('rv','in','is-open');copy.classList.add('review-detail');copy.removeAttribute('style');var oldButton=copy.querySelector('.review-expand');if(oldButton)oldButton.remove();
-      copy.querySelectorAll('[data-review-photo]').forEach(function(b){b.addEventListener('click',function(){var media=b.closest('.review-media'),buttons=[].slice.call(media.querySelectorAll('[data-review-photo]'));window.MVImageViewer.open({items:photos(media),index:buttons.indexOf(b),from:b})})});
-      sheet.setTitle((copy.querySelector('.review-author')||{}).textContent||'Отзыв покупателя');sheet.setBody(copy);sheet.open();
+      var name=((copy.querySelector('.review-author')||{}).textContent||'покупателя').trim();
+      sheet.setTitle('Отзыв от «'+name+'»');sheet.setBody(copy);sheet.open();
     }
+    document.addEventListener('click',function(e){var button=e.target.closest&&e.target.closest('[data-review-photo]');if(!button)return;e.preventDefault();e.stopPropagation();openPhoto(button)},true);
     document.querySelectorAll('.review-post').forEach(function(post){
       var openButton=document.createElement('button');openButton.type='button';openButton.className='review-expand';openButton.textContent='Читать отзыв';
       post.querySelector('.review-text').insertAdjacentElement('afterend',openButton);openButton.addEventListener('click',function(){show(post)});
       post.addEventListener('click',function(e){if(e.target.closest('a,button'))return;show(post)});
-      post.querySelectorAll('[data-review-photo]').forEach(function(b){b.addEventListener('click',function(){var media=b.closest('.review-media'),buttons=[].slice.call(media.querySelectorAll('[data-review-photo]'));window.MVImageViewer.open({items:photos(media),index:buttons.indexOf(b),from:b})})});
     });
   })();
 
