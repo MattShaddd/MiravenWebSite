@@ -163,7 +163,7 @@
     if(ed.qty>0)Y.inv=ed.qty;
     if(p.unit)Y.unit=p.unit;if(p.portion)Y.portion=p.portion;if(p.single)Y.single=p.single;
     if(sel&&it.opts.length)Y.options=it.opts.map(function(o){return{option:o.title,variant:sel[o.title]}});
-    if(typeof window.tcart__addProduct!=='function'){toast('Корзина ещё загружается, попробуйте через секунду');return false}
+    if(typeof window.tcart__addProduct!=='function'){MVProductCard.notify('Корзина ещё загружается, попробуйте через секунду');return false}
     var before=lineQty(it,ed,sel),max=maxQty(ed);
     if(before+(qty||1)>max&&max<99){
       toast(before>=max?(max===1?'Это единственный экземпляр, он уже в корзине':'В корзине уже все '+max+' шт. — больше нет в наличии'):'В наличии только '+max+' шт., в корзине уже '+before);

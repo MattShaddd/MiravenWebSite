@@ -14,6 +14,8 @@
 .mv-product-card .add.stp button:hover{background:rgba(255,255,255,.16)}
 .mv-product-card .add.stp b{min-width:22px;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
 .mv-product-card .add.stp.lim button[data-s="p"]{opacity:.35}
+.mv-cart-notice{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:200;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box;padding:12px 18px;border:1px solid var(--stone);border-radius:18px;background:var(--ink);color:var(--white);font:14px/1.45 var(--f-body);opacity:0;pointer-events:none;transition:opacity .18s}
+.mv-cart-notice.on{opacity:1}
 @media(max-width:760px){
   .mv-product-card .add{right:6px;bottom:6px;height:32px;min-width:32px;padding:0 9px}
   .mv-product-card .add span{display:none}

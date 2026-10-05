@@ -1,14 +1,19 @@
 (function(){
   'use strict';
-  if(window.MVProductCard&&window.MVProductCard.version===2)return;
-  if(!document.querySelector('link[data-mv-product-card-css]')){
-    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=1';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css);
-  }
+  if(window.MVProductCard&&window.MVProductCard.version===3)return;
+  var css=document.querySelector('link[data-mv-product-card-css]');
+  if(!css){css=document.createElement('link');css.rel='stylesheet';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css)}
+  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=3';
 
   var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   var watchers=[];
   function watch(root,update){watchers.push({root:root,update:update})}
   function refresh(){watchers=watchers.filter(function(w){return w.root.isConnected});watchers.forEach(function(w){w.update()});if(window.MVFloatingCart)window.MVFloatingCart.refresh()}
+  var notice,noticeTimer;
+  function notify(text){
+    if(!notice){notice=document.createElement('div');notice.className='mv-cart-notice';notice.setAttribute('role','status');notice.setAttribute('aria-live','polite');document.body.appendChild(notice)}
+    notice.textContent=text;notice.classList.add('on');clearTimeout(noticeTimer);noticeTimer=setTimeout(function(){notice.classList.remove('on')},2800);
+  }
 
   function products(){
     try{
@@ -108,5 +113,5 @@
       animation.onfinish=function(){dot.remove();if(done)done()};animation.oncancel=function(){dot.remove()};
     });
   }
-  window.MVProductCard={version:2,products:products,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh};
+  window.MVProductCard={version:3,products:products,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh,notify:notify};
 })();

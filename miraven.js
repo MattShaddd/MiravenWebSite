@@ -138,7 +138,7 @@
     if(p.sku)Y.sku=String(p.sku);
     if(i.qty>0)Y.inv=i.qty;
     if(p.unit)Y.unit=p.unit;if(p.portion)Y.portion=p.portion;if(p.single)Y.single=p.single;
-    if(typeof window.tcart__addProduct!=='function'){location.href=i.url;return false}
+    if(typeof window.tcart__addProduct!=='function'){MVProductCard.notify('Корзина ещё загружается, попробуйте через секунду');return false}
     var t6=document.querySelector('.t706');if(t6)t6.setAttribute('data-opencart-onorder','no');
     tcart__addProduct(Y);
     updBadge();
@@ -847,7 +847,7 @@
     apply(saved,true);
   });
   }
-  if(window.MVProductCard&&MVProductCard.markup)start();
+  if(window.MVProductCard&&MVProductCard.markup&&MVProductCard.notify)start();
   else fetch('https://mattshaddd.github.io/MiravenWebSite/product-card.js',{cache:'no-cache'})
     .then(function(r){if(!r.ok)throw new Error('product-card.js');return r.text()})
     .then(function(code){var s=document.createElement('script');s.textContent=code;document.head.appendChild(s);s.remove();start()})

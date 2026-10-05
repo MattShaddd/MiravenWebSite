@@ -1,14 +1,19 @@
 (function(){
   'use strict';
-  if(window.MVProductCard&&window.MVProductCard.version===2)return;
-  if(!document.querySelector('link[data-mv-product-card-css]')){
-    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=1';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css);
-  }
+  if(window.MVProductCard&&window.MVProductCard.version===3)return;
+  var css=document.querySelector('link[data-mv-product-card-css]');
+  if(!css){css=document.createElement('link');css.rel='stylesheet';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css)}
+  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=3';
 
   var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   var watchers=[];
   function watch(root,update){watchers.push({root:root,update:update})}
   function refresh(){watchers=watchers.filter(function(w){return w.root.isConnected});watchers.forEach(function(w){w.update()});if(window.MVFloatingCart)window.MVFloatingCart.refresh()}
+  var notice,noticeTimer;
+  function notify(text){
+    if(!notice){notice=document.createElement('div');notice.className='mv-cart-notice';notice.setAttribute('role','status');notice.setAttribute('aria-live','polite');document.body.appendChild(notice)}
+    notice.textContent=text;notice.classList.add('on');clearTimeout(noticeTimer);noticeTimer=setTimeout(function(){notice.classList.remove('on')},2800);
+  }
 
   function products(){
     try{
@@ -108,7 +113,7 @@
       animation.onfinish=function(){dot.remove();if(done)done()};animation.oncancel=function(){dot.remove()};
     });
   }
-  window.MVProductCard={version:2,products:products,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh};
+  window.MVProductCard={version:3,products:products,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh,notify:notify};
 })();
 
 (function(){
@@ -649,7 +654,7 @@
     if(ed.qty>0)Y.inv=ed.qty;
     if(p.unit)Y.unit=p.unit;if(p.portion)Y.portion=p.portion;if(p.single)Y.single=p.single;
     if(sel&&it.opts.length)Y.options=it.opts.map(function(o){return{option:o.title,variant:sel[o.title]}});
-    if(typeof window.tcart__addProduct!=='function'){toast('Корзина ещё загружается, попробуйте через секунду');return false}
+    if(typeof window.tcart__addProduct!=='function'){MVProductCard.notify('Корзина ещё загружается, попробуйте через секунду');return false}
     var before=lineQty(it,ed,sel),max=maxQty(ed);
     if(before+(qty||1)>max&&max<99){
       toast(before>=max?(max===1?'Это единственный экземпляр, он уже в корзине':'В корзине уже все '+max+' шт. — больше нет в наличии'):'В наличии только '+max+' шт., в корзине уже '+before);
