@@ -51,7 +51,7 @@ html{scroll-behavior:smooth}
 /* ---------- site mock ---------- */
 .site{overflow-x:clip}
 .wrap{padding-inline:max(20px,calc((100vw - 1280px) / 2))}
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--white)}
+.top{position:sticky;top:0;z-index:10;background:var(--white)}
 .sec{padding-block:clamp(56px,8vw,104px)}
 .h2{font-family:var(--f-story);font-weight:600;letter-spacing:-.01em;font-size:clamp(28px,3.8vw,42px)}
 .sec-head{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:end;justify-content:space-between;margin-bottom:36px}

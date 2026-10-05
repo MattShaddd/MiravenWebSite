@@ -120,7 +120,7 @@ html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background
 .qv-box{position:relative;width:min(1180px,100%);height:min(780px,100%);display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);background:var(--white);border:1px solid var(--stone);outline:1px solid rgba(255,255,255,.16);border-radius:var(--r-lg);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 50px 100px -40px rgba(0,0,0,.6);transform:translateY(24px) scale(.985);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .qv.on .qv-box{transform:none}
 .qv-top{position:absolute;z-index:6;top:14px;right:14px;display:flex;gap:6px;align-items:center}
-.qv-btn{width:42px;height:42px;border:0;border-radius:50%;background:color-mix(in srgb,var(--white) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--ink);display:grid;place-items:center;box-shadow:0 0 0 1px var(--stone);transition:background .2s,color .2s,transform .2s,opacity .2s}
+.qv-btn{flex:none;width:42px;min-width:42px;height:42px;min-height:42px;aspect-ratio:1;border:0;border-radius:50%;background:color-mix(in srgb,var(--white) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--ink);display:grid;place-items:center;box-shadow:0 0 0 1px var(--stone);transition:background .2s,color .2s,transform .2s,opacity .2s}
 .qv-btn:hover:not(:disabled){background:var(--ink);color:var(--white)}
 .qv-btn:active:not(:disabled){transform:scale(.94)}
 .qv-btn:disabled{opacity:.35;cursor:default}
@@ -470,3 +470,22 @@ body.qv-lock{overscroll-behavior:none}
   .qv-box{width:100%;min-width:0;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
   .qv-info,.qv-scroll,.qv-gal{min-width:0;max-width:100%}
 }
+
+/* Две панели категорий: большая в потоке, маленькая закреплена под шапкой. */
+.cat-bar{position:static!important;box-shadow:none!important}
+.cat-mini{position:fixed;top:calc(var(--hdr) - 1px);left:0;right:0;z-index:9;background:var(--white);color:var(--ink);font:14px/1.5 var(--f-body);border-block:1px solid var(--stone);box-shadow:0 10px 24px -22px rgba(0,0,0,.4);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-12px);transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s,visibility 0s .28s}
+.cat-mini.on{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition-delay:0s}
+.cat-mini,.cat-mini *{box-sizing:border-box}
+.cat-mini-in{display:flex;align-items:center;gap:8px;padding-block:8px}
+.cat-mini-tools{display:flex;gap:6px;flex:none}
+.cat-mini .tabs{display:flex;flex:1;min-width:0;flex-wrap:nowrap;align-items:center;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;margin:0;padding:0;border:0;border-radius:0;max-width:none;width:auto}
+.cat-mini .tabs::-webkit-scrollbar{display:none}
+.cat-mini button{position:relative;flex:none;font:inherit;cursor:pointer;white-space:nowrap;padding:5px 11px;border:1px solid var(--stone);border-radius:999px;background:transparent;color:var(--ink);transition:background .2s,color .2s}
+.cat-mini .tabs button[aria-pressed="true"]{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.cat-mini .tabs button span{font-size:12px;margin-left:4px;opacity:.7}
+.cat-mini .tab-tool{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:34px;min-height:32px;padding:5px 9px}
+.cat-mini .tab-tool svg{width:16px;height:16px;flex:none}
+.cat-mini .tab-tool.active{color:var(--gold-text);border-color:var(--gold)}
+.cat-mini .tt-n{font-style:normal;font-size:12px}.cat-mini .tt-n[hidden]{display:none}
+.cat-mini :focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+@media(prefers-reduced-motion:reduce){.cat-mini{transition:none;transform:none}}

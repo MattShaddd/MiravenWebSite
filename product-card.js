@@ -79,5 +79,23 @@
     },options.capture===true);
   }
 
-  window.MVProductCard={products:products,quantity:quantity,stock:stock,control:control,minus:minus,replace:replace,bind:bind};
+  // Capture the button before Tilda replaces it with the quantity control.
+  function feedback(from,done){
+    if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}
+    if(window.MVFloatingCart)window.MVFloatingCart.refresh();
+    var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced||!document.body.animate){if(done)done();return}
+    requestAnimationFrame(function(){
+      var floating=document.querySelector('.fab.on'),target=floating&&floating.getBoundingClientRect().width?floating:document.getElementById('cartBtn');
+      if(!target||!from||!from.width||!from.height){if(done)done();return}
+      var to=target.getBoundingClientRect();if(!to.width||!to.height){if(done)done();return}
+      var dot=document.createElement('i');dot.className='fly';dot.style.zIndex=200;
+      var x=from.left+from.width/2,y=from.top+from.height/2,dx=to.left+to.width/2-x,dy=to.top+to.height/2-y;
+      dot.style.left=x+'px';dot.style.top=y+'px';document.body.appendChild(dot);
+      var frames=[];for(var t=0;t<=1.0001;t+=.1){var yy=dy*t-4*100*t*(1-t);frames.push({transform:'translate('+dx*t+'px,'+yy+'px) scale('+(1-t*.55)+')',opacity:t>.9?.6:1})}
+      var animation=dot.animate(frames,{duration:750,easing:'cubic-bezier(.3,.1,.3,1)'});
+      animation.onfinish=function(){dot.remove();if(done)done()};animation.oncancel=function(){dot.remove()};
+    });
+  }
+  window.MVProductCard={products:products,quantity:quantity,stock:stock,control:control,minus:minus,replace:replace,bind:bind,feedback:feedback};
 })();

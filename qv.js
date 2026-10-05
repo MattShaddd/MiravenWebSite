@@ -107,14 +107,10 @@
     updBadge();
   }
   function fly(b){
-    if(!cartEl)return;var to=cartEl.getBoundingClientRect(),from=b.getBoundingClientRect();
-    if(reduce||!document.body.animate){bump();return}
-    var dot=document.createElement('i');dot.className='fly';dot.style.zIndex=200;document.body.appendChild(dot);
-    var x0=from.left+from.width/2,y0=from.top+from.height/2,x1=to.left+to.width/2,y1=to.top+to.height/2,mx=(x0+x1)/2,my=Math.min(y0,y1)-120;
-    var kf=[];for(var t=0;t<=1.0001;t+=.1){var a=(1-t)*(1-t),bb=2*(1-t)*t,c=t*t;kf.push({left:(a*x0+bb*mx+c*x1)+'px',top:(a*y0+bb*my+c*y1)+'px',transform:'scale('+(1-t*.55)+')',opacity:t>.9?.6:1})}
-    dot.animate(kf,{duration:750,easing:'cubic-bezier(.3,.1,.3,1)'}).onfinish=function(){dot.remove();bump()};
+    MVProductCard.feedback(b,bump);
   }
   function addToCart(it,ed,qty,sel,btn){
+    var from=btn.getBoundingClientRect();
     var p=it.raw,Y={name:it.title,price:ed.price,img:ed.img||it.img,recid:API.rec,lid:it.uid,uid:ed.uid,url:it.url,quantity:qty||1,
       pack_label:p.pack_label,pack_m:p.pack_m,pack_x:p.pack_x,pack_y:p.pack_y,pack_z:p.pack_z,part_uids:it.ids.map(String),gen_uid:p.externalid||''};
     if(ed.sku)Y.sku=String(ed.sku);
@@ -131,7 +127,7 @@
     var oa=window.alert;window.alert=function(m){toast(String(m||'Не удалось добавить товар'))};
     try{tcart__addProduct(Y)}finally{window.alert=oa}
     if(cartProducts().length&&lineQty(it,ed,sel)<=before){toast('Больше нет в наличии');return false}
-    fly(btn);paintCards();return true;
+    fly(from);paintCards();return true;
   }
   /* ---------- просмотрщик ---------- */
   var qv=$('qv'),cur=null,sel={},qty=1,gi=0,pushed=false,lastFocus=null;
@@ -243,6 +239,7 @@
     else{if(/^#p-/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);hideQV()}
   }
   window.addEventListener('popstate',function(){
+    if(!qv.isConnected)return;
     var m=/^#p-(\d+)/.exec(location.hash);
     if(m&&byUid[m[1]]){pushed=false;openQV(m[1],true)}else hideQV();
   });
@@ -303,7 +300,7 @@
     }
   });
   document.addEventListener('keydown',function(e){
-    if(qv.hidden)return;
+    if(qv.hidden||!qv.isConnected)return;
     if(e.key==='Escape'){closeQV();return}
     if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
       var d=e.key==='ArrowLeft'?-1:1;
@@ -413,9 +410,10 @@
       var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
       if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.6)return;
       var dir=dx<0?1:-1;
-      if(stage&&((dir===1&&!canNext)||(dir===-1&&!canPrev)))return; // внутри галереи листаются фото
+      if(stage)return; // галерея всегда листает только фотографии, в том числе на её краях
       stepAnim(dir);
     },{passive:true});
+    qv.addEventListener('touchcancel',function(){on=false},{passive:true});
   })();
 
 

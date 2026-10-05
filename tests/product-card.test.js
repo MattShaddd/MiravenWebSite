@@ -25,4 +25,28 @@ assert.equal(window.tcart.products[0].quantity,1);
 assert.equal(window.tcart.total,1);
 assert.equal(window.tcart.amount,150);
 
+// First add can detach the source button and the desktop floating cart is hidden.
+// Feedback must use the captured rectangle and fall back to a rendered target.
+global.navigator={vibrate(){}};
+global.matchMedia=()=>({matches:false});
+global.requestAnimationFrame=callback=>callback();
+let frames,dot,finished=0;
+document.querySelector=()=>({getBoundingClientRect:()=>({width:0,height:0})});
+document.getElementById=()=>({getBoundingClientRect:()=>({left:500,top:50,width:44,height:44})});
+document.body={animate(){},appendChild(){}};
+document.createElement=()=>dot={style:{},remove(){},animate(value){frames=value;return this}};
+card.feedback({left:10,top:20,width:40,height:40},()=>finished++);
+assert.equal(dot.style.left,'30px');
+assert.equal(dot.style.top,'40px');
+assert.match(frames.at(-1).transform,/translate\(491\.999|translate\(492px/);
+dot.onfinish();
+assert.equal(finished,1);
+
+// Reduced motion still gives completion feedback without a flight.
+frames=null;
+global.matchMedia=()=>({matches:true});
+card.feedback({left:10,top:20,width:40,height:40},()=>finished++);
+assert.equal(frames,null);
+assert.equal(finished,2);
+
 console.log('product-card: ok');

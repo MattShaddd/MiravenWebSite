@@ -10,14 +10,15 @@
     function run(code){var s=document.createElement('script');s.textContent=code;document.body.appendChild(s);s.remove()}
     function go(url,replace){if(busy)return Promise.resolve();busy=true;var root=document.getElementById('miraven-root');if(!root){busy=false;return Promise.reject()}
       var catalog=routePath(url.split('#')[0])===routePath(CATALOG);
-      return Promise.all(catalog?[get('miraven.css'),get('catalog.css'),get('image-viewer.css'),get('catalog.html'),get('image-viewer.js'),get('catalog.js')]:[get('miraven.css'),get('image-viewer.css'),get('miraven.html'),get('image-viewer.js'),get('miraven.js')]).then(function(a){
-        var swap=function(){currentPath=routePath(url.split('#')[0]);document.documentElement.dataset.mvRoute=catalog?'catalog':'home';if(replace)history.replaceState({mvRoute:1},'',url);else history.pushState({mvRoute:1},'',url);styles(catalog?a[0]+'\n'+a[1]+'\n'+a[2]:a[0]+'\n'+a[1]);root.innerHTML=(catalog?a[3]:a[2]).split('{{BASE}}').join(BASE).split('{{HOME}}').join(HOME);window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;run(catalog?a[4]+'\n'+a[5]:a[3]+'\n'+a[4]);window.scrollTo(0,0);requestAnimationFrame(function(){window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0});busy=false};
+      return Promise.all(catalog?[get('miraven.css'),get('catalog.css'),get('image-viewer.css'),get('catalog.html'),get('image-viewer.js'),get('catalog.js'),get('product-card.css')]:[get('miraven.css'),get('image-viewer.css'),get('miraven.html'),get('image-viewer.js'),get('miraven.js'),get('product-card.css')]).then(function(a){
+        document.querySelectorAll('.cat-mini').forEach(function(el){el.remove()});
+        var swap=function(){currentPath=routePath(url.split('#')[0]);document.documentElement.dataset.mvRoute=catalog?'catalog':'home';if(replace)history.replaceState({mvRoute:1},'',url);else history.pushState({mvRoute:1},'',url);styles((catalog?a[0]+'\n'+a[1]+'\n'+a[2]:a[0]+'\n'+a[1])+'\n'+a[a.length-1]);root.innerHTML=(catalog?a[3]:a[2]).split('{{BASE}}').join(BASE).split('{{HOME}}').join(HOME);window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;run(catalog?a[4]+'\n'+a[5]:a[3]+'\n'+a[4]);window.scrollTo(0,0);requestAnimationFrame(function(){window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0});busy=false};
         if(document.startViewTransition)document.startViewTransition(swap);else swap();
       }).catch(function(){busy=false});
     }
     window.MVRouter={go:go};
     function routePath(p){return (p||'/').replace(/\/+$/,'')||'/'}
-    document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;var u=new URL(a.href,location.href),p=routePath(u.pathname);if(u.origin!==location.origin||(p!==routePath(CATALOG)&&p!==routePath(HOME)))return;if(p===routePath(CATALOG)&&/^#p-\d+/.test(u.hash))return;e.preventDefault();e.stopImmediatePropagation();go(p+(p===routePath(CATALOG)?u.hash:''),false)},true);
+    document.addEventListener('click',function(e){if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button)return;var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;var u=new URL(a.href,location.href),p=routePath(u.pathname);if(u.origin!==location.origin||(p!==routePath(CATALOG)&&p!==routePath(HOME)))return;if(p===currentPath||p===routePath(CATALOG)&&/^#p-\d+/.test(u.hash))return;e.preventDefault();e.stopImmediatePropagation();go(p+(p===routePath(CATALOG)?u.hash:''),false)},true);
     window.addEventListener('popstate',function(){var p=routePath(location.pathname);if(p===currentPath)return;if(p===routePath(CATALOG)||p===routePath(HOME))go(p+(p===routePath(CATALOG)?location.hash:''),true)});
   })();
   // Production Tilda loader historically fetched only miraven.js/miraven.css.
@@ -132,6 +133,7 @@
     if(window.tcart__openCart)tcart__openCart();else if(document.querySelector('.t706__carticon'))document.querySelector('.t706__carticon').click();
   });
   function addToCart(i,b){
+    var from=b.getBoundingClientRect();
     var p=i.raw,Y={name:i.title,price:i.price,img:i.img,recid:API.rec,lid:i.uid,uid:i.uid,url:i.url,quantity:1,
       pack_label:p.pack_label,pack_m:p.pack_m,pack_x:p.pack_x,pack_y:p.pack_y,pack_z:p.pack_z,part_uids:i.ids.map(String),gen_uid:p.externalid||''};
     if(p.sku)Y.sku=String(p.sku);
@@ -140,20 +142,9 @@
     if(typeof window.tcart__addProduct!=='function'){location.href=i.url;return false}
     var t6=document.querySelector('.t706');if(t6)t6.setAttribute('data-opencart-onorder','no');
     tcart__addProduct(Y);
-    if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}
-    var from=b.getBoundingClientRect();
     updBadge();
-    flyReady(b,0,from);return true;
+    MVProductCard.feedback(from,bump);return true;
   }
-  function fly(b,fromRect){
-    var to=cart.getBoundingClientRect(),from=fromRect||b.getBoundingClientRect();
-    if(reduce||!document.body.animate){bump();return}
-    var dot=document.createElement('i');dot.className='fly';document.body.appendChild(dot);
-    var x0=from.left+from.width/2,y0=from.top+from.height/2,x1=to.left+to.width/2,y1=to.top+to.height/2,mx=(x0+x1)/2,my=Math.min(y0,y1)-120;
-    var kf=[];for(var t=0;t<=1.0001;t+=.1){var a=(1-t)*(1-t),bb=2*(1-t)*t,c=t*t;kf.push({left:(a*x0+bb*mx+c*x1)+'px',top:(a*y0+bb*my+c*y1)+'px',transform:'scale('+(1-t*.55)+')',opacity:t>.9?.6:1})}
-    dot.animate(kf,{duration:750,easing:'cubic-bezier(.3,.1,.3,1)'}).onfinish=function(){dot.remove();bump()};
-  }
-  function flyReady(b,n,from){var r=cart.getBoundingClientRect();if(r.width>0&&r.height>0){fly(b,from);return}if((n||0)<12)requestAnimationFrame(function(){setTimeout(function(){flyReady(b,(n||0)+1,from)},20)});else bump()}
   MVProductCard.bind(track,{
     getItem:function(uid){return items.filter(function(x){return x.uid===uid})[0]},
     add:function(i,b){addToCart(i,b)},
@@ -659,6 +650,7 @@
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
     var site=document.querySelector('.site');if(!site)return;
+    if(window.MVFloatingCart)window.MVFloatingCart.destroy();
     var fab=document.createElement('button');fab.type='button';fab.className='fab';fab.setAttribute('aria-label','Открыть корзину');
     fab.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-.8.8H7.200a1 1 0 0 1-.8-.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="fab-sum"></span><i class="fab-n"></i>';
     document.body.appendChild(fab);
@@ -679,7 +671,8 @@
       if(!first){fab.classList.remove('bump');void fab.offsetWidth;fab.classList.add('bump')}
     }
     fab.addEventListener('click',function(){if(window.tcart__openCart)tcart__openCart();else{var i=document.querySelector('.t706__carticon');i&&i.click()}});
-    paint();setInterval(paint,700);
+    paint();var timer=setInterval(paint,700);
+    window.MVFloatingCart={refresh:paint,destroy:function(){clearInterval(timer);fab.remove();sf.remove()}};
   })();
   // КОНЕЦ ПЛАВАЮЩЕЙ КОРЗИНЫ
   // поиск и мобильное меню
@@ -699,12 +692,14 @@
   // ПРОСМОТР ТОВАРА НА ГЛАВНОЙ
   // Карточка товара открывается шторкой прямо здесь (код шторки лежит в qv.js, подгружается заранее), без перехода в каталог.
   (function(){
-    var MV=window.MV=window.MV||{},p=null;
+    var MV=window.MV=window.MV||{},p=null,productHost=document.querySelector('.site');
     function base(){var i=document.querySelector('img[src*="logo-header.webp"]');return i?i.src.replace(/logo-header\.webp.*$/,''):''}
     function load(){
+      if(!productHost.isConnected)return Promise.reject(new Error('inactive page'));
       if(p)return p;var b=base();if(!b)return Promise.reject(new Error('base'));
       var css=document.createElement('link');css.rel='stylesheet';css.href=b+'catalog.css?v=qv-close-1';document.head.appendChild(css);
       p=fetch(b+'qv.js',{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error('qv');return r.text()}).then(function(t){
+        if(!productHost.isConnected)throw new Error('inactive page');
         var s=document.createElement('script');s.textContent=t;document.body.appendChild(s);if(!MV.qvOpen)throw new Error('qv init');
       }).catch(function(e){p=null;throw e});
       return p;
@@ -713,6 +708,7 @@
     function warm(){load().catch(function(){})}
     if('requestIdleCallback' in window)requestIdleCallback(function(){setTimeout(warm,1500)},{timeout:6000});else setTimeout(warm,4000);
     document.addEventListener('click',function(e){
+      if(!productHost.isConnected||e.defaultPrevented)return;
       var a=e.target.closest&&e.target.closest('a[href*="#p-"]');if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
       var m=/#p-(\d+)/.exec(a.getAttribute('href'));if(!m)return;
       e.preventDefault();
@@ -730,6 +726,7 @@
   var heroEl=document.querySelector('.hero');
   if(heroEl){top.classList.add('slide');document.documentElement.style.setProperty('--hdrh',top.offsetHeight+'px')}
   function onScroll(){
+    if(!top.isConnected)return;
     top.classList.toggle('scrolled',window.scrollY>8);
     if(heroEl){var th=Math.max(140,heroEl.offsetHeight*.6);top.classList.toggle('show',window.scrollY>th)}
   }
@@ -805,6 +802,7 @@
     function maxY(){return document.documentElement.scrollHeight-innerHeight}
     function loop(){smooth.y+=(smooth.t-smooth.y)*.12;if(Math.abs(smooth.t-smooth.y)<.5)smooth.y=smooth.t;window.scrollTo(0,smooth.y);smooth.raf=smooth.y!==smooth.t?requestAnimationFrame(loop):0}
     window.addEventListener('wheel',function(e){
+      if(!track.isConnected)return;
       if(e.ctrlKey||e.defaultPrevented)return;
       if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
       if(e.target.closest&&e.target.closest('.track')&&e.shiftKey)return;

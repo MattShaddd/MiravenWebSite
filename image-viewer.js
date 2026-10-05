@@ -30,6 +30,7 @@
     },true);
   }
   function open(o){
+    site=document.querySelector('.site');
     o=o||{};if(!root)make();items=normalise(o.items||o.images);if(!items.length)return;index=Math.max(0,Math.min(items.length-1,o.index||0));from=o.from||document.activeElement;onChange=typeof o.onChange==='function'?o.onChange:null;
     track.innerHTML=items.map(function(x){return'<div class="mv-viewer__slide"><img src="'+esc(x.src)+'" data-full="'+esc(x.full)+'" alt="'+esc(x.alt)+'" draggable="false"></div>'}).join('');
     track.querySelectorAll('img').forEach(function(img){img.addEventListener('error',function(){if(img.dataset.full&&img.src!==img.dataset.full)img.src=img.dataset.full},{once:true})});
