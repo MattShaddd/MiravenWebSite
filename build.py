@@ -152,7 +152,7 @@ def scope_css(css):
             out.append(', '.join(scope_selector(s) for s in sels) + '{' + body + '}')
         i = k
     return ''.join(out)
-wr('members.css', scope_css(rd('members.src.css')))
+wr('members.css', scope_css(rd('members.src.css')) + '\n' + rd('dropdowns.css'))
 
 # ---------- готовые блоки T123 ----------
 def inline(css_files, html, js, extra_head=''):
@@ -160,6 +160,7 @@ def inline(css_files, html, js, extra_head=''):
     font = None
     for f in css_files:
         c = rd(f)
+        c = re.sub(r'@import url\("https://mattshaddd.github.io/MiravenWebSite/dropdowns.css[^" ]*"\);', lambda m: rd('dropdowns.css'), c)
         m = re.search(r'@import url\("([^"]+)"\);\n?', c)
         if m: font = font or m.group(1); c = c.replace(m.group(0), '')
         css += c + '\n'

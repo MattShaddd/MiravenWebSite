@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=Golos+Text:wght@400;500;600&display=swap");
+@import url("https://mattshaddd.github.io/MiravenWebSite/dropdowns.css?v=1");
 /* Layout: full-width storefront, content column max 1280px, media queries for tablet and phone. Deliberate single light look: white + cool greys, ink text, gold used only as a thin accent. */
 :root,.site{
   color-scheme: light;
