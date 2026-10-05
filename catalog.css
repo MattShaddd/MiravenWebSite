@@ -453,15 +453,15 @@ body.qv-lock{overscroll-behavior:none}
 /* телефон: карточка товара — отдельный экран, а не модальная шторка */
 .qv-grab{display:none}
 @media (max-width:760px){
-  .qv{display:block;align-items:initial;justify-content:initial;background:var(--white);overflow:auto}
-  .qv-box{height:auto;min-height:100dvh;max-height:none;border-radius:0;border:0;outline:0;box-shadow:none;transform:none;transition:none;overflow:visible}
+  .qv{display:block;align-items:initial;justify-content:initial;background:var(--white);overflow:hidden}
+  .qv-box{height:100%;min-height:0;max-height:100%;border-radius:0;border:0;outline:0;box-shadow:none;transform:none;transition:none;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
   .qv.on .qv-box{transform:none}
-  .qv-box.mv-full{height:auto}
+  .qv-box.mv-full{height:100%}
   .qv-top{position:sticky;top:0;right:auto;min-height:58px;padding:8px 14px;background:color-mix(in srgb,var(--white) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--stone)}
   .qv-top .qv-btn[data-qv="x"]{order:-1;margin-right:auto}
-  /* кнопка «В корзину» липнет к низу шторки (fixed ломается, когда шторку двигают пальцем) */
-  .qv-foot{position:sticky;left:auto;right:auto;bottom:0}
-  .qv-scroll{padding-bottom:24px}
+  /* Экран прокручивается в qv-box; покупка всегда доступна у нижней границы. */
+  .qv-foot{position:fixed;left:0;right:0;bottom:0}
+  .qv-scroll{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
 }
 
 /* телефон: шторка карточки не должна ходить вбок: на всю ширину экрана, без горизонтальной прокрутки */

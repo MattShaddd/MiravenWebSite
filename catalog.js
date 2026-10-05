@@ -840,7 +840,7 @@
     if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.stopImmediatePropagation();e.preventDefault();var s=lbSlide(),k=Math.max(0,Math.min(s.children.length-1,lbIdx()+(e.key==='ArrowRight'?1:-1)));s.scrollTo({left:k*s.clientWidth,behavior:reduce?'auto':'smooth'})}
   },true);
 
-  if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:qv,box:function(){return qv.querySelector('.qv-box')},scroller:function(){return qv.querySelector('.qv-box')},handle:'.qv-top,.qv-grab',expand:true,enabled:function(){return !qv.hidden},close:closeQV});
+  if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:qv,box:function(){return qv.querySelector('.qv-box')},scroller:function(){return qv.querySelector('.qv-box')},handle:'.qv-top,.qv-grab',enabled:function(){return !qv.hidden},close:closeQV});
   /* ---------- свайп влево/вправо листает товары (телефон) ---------- */
   (function(){
     var tx=0,ty=0,on=false,stage=false,canPrev=false,canNext=false;
