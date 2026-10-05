@@ -126,11 +126,7 @@
   }
   var STP='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   function cardBtn(it){
-    if(it.sold)return '';
-    if(it.multi){var m=itemQty(it);return '<button class="add" type="button" data-uid="'+it.uid+'" aria-label="Выбрать вариант: '+esc(it.title)+'">'+PLUS+'<span>'+(m?'Выбрать · '+m+' в корзине':'Выбрать')+'</span></button>'}
-    var q=itemQty(it);
-    if(q)return '<div class="add stp'+(q>=maxQty(it.eds[0])?' lim':'')+'" data-uid="'+it.uid+'" data-q="'+q+'" role="group" aria-label="В корзине: '+esc(it.title)+'">'+STP.replace('<b></b>','<b>'+q+'</b>')+'</div>';
-    return '<button class="add" type="button" data-uid="'+it.uid+'" data-q="0" aria-label="В корзину: '+esc(it.title)+'">'+PLUS+'<span>В корзину</span></button>';
+    return MVProductCard.control(it,esc,PLUS);
   }
   /* обратная связь на «−»: число прокручивается, над кнопкой всплывает «−1», телефон коротко вибрирует. Палец закрывает число, поэтому подсказка выше */
   function rollNum(b,down){
@@ -161,7 +157,7 @@
     var btn=cardBtn(it);
     var price=it.sold?'<span class="soldtag">Нет в наличии</span>':(it.from?'от ':'')+fmt(it.price)+' ₽'+(it.old>it.price&&!it.from?'<s>'+fmt(it.old)+' ₽</s>':'');
     var productUrl='#p-'+it.uid;
-    return '<article class="pc'+(it.sold?' sold':'')+'" style="--i:'+Math.min(k,11)+'" data-uid="'+it.uid+'"><div class="pc-ph">'+
+    return '<article class="pc mv-product-card'+(it.sold?' sold':'')+'" style="--i:'+Math.min(k,11)+'" data-uid="'+it.uid+'"><div class="pc-ph">'+
       '<a class="pc-link" href="'+esc(productUrl)+'" aria-label="'+esc(it.title)+'"></a>'+
       (it.img?'<img src="'+esc(thumb(it.img,520))+'" data-full="'+esc(it.img)+'" alt="'+esc(it.title)+'" loading="lazy" decoding="async" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+
       (it.img2&&!it.sold&&!TOUCH?'<img class="alt" src="'+esc(thumb(it.img2,520))+'" alt="" loading="lazy" decoding="async">':'')+
@@ -358,21 +354,12 @@
     fly(btn);paintCards();return true;
   }
   /* быстрое добавление с карточки */
-  grid.addEventListener('click',function(e){
-    var st=e.target.closest('.stp button');if(st){
-      e.preventDefault();var it0=byUid[st.parentNode.dataset.uid];if(!it0)return;
-      if(st.dataset.s==='m')cartMinus(it0,it0.eds[0],null);
-      else addToCart(it0,it0.eds[0],1,null,st);
-      return;
-    }
-    var b=e.target.closest('.add');if(b){
-      e.preventDefault();if(b.classList.contains('stp'))return;var it=byUid[b.dataset.uid];if(!it)return;
-      if(it.multi){openQV(it.uid);return}
-      addToCart(it,it.eds[0],1,null,b);
-      return;
-    }
-    var a=e.target.closest('a[href^="#p-"]');
-    if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){e.preventDefault();openQV(a.getAttribute('href').slice(3))}
+  MVProductCard.bind(grid,{
+    getItem:function(uid){return byUid[uid]},
+    add:function(it,button){addToCart(it,it.eds[0],1,null,button)},
+    open:function(it){openQV(it.uid)},
+    after:function(){paintCards();updBadge()},
+    link:'a[href^="#p-"]'
   });
 
   /* ---------- просмотрщик ---------- */

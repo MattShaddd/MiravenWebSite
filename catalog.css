@@ -97,21 +97,6 @@ html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background
 .bdg{font-size:12px;font-weight:600;line-height:1;border-radius:999px;padding:6px 10px;background:var(--white);color:var(--ink);letter-spacing:.01em}
 .bdg.sale{background:var(--gold);color:#17151B}
 .bdg.new{background:var(--ink);color:var(--white)}
-.pc .add{z-index:4;right:10px;bottom:10px}
-.pc .add.stp{padding:0;gap:0;overflow:visible;background:var(--ink);color:var(--white)}
-.pc .add.stp:hover{background:var(--ink)}
-.pc .add.stp button{border:0;background:none;color:inherit;font:inherit;font-size:17px;line-height:1;width:34px;height:100%;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .2s}
-.pc .add.stp button{position:relative;border-radius:0}
-.pc .add.stp button[data-s="m"]{border-radius:18px 0 0 18px}
-.pc .add.stp button[data-s="p"]{border-radius:0 18px 18px 0}
-/* невидимая зона нажатия шире самой кнопки: -12px сверху, снизу и снаружи, до середины числа */
-.pc .add.stp button::before{content:"";position:absolute;top:-12px;bottom:-12px;left:0;right:0}
-.pc .add.stp button[data-s="m"]::before{left:-14px;right:-11px}
-.pc .add.stp button[data-s="p"]::before{left:-11px;right:-14px}
-.pc .add.stp button:hover{background:rgba(255,255,255,.16)}
-.pc .add.stp b{min-width:22px;text-align:center;font-weight:600;font-size:13px}
-.pc .add.stp.lim button[data-s="p"]{opacity:.35}
-.pc:hover .add span,.pc .add:focus-visible span{max-width:90px}
 .pc-meta{display:grid;gap:1px;min-width:0}
 .pc-meta small{font-size:12px;color:var(--muted)}
 .pc-meta h3{font-family:var(--f-body);font-weight:500;font-size:16px;line-height:1.3;letter-spacing:0}
@@ -267,9 +252,6 @@ body.qv-lock{overscroll-behavior:none}
   .pc-meta small{font-size:11px}
   .pc-meta h3{font-size:14px}
   .pc .price{font-size:14px}
-  .pc .add{right:6px;bottom:6px;height:32px;min-width:32px;padding:0 9px}
-  .pc .add span{display:none}
-  .pc .add.stp button{width:30px}
   .bdg{font-size:11px;padding:5px 8px}
   .pc-badges{left:6px;top:6px}
   .cat-hero{padding-block:20px 12px;gap:10px}
@@ -462,11 +444,6 @@ body.qv-lock{overscroll-behavior:none}
   .cat-bar .tabs button:hover{border-color:var(--muted)}
   .cat-bar .tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--white)}
   .cat-bar-in{align-items:center}
-}
-
-@media (hover:none){
-  .pc .add.stp button:hover{background:none}
-  .pc .add.stp button:active{background:rgba(255,255,255,.16)}
 }
 
 /* всплывающая подсказка над кнопкой «−» на карточке */

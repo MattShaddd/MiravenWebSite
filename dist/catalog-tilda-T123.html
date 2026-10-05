@@ -148,9 +148,8 @@ html{scroll-behavior:smooth}
 .add{position:absolute;right:10px;bottom:10px;z-index:2;height:36px;min-width:36px;padding:0 11px;border:0;border-radius:18px;background:var(--white);color:var(--ink);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;box-shadow:0 6px 16px -8px rgba(0,0,0,.35);transition:background .25s,color .25s,transform .25s}
 .add svg{width:14px;height:14px;flex:none;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
 .add span{display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .35s cubic-bezier(.2,.8,.2,1)}
-.prod:hover .add span,.add:focus-visible span{max-width:90px}
 .add:hover{background:var(--ink);color:var(--white)}
-.add:active{transform:scale(.94)}
+.add:active{transform:scale(.96)}
 .add.done{background:var(--gold);color:#17151B}
 .add.done svg{transform:rotate(360deg)}
 .progress{position:relative;height:2px;background:var(--stone);border-radius:2px;margin-top:18px;overflow:hidden}
@@ -1125,7 +1124,7 @@ html[data-mv-theme="dark"],html[data-mv-theme="dark"] body{background:#121017!im
 /* телефон: у окон нет крестиков, закрываются свайпом вниз (или касанием по затемнению) */
 @media (max-width:760px){
   .top{top:0!important}
-  .sh-x,.cab-x,.lb-x,.qv-btn[data-qv="x"],
+  .sh-x,.cab-x,.lb-x,
   .t706__cartpage .t706__cartpage-close,.t706__cartwin .t706__cartwin-close,.t706__cartwin .t706__cartwin-close-wrapper{display:none!important}
   .sh-head{padding-right:22px}
   .t706__cartpage .t706__cartpage-heading{padding-right:0!important}
@@ -1256,21 +1255,6 @@ html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background
 .bdg{font-size:12px;font-weight:600;line-height:1;border-radius:999px;padding:6px 10px;background:var(--white);color:var(--ink);letter-spacing:.01em}
 .bdg.sale{background:var(--gold);color:#17151B}
 .bdg.new{background:var(--ink);color:var(--white)}
-.pc .add{z-index:4;right:10px;bottom:10px}
-.pc .add.stp{padding:0;gap:0;overflow:visible;background:var(--ink);color:var(--white)}
-.pc .add.stp:hover{background:var(--ink)}
-.pc .add.stp button{border:0;background:none;color:inherit;font:inherit;font-size:17px;line-height:1;width:34px;height:100%;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .2s}
-.pc .add.stp button{position:relative;border-radius:0}
-.pc .add.stp button[data-s="m"]{border-radius:18px 0 0 18px}
-.pc .add.stp button[data-s="p"]{border-radius:0 18px 18px 0}
-/* невидимая зона нажатия шире самой кнопки: -12px сверху, снизу и снаружи, до середины числа */
-.pc .add.stp button::before{content:"";position:absolute;top:-12px;bottom:-12px;left:0;right:0}
-.pc .add.stp button[data-s="m"]::before{left:-14px;right:-11px}
-.pc .add.stp button[data-s="p"]::before{left:-11px;right:-14px}
-.pc .add.stp button:hover{background:rgba(255,255,255,.16)}
-.pc .add.stp b{min-width:22px;text-align:center;font-weight:600;font-size:13px}
-.pc .add.stp.lim button[data-s="p"]{opacity:.35}
-.pc:hover .add span,.pc .add:focus-visible span{max-width:90px}
 .pc-meta{display:grid;gap:1px;min-width:0}
 .pc-meta small{font-size:12px;color:var(--muted)}
 .pc-meta h3{font-family:var(--f-body);font-weight:500;font-size:16px;line-height:1.3;letter-spacing:0}
@@ -1403,9 +1387,9 @@ body.qv-lock{overscroll-behavior:none}
   .qv-title{font-size:28px}
   .qv-foot{position:fixed;left:0;right:0;bottom:0;z-index:7;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
   .qv-gocart{display:none}
-  .qv-top .qv-btn[data-qv="x"]{width:auto;min-width:0;height:42px;padding:0 16px;border-radius:999px;gap:7px;font-size:14px;font-family:var(--f-body);font-weight:500}
-  .qv-top .qv-btn[data-qv="x"] svg{display:none}
-  .qv-top .qv-btn[data-qv="x"]::after{content:'Назад';display:block}
+  .qv-top .qv-btn[data-qv="x"]{width:42px;min-width:42px;height:42px;padding:0;border-radius:50%}
+  .qv-top .qv-btn[data-qv="x"] svg{display:block}
+  .qv-top .qv-btn[data-qv="x"]::after{content:none;display:none}
   .qv-slide{padding:18px}
   .qv-slide.zoom img{transform:none}
 }
@@ -1426,9 +1410,6 @@ body.qv-lock{overscroll-behavior:none}
   .pc-meta small{font-size:11px}
   .pc-meta h3{font-size:14px}
   .pc .price{font-size:14px}
-  .pc .add{right:6px;bottom:6px;height:32px;min-width:32px;padding:0 9px}
-  .pc .add span{display:none}
-  .pc .add.stp button{width:30px}
   .bdg{font-size:11px;padding:5px 8px}
   .pc-badges{left:6px;top:6px}
   .cat-hero{padding-block:20px 12px;gap:10px}
@@ -1623,11 +1604,6 @@ body.qv-lock{overscroll-behavior:none}
   .cat-bar-in{align-items:center}
 }
 
-@media (hover:none){
-  .pc .add.stp button:hover{background:none}
-  .pc .add.stp button:active{background:rgba(255,255,255,.16)}
-}
-
 /* всплывающая подсказка над кнопкой «−» на карточке */
 .pc-chip{position:absolute;right:10px;bottom:56px;z-index:6;pointer-events:none;padding:5px 11px;border-radius:999px;background:var(--gold);color:#17151B;font-size:13px;font-weight:600;line-height:1.2;white-space:nowrap;box-shadow:0 8px 18px -8px rgba(0,0,0,.5)}
 @media (max-width:760px){.pc-chip{right:6px;bottom:46px}}
@@ -1651,6 +1627,31 @@ body.qv-lock{overscroll-behavior:none}
   .qv{width:100%;max-width:100vw;overflow:hidden}
   .qv-box{width:100%;min-width:0;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
   .qv-info,.qv-scroll,.qv-gal{min-width:0;max-width:100%}
+}
+
+.mv-product-card .add{position:absolute;z-index:4;right:10px;bottom:10px;height:36px;min-width:36px;padding:0 11px;border:0;border-radius:18px;background:var(--ink);color:var(--white);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;box-shadow:0 8px 18px -10px rgba(0,0,0,.55);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition-property:background,color,transform;transition-duration:.2s}
+.mv-product-card .add:hover{background:var(--ink);color:var(--white)}
+.mv-product-card .add:active{transform:scale(.96)}
+.mv-product-card .add svg{width:16px;height:16px;flex:none}
+.mv-product-card .add span{display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .35s cubic-bezier(.2,.8,.2,1)}
+.mv-product-card:hover .add span,.mv-product-card .add:focus-visible span{max-width:110px}
+.mv-product-card .add.stp{padding:0;gap:0;overflow:visible}
+.mv-product-card .add.stp button{position:relative;width:34px;height:100%;border:0;background:none;color:inherit;font:inherit;font-size:17px;line-height:1;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .2s}
+.mv-product-card .add.stp button[data-s="m"]{border-radius:18px 0 0 18px}
+.mv-product-card .add.stp button[data-s="p"]{border-radius:0 18px 18px 0}
+.mv-product-card .add.stp button::before{content:"";position:absolute;top:-12px;bottom:-12px;left:-11px;right:-11px}
+.mv-product-card .add.stp button[data-s="m"]::before{left:-14px}
+.mv-product-card .add.stp button[data-s="p"]::before{right:-14px}
+.mv-product-card .add.stp button:hover{background:rgba(255,255,255,.16)}
+.mv-product-card .add.stp b{min-width:22px;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.mv-product-card .add.stp.lim button[data-s="p"]{opacity:.35}
+@media(max-width:760px){
+  .mv-product-card .add{right:6px;bottom:6px;height:32px;min-width:32px;padding:0 9px}
+  .mv-product-card .add span{display:none}
+  .mv-product-card .add.stp{padding:0}
+  .mv-product-card .add.stp button{width:30px}
+  .mv-product-card .add.stp button:hover{background:none}
+  .mv-product-card .add.stp button:active{background:rgba(255,255,255,.16)}
 }
 
 .mv-viewer{position:fixed!important;inset:0!important;z-index:2147483647!important;background:rgba(9,7,12,.96);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transition:opacity .22s ease-out;user-select:none;overscroll-behavior:contain}.mv-viewer[hidden]{display:none}.mv-viewer--open{opacity:1}
@@ -1765,6 +1766,90 @@ body.qv-lock{overscroll-behavior:none}
   }
   function shut(){if(!root||root.hidden)return;root.classList.remove('mv-viewer--open');document.documentElement.style.overflow=oldOverflow;if(site)site.inert=false;var restore=from;setTimeout(function(){if(!root.classList.contains('mv-viewer--open')){root.hidden=true;track.innerHTML=''}},reduce?0:220);if(restore&&restore.focus)try{restore.focus({preventScroll:true})}catch(e){}}
   window.MVImageViewer={open:open,close:shut};
+})();
+
+(function(){
+  'use strict';
+  if(window.MVProductCard)return;
+  if(!document.querySelector('link[data-mv-product-card-css]')){
+    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=1';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css);
+  }
+
+  var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
+
+  function products(){
+    try{
+      if(window.tcart&&Array.isArray(window.tcart.products))return window.tcart.products;
+      var saved=JSON.parse(localStorage.getItem('tcart')||'{}');
+      return Array.isArray(saved.products)?saved.products:[];
+    }catch(e){return[]}
+  }
+  function quantity(item){
+    var n=0;
+    products().forEach(function(p){if(String(p.lid)===String(item.uid))n+=parseInt(p.quantity,10)||0});
+    return n;
+  }
+  function stock(item){
+    var q=item&&item.eds&&item.eds[0]?item.eds[0].qty:item.qty;
+    return q==null?99:Math.max(parseInt(q,10)||0,0);
+  }
+  function control(item,esc,plus){
+    if(item.sold)return '';
+    var q=quantity(item),title=esc(item.title),icon=plus||'';
+    if(item.multi)return '<button class="add" type="button" data-uid="'+item.uid+'" data-q="'+q+'" aria-label="Выбрать вариант: '+title+'">'+icon+'<span>'+(q?'Выбрать · '+q+' в корзине':'Выбрать')+'</span></button>';
+    if(q)return '<div class="add stp'+(q>=stock(item)?' lim':'')+'" data-uid="'+item.uid+'" data-q="'+q+'" role="group" aria-label="В корзине: '+title+'">'+STEPPER.replace('<b></b>','<b>'+q+'</b>')+'</div>';
+    return '<button class="add" type="button" data-uid="'+item.uid+'" data-q="0" aria-label="В корзину: '+title+'">'+icon+'<span>В корзину</span></button>';
+  }
+  function syncCart(){
+    if(!window.tcart)return;
+    var n=0,a=0;
+    (window.tcart.products||[]).forEach(function(p){var q=parseInt(p.quantity,10)||0;n+=q;a+=(parseFloat(p.price)||0)*q});
+    window.tcart.total=n;window.tcart.prodamount=a;window.tcart.amount=a;
+    ['tcart__updateTotalProductsinCartObj','tcart__saveLocalObj','tcart__reDrawProducts','tcart__reDrawCartIcon','tcart__reDrawTotal'].forEach(function(fn){try{if(typeof window[fn]==='function')window[fn]()}catch(e){}});
+  }
+  function minus(item){
+    if(!window.tcart||!Array.isArray(window.tcart.products))return false;
+    var list=window.tcart.products,line=-1;
+    for(var i=0;i<list.length;i++)if(String(list[i].lid)===String(item.uid)){line=i;break}
+    if(line<0)return false;
+    var p=list[line],q=parseInt(p.quantity,10)||1;
+    if(q>1){p.quantity=q-1;p.amount=(parseFloat(p.price)||0)*p.quantity}else list.splice(line,1);
+    syncCart();
+    return true;
+  }
+  function replace(root,item,esc,plus){
+    var card=root.querySelector('[data-uid="'+item.uid+'"]'),old=card&&card.querySelector('.add');
+    if(!old)return;
+    var box=document.createElement('div');box.innerHTML=control(item,esc,plus);
+    if(box.firstChild)old.replaceWith(box.firstChild);
+  }
+  function bind(root,options){
+    root.addEventListener('click',function(e){
+      if(options.before&&options.before(e)===false)return;
+      var step=e.target.closest('.stp button');
+      if(step&&root.contains(step)){
+        e.preventDefault();
+        var stepItem=options.getItem(step.closest('.stp').dataset.uid);if(!stepItem)return;
+        if(step.dataset.s==='m')minus(stepItem);else options.add(stepItem,step);
+        options.after(stepItem,step.dataset.s);
+        return;
+      }
+      var button=e.target.closest('.add');
+      if(button&&root.contains(button)){
+        e.preventDefault();if(button.classList.contains('stp'))return;
+        var item=options.getItem(button.dataset.uid);if(!item)return;
+        if(item.multi)options.open(item);else options.add(item,button);
+        options.after(item,'add');
+        return;
+      }
+      var link=e.target.closest(options.link||'[data-product-link]');
+      if(link&&root.contains(link)&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){
+        e.preventDefault();var linked=options.getItem(link.closest('[data-uid]').dataset.uid);if(linked)options.open(linked);
+      }
+    },options.capture===true);
+  }
+
+  window.MVProductCard={products:products,quantity:quantity,stock:stock,control:control,minus:minus,replace:replace,bind:bind};
 })();
 
 (function(){
@@ -2024,11 +2109,7 @@ body.qv-lock{overscroll-behavior:none}
   }
   var STP='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   function cardBtn(it){
-    if(it.sold)return '';
-    if(it.multi){var m=itemQty(it);return '<button class="add" type="button" data-uid="'+it.uid+'" aria-label="Выбрать вариант: '+esc(it.title)+'">'+PLUS+'<span>'+(m?'Выбрать · '+m+' в корзине':'Выбрать')+'</span></button>'}
-    var q=itemQty(it);
-    if(q)return '<div class="add stp'+(q>=maxQty(it.eds[0])?' lim':'')+'" data-uid="'+it.uid+'" data-q="'+q+'" role="group" aria-label="В корзине: '+esc(it.title)+'">'+STP.replace('<b></b>','<b>'+q+'</b>')+'</div>';
-    return '<button class="add" type="button" data-uid="'+it.uid+'" data-q="0" aria-label="В корзину: '+esc(it.title)+'">'+PLUS+'<span>В корзину</span></button>';
+    return MVProductCard.control(it,esc,PLUS);
   }
   /* обратная связь на «−»: число прокручивается, над кнопкой всплывает «−1», телефон коротко вибрирует. Палец закрывает число, поэтому подсказка выше */
   function rollNum(b,down){
@@ -2059,7 +2140,7 @@ body.qv-lock{overscroll-behavior:none}
     var btn=cardBtn(it);
     var price=it.sold?'<span class="soldtag">Нет в наличии</span>':(it.from?'от ':'')+fmt(it.price)+' ₽'+(it.old>it.price&&!it.from?'<s>'+fmt(it.old)+' ₽</s>':'');
     var productUrl='#p-'+it.uid;
-    return '<article class="pc'+(it.sold?' sold':'')+'" style="--i:'+Math.min(k,11)+'" data-uid="'+it.uid+'"><div class="pc-ph">'+
+    return '<article class="pc mv-product-card'+(it.sold?' sold':'')+'" style="--i:'+Math.min(k,11)+'" data-uid="'+it.uid+'"><div class="pc-ph">'+
       '<a class="pc-link" href="'+esc(productUrl)+'" aria-label="'+esc(it.title)+'"></a>'+
       (it.img?'<img src="'+esc(thumb(it.img,520))+'" data-full="'+esc(it.img)+'" alt="'+esc(it.title)+'" loading="lazy" decoding="async" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+
       (it.img2&&!it.sold&&!TOUCH?'<img class="alt" src="'+esc(thumb(it.img2,520))+'" alt="" loading="lazy" decoding="async">':'')+
@@ -2256,21 +2337,12 @@ body.qv-lock{overscroll-behavior:none}
     fly(btn);paintCards();return true;
   }
   /* быстрое добавление с карточки */
-  grid.addEventListener('click',function(e){
-    var st=e.target.closest('.stp button');if(st){
-      e.preventDefault();var it0=byUid[st.parentNode.dataset.uid];if(!it0)return;
-      if(st.dataset.s==='m')cartMinus(it0,it0.eds[0],null);
-      else addToCart(it0,it0.eds[0],1,null,st);
-      return;
-    }
-    var b=e.target.closest('.add');if(b){
-      e.preventDefault();if(b.classList.contains('stp'))return;var it=byUid[b.dataset.uid];if(!it)return;
-      if(it.multi){openQV(it.uid);return}
-      addToCart(it,it.eds[0],1,null,b);
-      return;
-    }
-    var a=e.target.closest('a[href^="#p-"]');
-    if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){e.preventDefault();openQV(a.getAttribute('href').slice(3))}
+  MVProductCard.bind(grid,{
+    getItem:function(uid){return byUid[uid]},
+    add:function(it,button){addToCart(it,it.eds[0],1,null,button)},
+    open:function(it){openQV(it.uid)},
+    after:function(){paintCards();updBadge()},
+    link:'a[href^="#p-"]'
   });
 
   /* ---------- просмотрщик ---------- */
@@ -2997,7 +3069,6 @@ body.qv-lock{overscroll-behavior:none}
     try{localStorage.setItem('miraven-theme',saved)}catch(e){}
     apply(saved,true);
   });
-
 
   if(window.matchMedia('(max-width:760px)').matches)$('q').placeholder='Поиск';
 

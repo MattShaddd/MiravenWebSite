@@ -24,6 +24,7 @@ home = re.search(r"HOME='([^']+)'", rd('loader-catalog.html')).group(1)
 home_html = rd('miraven.html')
 home_js = rd('miraven.js')
 viewer_js = rd('image-viewer.js')
+product_card_js = rd('product-card.js')
 
 # ---------- catalog.html ----------
 header = re.search(r'<header class="top wrap">.*?</header>', home_html, re.S).group(0)
@@ -51,7 +52,7 @@ wr('catalog.html', catalog_html)
 a = home_js.index('  // вход / регистрация'); b = home_js.index('  // поиск и мобильное меню')
 auth = home_js[a:b]
 t = home_js.index("  var site=document.querySelector('.site'),tbtn")
-theme = home_js[t:home_js.rindex('})();')]
+theme = home_js[t:home_js.index('\n  }\n  if(window.MVProductCard)start()', t)]
 fa = home_js.index('  // ПЛАВАЮЩАЯ КОРЗИНА'); fb = home_js.index('  // КОНЕЦ ПЛАВАЮЩЕЙ КОРЗИНЫ')
 fab = home_js[fa:fb]
 sa = home_js.index('  // МОДАЛЬНЫЕ ШТОРКИ'); sb = home_js.index('  // КОНЕЦ ШТОРОК')
@@ -62,7 +63,7 @@ cartsheet = home_js[ca:cb]
 for blk in (sheet, cartsheet, fab):
     assert blk in auth
     auth = auth.replace(blk, '')
-cjs = rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
+cjs = product_card_js + '\n' + rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
 # ---------- qv.js: просмотр товара для главной (те же куски кода, что и в каталоге) ----------
@@ -162,8 +163,8 @@ def inline(css_files, html, js, extra_head=''):
     return ('<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             '<link rel="stylesheet" href="%s">\n<style>%s</style>\n\n%s\n\n<script>%s</script>\n') % (font, css, html, js)
 
-wr('dist/miraven-tilda-T123.html', inline(['miraven.css', 'image-viewer.css'], home_html.replace('{{BASE}}', base), viewer_js+'\n'+home_js))
-cat_inline = inline(['miraven.css', 'catalog.css', 'image-viewer.css'], catalog_html.replace('{{BASE}}', base).replace('{{HOME}}', home), 'window.MV_HOME=%r;\n' % home + viewer_js+'\n'+cjs)
+wr('dist/miraven-tilda-T123.html', inline(['miraven.css', 'product-card.css', 'image-viewer.css'], home_html.replace('{{BASE}}', base), product_card_js+'\n'+viewer_js+'\n'+home_js))
+cat_inline = inline(['miraven.css', 'catalog.css', 'product-card.css', 'image-viewer.css'], catalog_html.replace('{{BASE}}', base).replace('{{HOME}}', home), 'window.MV_HOME=%r;\n' % home + viewer_js+'\n'+cjs)
 wr('dist/catalog-tilda-T123.html', cat_inline)
 wr('dist/footer-tilda-T123.html', inline(['footer.css'], rd('footer.html').replace('{{BASE}}', base), ''))
 print('ok; logos from', base, '; home =', home)

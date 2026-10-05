@@ -1,4 +1,5 @@
 (function(){
+  function start(){
   /* Бесшовный переход главная → каталог. Тестовые адреса меняются здесь после запуска новой структуры URL. */
   (function(){
     if(window.MVRouter)return;
@@ -84,12 +85,13 @@
       url:(p.url||'').replace(/^http:/,'https:'),part:(ids[0]&&parts[ids[0]])||'',search:(p.title+' '+(p.descr||'')).toLowerCase()};
   }
   function list(){return items.filter(function(i){return (cat==='all'||i.ids.indexOf(+cat)>-1)&&(!query||i.search.indexOf(query)>-1)})}
+  function paintMainCard(i){MVProductCard.replace(track,i,esc,PLUS)}
   function cards(){
     var L=list();if(!L.length)return '<p class="empty">Ничего не нашлось. Попробуйте другой запрос.</p>';
     return L.map(function(i,k){
-      var btn=i.sold?'':'<button class="add" data-uid="'+i.uid+'" aria-label="'+(i.multi?'Выбрать вариант: ':'В корзину: ')+esc(i.title)+'">'+PLUS+'<span>'+(i.multi?'Выбрать':'В корзину')+'</span></button>';
+      var btn=MVProductCard.control(i,esc,PLUS);
       var url='/newstore#p-'+i.uid;
-      return '<article class="prod'+(i.sold?' soldout':'')+'" style="--i:'+Math.min(k,7)+'"><div class="photo">'+(i.img?'<img class="pimg" loading="lazy" decoding="async" src="'+esc(thumb(i.img))+'" data-full="'+esc(i.img)+'" alt="'+esc(i.title)+'" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+'<a class="plink" href="'+url+'" aria-label="'+esc(i.title)+'"></a>'+btn+'</div><div class="meta"><small>'+esc(i.t||i.part)+'</small><h3><a href="'+url+'">'+esc(i.n)+'</a></h3></div><span class="price">'+(i.sold?'<span class="soldtag">Нет в наличии</span>':fmt(i.price)+' ₽'+(i.old?'<s>'+fmt(i.old)+' ₽</s>':''))+'</span></article>';
+      return '<article class="prod mv-product-card'+(i.sold?' soldout':'')+'" data-uid="'+i.uid+'" style="--i:'+Math.min(k,7)+'"><div class="photo">'+(i.img?'<img class="pimg" loading="lazy" decoding="async" src="'+esc(thumb(i.img))+'" data-full="'+esc(i.img)+'" alt="'+esc(i.title)+'" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+'<a class="plink" href="'+url+'" aria-label="'+esc(i.title)+'"></a>'+btn+'</div><div class="meta"><small>'+esc(i.t||i.part)+'</small><h3><a href="'+url+'">'+esc(i.n)+'</a></h3></div><span class="price">'+(i.sold?'<span class="soldtag">Нет в наличии</span>':fmt(i.price)+' ₽'+(i.old?'<s>'+fmt(i.old)+' ₽</s>':''))+'</span></article>';
     }).join('');
   }
   function render(){
@@ -135,33 +137,32 @@
     if(p.sku)Y.sku=String(p.sku);
     if(i.qty>0)Y.inv=i.qty;
     if(p.unit)Y.unit=p.unit;if(p.portion)Y.portion=p.portion;if(p.single)Y.single=p.single;
-    if(typeof window.tcart__addProduct!=='function'){location.href=i.url;return}
+    if(typeof window.tcart__addProduct!=='function'){location.href=i.url;return false}
     var t6=document.querySelector('.t706');if(t6)t6.setAttribute('data-opencart-onorder','no');
     tcart__addProduct(Y);
     if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}
-    b.classList.add('done');b.innerHTML=CHECK+'<span>В корзине</span>';
-    setTimeout(function(){b.classList.remove('done');b.innerHTML=PLUS+'<span>В корзину</span>'},2200);
+    var from=b.getBoundingClientRect();
     updBadge();
-    flyReady(b,0);
+    flyReady(b,0,from);return true;
   }
-  function fly(b){
-    var to=cart.getBoundingClientRect(),from=b.getBoundingClientRect();
+  function fly(b,fromRect){
+    var to=cart.getBoundingClientRect(),from=fromRect||b.getBoundingClientRect();
     if(reduce||!document.body.animate){bump();return}
     var dot=document.createElement('i');dot.className='fly';document.body.appendChild(dot);
     var x0=from.left+from.width/2,y0=from.top+from.height/2,x1=to.left+to.width/2,y1=to.top+to.height/2,mx=(x0+x1)/2,my=Math.min(y0,y1)-120;
     var kf=[];for(var t=0;t<=1.0001;t+=.1){var a=(1-t)*(1-t),bb=2*(1-t)*t,c=t*t;kf.push({left:(a*x0+bb*mx+c*x1)+'px',top:(a*y0+bb*my+c*y1)+'px',transform:'scale('+(1-t*.55)+')',opacity:t>.9?.6:1})}
     dot.animate(kf,{duration:750,easing:'cubic-bezier(.3,.1,.3,1)'}).onfinish=function(){dot.remove();bump()};
   }
-  function flyReady(b,n){var r=cart.getBoundingClientRect();if(r.width>0&&r.height>0){fly(b);return}if((n||0)<12)requestAnimationFrame(function(){setTimeout(function(){flyReady(b,(n||0)+1)},20)});else bump()}
-  track.addEventListener('click',function(e){
-    if(moved){e.preventDefault();e.stopPropagation();moved=false;return}
-    var b=e.target.closest('.add');if(!b)return;
-    e.preventDefault();
-    var i=items.filter(function(x){return x.uid===b.dataset.uid})[0];if(!i)return;
-    if(i.multi){if(window.MV&&MV.viewProduct)MV.viewProduct(i.uid).catch(function(){location.href=i.url});else location.href=i.url;return}
-    if(b.classList.contains('done'))return;
-    addToCart(i,b);
-  },true);
+  function flyReady(b,n,from){var r=cart.getBoundingClientRect();if(r.width>0&&r.height>0){fly(b,from);return}if((n||0)<12)requestAnimationFrame(function(){setTimeout(function(){flyReady(b,(n||0)+1,from)},20)});else bump()}
+  MVProductCard.bind(track,{
+    getItem:function(uid){return items.filter(function(x){return x.uid===uid})[0]},
+    add:function(i,b){addToCart(i,b)},
+    open:function(i){if(window.MV&&MV.viewProduct)MV.viewProduct(i.uid).catch(function(){location.href=i.url});else location.href=i.url},
+    after:function(i){paintMainCard(i);updBadge()},
+    link:'a[href*="#p-"]',
+    capture:true,
+    before:function(e){if(!moved)return true;e.preventDefault();e.stopPropagation();moved=false;return false}
+  });
   // вкладки с бегущей плашкой
   var tabs=document.getElementById('tabs'),pill=tabs.querySelector('.pill');
   function movePill(b,instant){if(instant)pill.style.transition='none';pill.style.width=b.offsetWidth+'px';pill.style.transform='translateX('+(b.offsetLeft)+'px)';if(instant){void pill.offsetWidth;pill.style.transition=''}}
@@ -848,4 +849,10 @@
     try{localStorage.setItem('miraven-theme',saved)}catch(e){}
     apply(saved,true);
   });
+  }
+  if(window.MVProductCard)start();
+  else fetch('https://mattshaddd.github.io/MiravenWebSite/product-card.js',{cache:'no-cache'})
+    .then(function(r){if(!r.ok)throw new Error('product-card.js');return r.text()})
+    .then(function(code){var s=document.createElement('script');s.textContent=code;document.head.appendChild(s);s.remove();start()})
+    .catch(function(e){console.error('Не удалось загрузить общий модуль карточки товара',e)});
 })();

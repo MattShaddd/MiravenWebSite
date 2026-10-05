@@ -1,0 +1,24 @@
+.mv-product-card .add{position:absolute;z-index:4;right:10px;bottom:10px;height:36px;min-width:36px;padding:0 11px;border:0;border-radius:18px;background:var(--ink);color:var(--white);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;box-shadow:0 8px 18px -10px rgba(0,0,0,.55);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition-property:background,color,transform;transition-duration:.2s}
+.mv-product-card .add:hover{background:var(--ink);color:var(--white)}
+.mv-product-card .add:active{transform:scale(.96)}
+.mv-product-card .add svg{width:16px;height:16px;flex:none}
+.mv-product-card .add span{display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .35s cubic-bezier(.2,.8,.2,1)}
+.mv-product-card:hover .add span,.mv-product-card .add:focus-visible span{max-width:110px}
+.mv-product-card .add.stp{padding:0;gap:0;overflow:visible}
+.mv-product-card .add.stp button{position:relative;width:34px;height:100%;border:0;background:none;color:inherit;font:inherit;font-size:17px;line-height:1;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .2s}
+.mv-product-card .add.stp button[data-s="m"]{border-radius:18px 0 0 18px}
+.mv-product-card .add.stp button[data-s="p"]{border-radius:0 18px 18px 0}
+.mv-product-card .add.stp button::before{content:"";position:absolute;top:-12px;bottom:-12px;left:-11px;right:-11px}
+.mv-product-card .add.stp button[data-s="m"]::before{left:-14px}
+.mv-product-card .add.stp button[data-s="p"]::before{right:-14px}
+.mv-product-card .add.stp button:hover{background:rgba(255,255,255,.16)}
+.mv-product-card .add.stp b{min-width:22px;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.mv-product-card .add.stp.lim button[data-s="p"]{opacity:.35}
+@media(max-width:760px){
+  .mv-product-card .add{right:6px;bottom:6px;height:32px;min-width:32px;padding:0 9px}
+  .mv-product-card .add span{display:none}
+  .mv-product-card .add.stp{padding:0}
+  .mv-product-card .add.stp button{width:30px}
+  .mv-product-card .add.stp button:hover{background:none}
+  .mv-product-card .add.stp button:active{background:rgba(255,255,255,.16)}
+}

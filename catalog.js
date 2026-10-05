@@ -1,5 +1,89 @@
 (function(){
   'use strict';
+  if(window.MVProductCard)return;
+  if(!document.querySelector('link[data-mv-product-card-css]')){
+    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=1';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css);
+  }
+
+  var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
+
+  function products(){
+    try{
+      if(window.tcart&&Array.isArray(window.tcart.products))return window.tcart.products;
+      var saved=JSON.parse(localStorage.getItem('tcart')||'{}');
+      return Array.isArray(saved.products)?saved.products:[];
+    }catch(e){return[]}
+  }
+  function quantity(item){
+    var n=0;
+    products().forEach(function(p){if(String(p.lid)===String(item.uid))n+=parseInt(p.quantity,10)||0});
+    return n;
+  }
+  function stock(item){
+    var q=item&&item.eds&&item.eds[0]?item.eds[0].qty:item.qty;
+    return q==null?99:Math.max(parseInt(q,10)||0,0);
+  }
+  function control(item,esc,plus){
+    if(item.sold)return '';
+    var q=quantity(item),title=esc(item.title),icon=plus||'';
+    if(item.multi)return '<button class="add" type="button" data-uid="'+item.uid+'" data-q="'+q+'" aria-label="Выбрать вариант: '+title+'">'+icon+'<span>'+(q?'Выбрать · '+q+' в корзине':'Выбрать')+'</span></button>';
+    if(q)return '<div class="add stp'+(q>=stock(item)?' lim':'')+'" data-uid="'+item.uid+'" data-q="'+q+'" role="group" aria-label="В корзине: '+title+'">'+STEPPER.replace('<b></b>','<b>'+q+'</b>')+'</div>';
+    return '<button class="add" type="button" data-uid="'+item.uid+'" data-q="0" aria-label="В корзину: '+title+'">'+icon+'<span>В корзину</span></button>';
+  }
+  function syncCart(){
+    if(!window.tcart)return;
+    var n=0,a=0;
+    (window.tcart.products||[]).forEach(function(p){var q=parseInt(p.quantity,10)||0;n+=q;a+=(parseFloat(p.price)||0)*q});
+    window.tcart.total=n;window.tcart.prodamount=a;window.tcart.amount=a;
+    ['tcart__updateTotalProductsinCartObj','tcart__saveLocalObj','tcart__reDrawProducts','tcart__reDrawCartIcon','tcart__reDrawTotal'].forEach(function(fn){try{if(typeof window[fn]==='function')window[fn]()}catch(e){}});
+  }
+  function minus(item){
+    if(!window.tcart||!Array.isArray(window.tcart.products))return false;
+    var list=window.tcart.products,line=-1;
+    for(var i=0;i<list.length;i++)if(String(list[i].lid)===String(item.uid)){line=i;break}
+    if(line<0)return false;
+    var p=list[line],q=parseInt(p.quantity,10)||1;
+    if(q>1){p.quantity=q-1;p.amount=(parseFloat(p.price)||0)*p.quantity}else list.splice(line,1);
+    syncCart();
+    return true;
+  }
+  function replace(root,item,esc,plus){
+    var card=root.querySelector('[data-uid="'+item.uid+'"]'),old=card&&card.querySelector('.add');
+    if(!old)return;
+    var box=document.createElement('div');box.innerHTML=control(item,esc,plus);
+    if(box.firstChild)old.replaceWith(box.firstChild);
+  }
+  function bind(root,options){
+    root.addEventListener('click',function(e){
+      if(options.before&&options.before(e)===false)return;
+      var step=e.target.closest('.stp button');
+      if(step&&root.contains(step)){
+        e.preventDefault();
+        var stepItem=options.getItem(step.closest('.stp').dataset.uid);if(!stepItem)return;
+        if(step.dataset.s==='m')minus(stepItem);else options.add(stepItem,step);
+        options.after(stepItem,step.dataset.s);
+        return;
+      }
+      var button=e.target.closest('.add');
+      if(button&&root.contains(button)){
+        e.preventDefault();if(button.classList.contains('stp'))return;
+        var item=options.getItem(button.dataset.uid);if(!item)return;
+        if(item.multi)options.open(item);else options.add(item,button);
+        options.after(item,'add');
+        return;
+      }
+      var link=e.target.closest(options.link||'[data-product-link]');
+      if(link&&root.contains(link)&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){
+        e.preventDefault();var linked=options.getItem(link.closest('[data-uid]').dataset.uid);if(linked)options.open(linked);
+      }
+    },options.capture===true);
+  }
+
+  window.MVProductCard={products:products,quantity:quantity,stock:stock,control:control,minus:minus,replace:replace,bind:bind};
+})();
+
+(function(){
+  'use strict';
   /* Android Chrome: при открытой клавиатуре и скрытии адресной строки над клавиатурой оставалась пустая полоса. Пусть клавиатура меняет размер страницы целиком, а не только видимой области */
   try{var vm=document.querySelector('meta[name=viewport]');if(vm&&!/interactive-widget/.test(vm.content))vm.setAttribute('content',vm.content+',interactive-widget=resizes-content')}catch(e){}
     // МОДАЛЬНЫЕ ШТОРКИ (модуль MV.sheet)
@@ -255,11 +339,7 @@
   }
   var STP='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   function cardBtn(it){
-    if(it.sold)return '';
-    if(it.multi){var m=itemQty(it);return '<button class="add" type="button" data-uid="'+it.uid+'" aria-label="Выбрать вариант: '+esc(it.title)+'">'+PLUS+'<span>'+(m?'Выбрать · '+m+' в корзине':'Выбрать')+'</span></button>'}
-    var q=itemQty(it);
-    if(q)return '<div class="add stp'+(q>=maxQty(it.eds[0])?' lim':'')+'" data-uid="'+it.uid+'" data-q="'+q+'" role="group" aria-label="В корзине: '+esc(it.title)+'">'+STP.replace('<b></b>','<b>'+q+'</b>')+'</div>';
-    return '<button class="add" type="button" data-uid="'+it.uid+'" data-q="0" aria-label="В корзину: '+esc(it.title)+'">'+PLUS+'<span>В корзину</span></button>';
+    return MVProductCard.control(it,esc,PLUS);
   }
   /* обратная связь на «−»: число прокручивается, над кнопкой всплывает «−1», телефон коротко вибрирует. Палец закрывает число, поэтому подсказка выше */
   function rollNum(b,down){
@@ -290,7 +370,7 @@
     var btn=cardBtn(it);
     var price=it.sold?'<span class="soldtag">Нет в наличии</span>':(it.from?'от ':'')+fmt(it.price)+' ₽'+(it.old>it.price&&!it.from?'<s>'+fmt(it.old)+' ₽</s>':'');
     var productUrl='#p-'+it.uid;
-    return '<article class="pc'+(it.sold?' sold':'')+'" style="--i:'+Math.min(k,11)+'" data-uid="'+it.uid+'"><div class="pc-ph">'+
+    return '<article class="pc mv-product-card'+(it.sold?' sold':'')+'" style="--i:'+Math.min(k,11)+'" data-uid="'+it.uid+'"><div class="pc-ph">'+
       '<a class="pc-link" href="'+esc(productUrl)+'" aria-label="'+esc(it.title)+'"></a>'+
       (it.img?'<img src="'+esc(thumb(it.img,520))+'" data-full="'+esc(it.img)+'" alt="'+esc(it.title)+'" loading="lazy" decoding="async" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+
       (it.img2&&!it.sold&&!TOUCH?'<img class="alt" src="'+esc(thumb(it.img2,520))+'" alt="" loading="lazy" decoding="async">':'')+
@@ -487,21 +567,12 @@
     fly(btn);paintCards();return true;
   }
   /* быстрое добавление с карточки */
-  grid.addEventListener('click',function(e){
-    var st=e.target.closest('.stp button');if(st){
-      e.preventDefault();var it0=byUid[st.parentNode.dataset.uid];if(!it0)return;
-      if(st.dataset.s==='m')cartMinus(it0,it0.eds[0],null);
-      else addToCart(it0,it0.eds[0],1,null,st);
-      return;
-    }
-    var b=e.target.closest('.add');if(b){
-      e.preventDefault();if(b.classList.contains('stp'))return;var it=byUid[b.dataset.uid];if(!it)return;
-      if(it.multi){openQV(it.uid);return}
-      addToCart(it,it.eds[0],1,null,b);
-      return;
-    }
-    var a=e.target.closest('a[href^="#p-"]');
-    if(a&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.button)){e.preventDefault();openQV(a.getAttribute('href').slice(3))}
+  MVProductCard.bind(grid,{
+    getItem:function(uid){return byUid[uid]},
+    add:function(it,button){addToCart(it,it.eds[0],1,null,button)},
+    open:function(it){openQV(it.uid)},
+    after:function(){paintCards();updBadge()},
+    link:'a[href^="#p-"]'
   });
 
   /* ---------- просмотрщик ---------- */
@@ -1228,7 +1299,6 @@
     try{localStorage.setItem('miraven-theme',saved)}catch(e){}
     apply(saved,true);
   });
-
 
   if(window.matchMedia('(max-width:760px)').matches)$('q').placeholder='Поиск';
 
