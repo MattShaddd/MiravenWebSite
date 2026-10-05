@@ -189,7 +189,7 @@
   'use strict';
   if(window.MVImageViewer)return;
   if(!document.querySelector('link[data-mv-viewer-css]')){
-    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-1';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
+    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-2';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
   }
   var root,track,count,prev,next,closeBtn,items=[],index=0,from=null,onChange=null,oldOverflow='',oldInert=false,site=null;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;

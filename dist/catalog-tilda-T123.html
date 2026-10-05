@@ -1700,6 +1700,10 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 .mv-viewer__close{top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));width:46px;height:46px;min-width:46px;min-height:46px}.mv-viewer__close svg{width:22px;height:22px;flex:none}.mv-viewer__arrow{top:50%;translate:0 -50%;width:52px;height:52px;min-width:52px;min-height:52px}.mv-viewer__arrow svg{width:24px;height:24px;flex:none}.mv-viewer__arrow--prev{left:max(18px,env(safe-area-inset-left))}.mv-viewer__arrow--next{right:max(18px,env(safe-area-inset-right))}.mv-viewer__arrow:disabled{opacity:.18;pointer-events:none}.mv-viewer--single .mv-viewer__arrow{display:none}
 @media(max-width:700px){.mv-viewer__slide{padding:64px 10px 30px}.mv-viewer__slide img{border-radius:8px}.mv-viewer__arrow{width:44px;height:44px;background:rgba(30,27,35,.6)}.mv-viewer__arrow--prev{left:8px}.mv-viewer__arrow--next{right:8px}.mv-viewer__count{top:max(18px,env(safe-area-inset-top))}.mv-viewer__close{top:max(10px,env(safe-area-inset-top));right:10px}}
 @media(prefers-reduced-motion:reduce){.mv-viewer,.mv-viewer__close,.mv-viewer__arrow{transition:none}.mv-viewer__track{scroll-behavior:auto}}
+/* Keep intrinsic image size from expanding the grid beyond the viewport. */
+.mv-viewer__slide{--viewer-top:max(72px,env(safe-area-inset-top));--viewer-bottom:max(42px,env(safe-area-inset-bottom));grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr);min-height:0}
+.mv-viewer__slide img{min-width:0;min-height:0;max-height:calc(100vh - var(--viewer-top) - var(--viewer-bottom));max-height:calc(100dvh - var(--viewer-top) - var(--viewer-bottom))}
+@media(max-width:700px){.mv-viewer__slide{--viewer-top:64px;--viewer-bottom:30px}}
 
 </style>
 
@@ -1768,7 +1772,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   'use strict';
   if(window.MVImageViewer)return;
   if(!document.querySelector('link[data-mv-viewer-css]')){
-    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-1';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
+    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-2';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
   }
   var root,track,count,prev,next,closeBtn,items=[],index=0,from=null,onChange=null,oldOverflow='',oldInert=false,site=null;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2001,7 +2005,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   'use strict';
   if(window.MVImageViewer)return;
   if(!document.querySelector('link[data-mv-viewer-css]')){
-    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-1';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
+    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-2';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
   }
   var root,track,count,prev,next,closeBtn,items=[],index=0,from=null,onChange=null,oldOverflow='',oldInert=false,site=null;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
