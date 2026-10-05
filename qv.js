@@ -141,7 +141,7 @@
     return null;
   }
   function lineQty(it,ed,sel){var f=findLine(it,ed,sel);return f?(parseInt(f.p.quantity,10)||0):0}
-  function itemQty(it){var n=0;cartProducts().forEach(function(p){if(String(p.lid)===String(it.uid))n+=parseInt(p.quantity,10)||0});return n}
+  function itemQty(it){return MVProductCard.quantity(it)}
   function maxQty(ed){return ed.qty==null?99:Math.max(ed.qty,0)}
   function cartMinus(it,ed,sel){
     var f=findLine(it,ed,sel);if(!f||!window.tcart||!window.tcart.products)return;

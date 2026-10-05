@@ -162,7 +162,6 @@
   function bump(){updBadge();cart.classList.remove('bump');void cart.offsetWidth;cart.classList.add('bump')}
   function hookCart(){
     updBadge();
-    if(window.tcart__reDrawCartIcon&&!window.tcart__reDrawCartIcon.__m){var o=window.tcart__reDrawCartIcon;window.tcart__reDrawCartIcon=function(){var r=o.apply(this,arguments);updBadge();return r};window.tcart__reDrawCartIcon.__m=1}
   }
   function afterLoad(){hookCart();setTimeout(hookCart,600);setTimeout(updBadge,1500)}
   if(document.readyState==='complete')afterLoad();else window.addEventListener('load',afterLoad);
