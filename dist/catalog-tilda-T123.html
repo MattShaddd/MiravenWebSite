@@ -17,6 +17,8 @@
   --f-body:"Golos Text", "Segoe UI", Roboto, Arial, sans-serif;
   --r:18px;           /* фото, карточки */
   --r-lg:26px;        /* крупные фото */
+  --dialog-backdrop:rgba(14,11,18,.76);
+  --dialog-edge:rgba(0,0,0,.16);
 }
 @supports (view-transition-name: none){
   ::view-transition-group(root){background:transparent!important}
@@ -1159,6 +1161,11 @@ html[data-mv-theme="dark"],html[data-mv-theme="dark"] body{background:#121017!im
 /* iOS visual-viewport anchor. Keep home slide animation, never animate top. */
 .top.mv-viewport-header{position:fixed!important;top:var(--mv-vtop,0px)!important;left:0;right:0}
 .mv-header-space{pointer-events:none;flex:none}
+/* Shared modal separation: a restrained ring, clearly dimmed page. */
+html[data-mv-theme="dark"],.site[data-theme="dark"]{--dialog-edge:rgba(255,255,255,.22)}
+.sh,.cab,.qv,.t706__cartwin,.t706__cartpage{background:var(--dialog-backdrop)!important}
+.sh-box,.cab-box,.mv-cp,.t706__cartwin-content{outline:1px solid var(--dialog-edge);outline-offset:-1px}
+@media(min-width:761px){.qv-box{outline:1px solid var(--dialog-edge)!important;outline-offset:-1px}}
 
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
