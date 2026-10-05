@@ -106,7 +106,7 @@
   if(!document.querySelector('link[data-mv-viewer-css]')){
     var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-1';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
   }
-  var root,track,count,prev,next,closeBtn,items=[],index=0,from=null,onChange=null,oldOverflow='',site=null;
+  var root,track,count,prev,next,closeBtn,items=[],index=0,from=null,onChange=null,oldOverflow='',oldInert=false,site=null;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
   var LEFT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -139,10 +139,10 @@
     o=o||{};if(!root)make();items=normalise(o.items||o.images);if(!items.length)return;index=Math.max(0,Math.min(items.length-1,o.index||0));from=o.from||document.activeElement;onChange=typeof o.onChange==='function'?o.onChange:null;
     track.innerHTML=items.map(function(x){return'<div class="mv-viewer__slide"><img src="'+esc(x.src)+'" data-full="'+esc(x.full)+'" alt="'+esc(x.alt)+'" draggable="false"></div>'}).join('');
     track.querySelectorAll('img').forEach(function(img){img.addEventListener('error',function(){if(img.dataset.full&&img.src!==img.dataset.full)img.src=img.dataset.full},{once:true})});
-    root.classList.toggle('mv-viewer--single',items.length<2);oldOverflow=document.documentElement.style.overflow;document.documentElement.style.overflow='hidden';if(site)site.inert=true;
+    root.classList.toggle('mv-viewer--single',items.length<2);if(!root.classList.contains('mv-viewer--open')){oldOverflow=document.documentElement.style.overflow;oldInert=site?site.inert:false}document.documentElement.style.overflow='hidden';if(site)site.inert=true;
     root.hidden=false;root.getBoundingClientRect();root.classList.add('mv-viewer--open');requestAnimationFrame(function(){go(index,false)});closeBtn.focus({preventScroll:true});
   }
-  function shut(){if(!root||root.hidden)return;root.classList.remove('mv-viewer--open');document.documentElement.style.overflow=oldOverflow;if(site)site.inert=false;var restore=from;setTimeout(function(){if(!root.classList.contains('mv-viewer--open')){root.hidden=true;track.innerHTML=''}},reduce?0:220);if(restore&&restore.focus)try{restore.focus({preventScroll:true})}catch(e){}}
+  function shut(){if(!root||root.hidden)return;root.classList.remove('mv-viewer--open');document.documentElement.style.overflow=oldOverflow;if(site)site.inert=oldInert;var restore=from;setTimeout(function(){if(!root.classList.contains('mv-viewer--open')){root.hidden=true;track.innerHTML=''}},reduce?0:220);if(restore&&restore.focus)try{restore.focus({preventScroll:true})}catch(e){}}
   window.MVImageViewer={open:open,close:shut};
 })();
 

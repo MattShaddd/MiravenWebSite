@@ -760,7 +760,7 @@
 
   // полный отзыв открывается тем же адаптивным окном MV.sheet, что и остальные модалки сайта
   (function(){
-    var sheet=null;
+    var sheet=null,reviewHost=document.querySelector('.site');
     function photos(media){return[].slice.call(media.querySelectorAll('[data-review-photo]')).map(function(b){var img=b.querySelector('img');return{src:img.currentSrc||img.src,full:img.src,alt:img.alt}})}
     function openPhoto(button){
       var media=button.closest('.review-media');if(!media||!window.MVImageViewer)return;
@@ -776,7 +776,7 @@
       bindPhotos(copy);var name=((copy.querySelector('.review-author')||{}).textContent||'покупателя').trim();
       sheet.setTitle('Отзыв от «'+name+'»');sheet.setBody(copy);sheet.open();
     }
-    document.addEventListener('click',function(e){var button=e.target.closest&&e.target.closest('[data-review-photo]');if(!button)return;e.preventDefault();e.stopPropagation();openPhoto(button)},true);
+    document.addEventListener('click',function(e){if(!reviewHost.isConnected)return;var button=e.target.closest&&e.target.closest('[data-review-photo]');if(!button)return;e.preventDefault();e.stopImmediatePropagation();openPhoto(button)},true);
     document.querySelectorAll('.review-post').forEach(function(post){
       var openButton=document.createElement('button');openButton.type='button';openButton.className='review-expand';openButton.textContent='Читать отзыв';
       post.querySelector('.review-text').insertAdjacentElement('afterend',openButton);openButton.addEventListener('click',function(){show(post)});
@@ -818,7 +818,7 @@
     smooth.to=function(y){smooth.y=window.scrollY;smooth.t=Math.max(0,Math.min(maxY(),y));if(!smooth.raf)smooth.raf=requestAnimationFrame(loop)};
   }
   document.addEventListener('click',function(e){
-    var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+    if(!track.isConnected)return;var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
     var id=a.getAttribute('href');if(id==='#'){e.preventDefault();smooth.on?smooth.to(0):window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});return}
     var t=document.querySelector(id);if(!t)return;e.preventDefault();
     var y=t.getBoundingClientRect().top+window.scrollY-(top.offsetHeight-2);
