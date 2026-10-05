@@ -52,7 +52,7 @@ wr('catalog.html', catalog_html)
 a = home_js.index('  // вход / регистрация'); b = home_js.index('  // поиск и мобильное меню')
 auth = home_js[a:b]
 t = home_js.index("  var site=document.querySelector('.site'),tbtn")
-theme = home_js[t:home_js.index('\n  }\n  if(window.MVProductCard)start()', t)]
+theme = home_js[t:home_js.index('\n  }\n  if(window.MVProductCard', t)]
 fa = home_js.index('  // ПЛАВАЮЩАЯ КОРЗИНА'); fb = home_js.index('  // КОНЕЦ ПЛАВАЮЩЕЙ КОРЗИНЫ')
 fab = home_js[fa:fb]
 sa = home_js.index('  // МОДАЛЬНЫЕ ШТОРКИ'); sb = home_js.index('  // КОНЕЦ ШТОРОК')
@@ -94,7 +94,7 @@ qv_mid = """
   /* ---------- склейка с главной страницей ---------- */
   API.rec='1278451251'; // блок магазина на главной
   var curList=[];
-  function paintCards(){}
+  function paintCards(){MVProductCard.refresh()}
   function updBadge(){}
   var cartEl=$('cart');
   function bump(){if(!cartEl)return;cartEl.classList.remove('bump');void cartEl.offsetWidth;cartEl.classList.add('bump')}

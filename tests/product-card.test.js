@@ -24,6 +24,21 @@ assert.equal(card.minus(item),true);
 assert.equal(window.tcart.products[0].quantity,1);
 assert.equal(window.tcart.total,1);
 assert.equal(window.tcart.amount,150);
+const rendering={esc,fmt:String,image:src=>src,plus:'<svg></svg>',type:'Открытка'};
+for(const layout of ['rail','grid']){
+  const html=card.markup({...item,price:150,img:'photo.jpg'}, {...rendering,layout});
+  assert.match(html,/href="#p-42"/);
+  assert.match(html,/data-uid="42"/);
+  assert.match(html,/class="add stp/);
+  assert.match(html,/<b>1<\/b>/);
+  assert.equal((html.match(/class="add /g)||[]).length,1);
+}
+let refreshed=0;
+const active={isConnected:true};
+card.watch(active,()=>refreshed++);
+card.watch({isConnected:false},()=>{throw new Error('detached page refreshed')});
+card.refresh();assert.equal(refreshed,1);
+active.isConnected=false;card.refresh();assert.equal(refreshed,1);
 
 // First add can detach the source button and the desktop floating cart is hidden.
 // Feedback must use the captured rectangle and fall back to a rendered target.

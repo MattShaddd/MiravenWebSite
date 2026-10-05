@@ -87,12 +87,11 @@
   }
   function list(){return items.filter(function(i){return (cat==='all'||i.ids.indexOf(+cat)>-1)&&(!query||i.search.indexOf(query)>-1)})}
   function paintMainCard(i){MVProductCard.replace(track,i,esc,PLUS)}
+  MVProductCard.watch(track,function(){items.forEach(paintMainCard);updBadge()});
   function cards(){
     var L=list();if(!L.length)return '<p class="empty">Ничего не нашлось. Попробуйте другой запрос.</p>';
     return L.map(function(i,k){
-      var btn=MVProductCard.control(i,esc,PLUS);
-      var url='/newstore#p-'+i.uid;
-      return '<article class="prod mv-product-card'+(i.sold?' soldout':'')+'" data-uid="'+i.uid+'" style="--i:'+Math.min(k,7)+'"><div class="photo">'+(i.img?'<img class="pimg" loading="lazy" decoding="async" src="'+esc(thumb(i.img))+'" data-full="'+esc(i.img)+'" alt="'+esc(i.title)+'" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'')+'<a class="plink" href="'+url+'" aria-label="'+esc(i.title)+'"></a>'+btn+'</div><div class="meta"><small>'+esc(i.t||i.part)+'</small><h3><a href="'+url+'">'+esc(i.n)+'</a></h3></div><span class="price">'+(i.sold?'<span class="soldtag">Нет в наличии</span>':fmt(i.price)+' ₽'+(i.old?'<s>'+fmt(i.old)+' ₽</s>':''))+'</span></article>';
+      return MVProductCard.markup(i,{layout:'rail',esc:esc,fmt:fmt,plus:PLUS,image:thumb,type:i.part,index:k});
     }).join('');
   }
   function render(){
@@ -848,7 +847,7 @@
     apply(saved,true);
   });
   }
-  if(window.MVProductCard)start();
+  if(window.MVProductCard&&MVProductCard.markup)start();
   else fetch('https://mattshaddd.github.io/MiravenWebSite/product-card.js',{cache:'no-cache'})
     .then(function(r){if(!r.ok)throw new Error('product-card.js');return r.text()})
     .then(function(code){var s=document.createElement('script');s.textContent=code;document.head.appendChild(s);s.remove();start()})

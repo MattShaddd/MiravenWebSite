@@ -124,7 +124,7 @@
   /* ---------- склейка с главной страницей ---------- */
   API.rec='1278451251'; // блок магазина на главной
   var curList=[];
-  function paintCards(){}
+  function paintCards(){MVProductCard.refresh()}
   function updBadge(){}
   var cartEl=$('cart');
   function bump(){if(!cartEl)return;cartEl.classList.remove('bump');void cartEl.offsetWidth;cartEl.classList.add('bump')}

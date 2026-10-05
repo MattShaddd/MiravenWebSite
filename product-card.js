@@ -1,11 +1,14 @@
 (function(){
   'use strict';
-  if(window.MVProductCard)return;
+  if(window.MVProductCard&&window.MVProductCard.version===2)return;
   if(!document.querySelector('link[data-mv-product-card-css]')){
     var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=1';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css);
   }
 
   var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
+  var watchers=[];
+  function watch(root,update){watchers.push({root:root,update:update})}
+  function refresh(){watchers=watchers.filter(function(w){return w.root.isConnected});watchers.forEach(function(w){w.update()});if(window.MVFloatingCart)window.MVFloatingCart.refresh()}
 
   function products(){
     try{
@@ -30,6 +33,13 @@
     if(q)return '<div class="add stp'+(q>=stock(item)?' lim':'')+'" data-uid="'+item.uid+'" data-q="'+q+'" role="group" aria-label="В корзине: '+title+'">'+STEPPER.replace('<b></b>','<b>'+q+'</b>')+'</div>';
     return '<button class="add" type="button" data-uid="'+item.uid+'" data-q="0" aria-label="В корзину: '+title+'">'+icon+'<span>В корзину</span></button>';
   }
+  function markup(item,o){
+    var rail=o.layout==='rail',esc=o.esc,cls=rail?'prod':'pc',photo=rail?'photo':'pc-ph',meta=rail?'meta':'pc-meta',link=rail?'plink':'pc-link';
+    var href=o.href||'#p-'+item.uid,src=o.image(item.img),price=item.sold?'<span class="soldtag">Нет в наличии</span>':(item.from?'от ':'')+o.fmt(item.price)+' ₽'+(item.old>item.price&&!item.from?'<s>'+o.fmt(item.old)+' ₽</s>':'');
+    var images=item.img?'<img'+(rail?' class="pimg"':'')+' loading="lazy" decoding="async" src="'+esc(src)+'" data-full="'+esc(item.img)+'" alt="'+esc(item.title)+'" onerror="if(this.dataset.full&&this.src!==this.dataset.full)this.src=this.dataset.full">':'';
+    if(o.hover&&item.img2&&!item.sold)images+='<img class="alt" src="'+esc(o.image(item.img2))+'" alt="" loading="lazy" decoding="async">';
+    return '<article class="'+cls+' mv-product-card'+(item.sold?(rail?' soldout':' sold'):'')+'" data-uid="'+item.uid+'" style="--i:'+Math.min(o.index||0,rail?7:11)+'"><div class="'+photo+'">'+images+'<a class="'+link+'" href="'+esc(href)+'" aria-label="'+esc(item.title)+'"></a>'+(o.badges||'')+control(item,esc,o.plus)+'</div><div class="'+meta+'"><small>'+esc(item.t||o.type||'')+'</small><h3><a href="'+esc(href)+'">'+esc(item.n||item.title)+'</a></h3></div><span class="price">'+price+'</span></article>';
+  }
   function syncCart(){
     if(!window.tcart)return;
     var n=0,a=0;
@@ -50,6 +60,7 @@
   function replace(root,item,esc,plus){
     var card=root.querySelector('[data-uid="'+item.uid+'"]'),old=card&&card.querySelector('.add');
     if(!old)return;
+    if(old.dataset.q===String(quantity(item)))return;
     var box=document.createElement('div');box.innerHTML=control(item,esc,plus);
     if(box.firstChild)old.replaceWith(box.firstChild);
   }
@@ -97,5 +108,5 @@
       animation.onfinish=function(){dot.remove();if(done)done()};animation.oncancel=function(){dot.remove()};
     });
   }
-  window.MVProductCard={products:products,quantity:quantity,stock:stock,control:control,minus:minus,replace:replace,bind:bind,feedback:feedback};
+  window.MVProductCard={version:2,products:products,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh};
 })();
