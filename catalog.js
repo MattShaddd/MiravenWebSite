@@ -1,3 +1,13 @@
+/* Начало ранней темы. Выполняется до загрузки модулей и инициализации страницы. */
+(function(){
+  var saved=null;try{saved=localStorage.getItem('miraven-theme')}catch(e){}
+  var hash=(location.hash||'').slice(1);if(hash==='dark'||hash==='beige')saved=hash;
+  if(saved!=='dark'&&saved!=='beige')saved=null;
+  var theme=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'beige');
+  document.documentElement.setAttribute('data-mv-theme',theme);
+  document.querySelectorAll('.site').forEach(function(site){site.setAttribute('data-theme',theme)});
+})();
+
 /* Начало общего закрепления шапки iOS. */
 (function(){
   if(window.MVViewportHeader)return;
@@ -1442,13 +1452,17 @@
   var mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null,saved=null;
   try{saved=localStorage.getItem('miraven-theme')}catch(e){}
   var h=(location.hash||'').slice(1);if(h==='dark'||h==='beige')saved=h;
+  if(saved!=='dark'&&saved!=='beige')saved=null;
   function apply(t,anim){
-    if(anim){site.classList.add('pal-anim');clearTimeout(apply.t);apply.t=setTimeout(function(){site.classList.remove('pal-anim')},600)}
-    if(t==='dark')site.setAttribute('data-theme','dark');else site.removeAttribute('data-theme');
+    if(!site.isConnected)return;
+    // One repaint, not colour/shadow interpolation on every node for 450 ms.
+    var root=document.documentElement;root.classList.add('mv-theme-change');
+    if(apply.frame)cancelAnimationFrame(apply.frame);
+    site.setAttribute('data-theme',t);
     document.documentElement.setAttribute('data-mv-theme',t==='dark'?'dark':'beige');
     tbtn.setAttribute('aria-pressed',String(t==='dark'));
     tbtn.setAttribute('aria-label',t==='dark'?'Светлая тема':'Тёмная тема');
-    var bg=getComputedStyle(site).backgroundColor;document.body.style.background=bg;document.documentElement.style.background=bg;
+    apply.frame=requestAnimationFrame(function(){apply.frame=requestAnimationFrame(function(){root.classList.remove('mv-theme-change');apply.frame=0})});
   }
   function current(){return saved||(mq&&mq.matches?'dark':'beige')}
   apply(current(),false);

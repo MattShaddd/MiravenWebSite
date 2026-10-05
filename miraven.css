@@ -316,8 +316,9 @@ section[id]{scroll-margin-top:80px}
 .faq summary:hover{color:var(--gold-text)}
 .faq summary::after{transition:transform .35s cubic-bezier(.2,.8,.2,1),margin-top .35s}
 
-/* смена палитры */
-.site.pal-anim, .site.pal-anim *{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease!important}
+/* Palette changes paint once. Keep compositor-only feedback on the theme icon. */
+html.mv-theme-change *,html.mv-theme-change *::before,html.mv-theme-change *::after{transition:none!important}
+html.mv-theme-change .theme-btn svg{transition:transform .25s ease-out,opacity .18s ease-out!important}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
