@@ -10,10 +10,19 @@ global.document={
   head
 };
 global.localStorage={getItem(){return null}};
+// Production polling belongs to the browser, not this synchronous test runner.
+global.setInterval=()=>1;
 
 vm.runInThisContext(fs.readFileSync(require.resolve('../product-card.js'),'utf8'));
 const card=window.MVProductCard;
 const item={uid:'42',title:'Открытка',sold:false,multi:false,qty:5};
+localStorage.getItem=()=>JSON.stringify({total:3,products:[{lid:'42',quantity:3,price:150}]});
+window.tcart={products:[],total:3};
+assert.deepEqual(card.totals(),{n:0,s:0});
+assert.equal(card.quantity(item),0);
+window.tcart={products:[{lid:'42',quantity:2,price:150,deleted:'yes'},{}],total:2};
+assert.deepEqual(card.totals(),{n:0,s:0});
+delete window.tcart;localStorage.getItem=()=>null;
 const esc=value=>value;
 
 assert.match(card.control(item,esc,'<svg></svg>'),/<button class="add"/);

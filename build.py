@@ -64,7 +64,8 @@ for blk in (sheet, cartsheet, fab):
     assert blk in auth
     auth = auth.replace(blk, '')
 router = home_js[home_js.index('  /* Бесшовный переход'):home_js.index('  // Production Tilda loader')]
-cjs = product_card_js + '\n' + viewer_js + '\n(function(){\n' + router + '\n})();\n' + rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
+viewport_header = home_js[home_js.index('/* Начало общего закрепления шапки iOS. */'):home_js.index('/* Конец общего закрепления шапки iOS. */')]
+cjs = viewport_header + '\n' + product_card_js + '\n' + viewer_js + '\n(function(){\n' + router + '\n})();\n' + rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
 # ---------- qv.js: просмотр товара для главной (те же куски кода, что и в каталоге) ----------

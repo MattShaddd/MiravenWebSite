@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  if(window.MVProductCard&&window.MVProductCard.version===3)return;
+  if(window.MVProductCard&&window.MVProductCard.version===4)return;
   var css=document.querySelector('link[data-mv-product-card-css]');
   if(!css){css=document.createElement('link');css.rel='stylesheet';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css)}
   css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=3';
@@ -17,15 +17,30 @@
 
   function products(){
     try{
-      if(window.tcart&&Array.isArray(window.tcart.products))return window.tcart.products;
+      if(window.tcart&&Array.isArray(window.tcart.products))return window.tcart.products.filter(activeProduct);
       var saved=JSON.parse(localStorage.getItem('tcart')||'{}');
-      return Array.isArray(saved.products)?saved.products:[];
+      return Array.isArray(saved.products)?saved.products.filter(activeProduct):[];
     }catch(e){return[]}
+  }
+  function activeProduct(p){return p&&p.deleted!=='yes'&&(parseInt(p.quantity,10)||0)>0}
+  var refreshQueued=false;
+  function changed(){if(refreshQueued)return;refreshQueued=true;Promise.resolve().then(function(){refreshQueued=false;refresh()})}
+  // Tilda can load after us. Wrap notifications, not its quantity/remove logic.
+  function hookCart(){
+    ['tcart__addProduct','tcart__reDrawCartIcon','tcart__saveLocalObj','tcart__product__minus','tcart__product__plus','tcart__product__del','tcart__product__updateQuantity'].forEach(function(name){
+      var original=window[name];if(typeof original!=='function'||original.__mvCardSync)return;
+      var wrapped=function(){var result=original.apply(this,arguments);changed();return result};
+      wrapped.__mvCardSync=true;window[name]=wrapped;
+    });
   }
   function quantity(item){
     var n=0;
     products().forEach(function(p){if(String(p.lid)===String(item.uid))n+=parseInt(p.quantity,10)||0});
     return n;
+  }
+  function totals(){
+    var n=0,s=0;products().forEach(function(p){var q=Math.max(0,parseInt(p.quantity,10)||0);n+=q;s+=(parseFloat(p.price)||0)*q});
+    return{n:n,s:s};
   }
   function stock(item){
     var q=item&&item.eds&&item.eds[0]?item.eds[0].qty:item.qty;
@@ -113,5 +128,9 @@
       animation.onfinish=function(){dot.remove();if(done)done()};animation.oncancel=function(){dot.remove()};
     });
   }
-  window.MVProductCard={version:3,products:products,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh,notify:notify};
+  window.MVProductCard={version:4,products:products,totals:totals,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh,notify:notify};
+  hookCart();
+  if(window.MVProductCartTimer)clearInterval(window.MVProductCartTimer);
+  var lastCart='';
+  window.MVProductCartTimer=setInterval(function(){hookCart();var next=JSON.stringify(products());if(next!==lastCart){lastCart=next;changed()}},700);
 })();

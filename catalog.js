@@ -1,6 +1,44 @@
+/* Начало общего закрепления шапки iOS. */
+(function(){
+  if(window.MVViewportHeader)return;
+  var current=null;
+  window.MVViewportHeader={mount:function(top,keepFlow){
+    if(current)current();if(!top)return;
+    var ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    if(!ios)return;
+    var mq=window.matchMedia('(max-width:760px)'),vp=window.visualViewport,frame=0,spacer=null,ro=null,reserved=0;
+    function sync(){
+      frame=0;if(!top.isConnected){destroy();return}
+      var active=mq.matches;
+      top.classList.toggle('mv-viewport-header',active);
+      var offset=active&&vp&&Math.abs(vp.scale-1)<.01?Math.max(0,vp.offsetTop):0;
+      top.style.setProperty('--mv-vtop',offset+'px');
+      if(active&&keepFlow){
+        if(!spacer){spacer=document.createElement('div');spacer.className='mv-header-space';spacer.setAttribute('aria-hidden','true');top.parentNode.insertBefore(spacer,top)}
+        reserved=Math.max(reserved,top.getBoundingClientRect().height);spacer.style.height=reserved+'px';
+      }else if(spacer){spacer.remove();spacer=null;reserved=0}
+      if(keepFlow)document.documentElement.style.setProperty('--hdr',top.getBoundingClientRect().bottom+'px');
+    }
+    function schedule(){if(!frame)frame=requestAnimationFrame(sync)}
+    function destroy(){
+      if(frame)cancelAnimationFrame(frame);frame=0;
+      window.removeEventListener('resize',schedule);window.removeEventListener('pageshow',schedule);
+      if(vp){vp.removeEventListener('resize',schedule);vp.removeEventListener('scroll',schedule)}
+      if(ro)ro.disconnect();if(spacer)spacer.remove();
+      top.classList.remove('mv-viewport-header');top.style.removeProperty('--mv-vtop');
+      if(current===destroy)current=null;
+    }
+    current=destroy;
+    window.addEventListener('resize',schedule,{passive:true});window.addEventListener('pageshow',schedule);
+    if(vp){vp.addEventListener('resize',schedule,{passive:true});vp.addEventListener('scroll',schedule,{passive:true})}
+    if(window.ResizeObserver){ro=new ResizeObserver(schedule);ro.observe(top,{box:'border-box'})}
+    sync();
+  }};
+})();
+
 (function(){
   'use strict';
-  if(window.MVProductCard&&window.MVProductCard.version===3)return;
+  if(window.MVProductCard&&window.MVProductCard.version===4)return;
   var css=document.querySelector('link[data-mv-product-card-css]');
   if(!css){css=document.createElement('link');css.rel='stylesheet';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css)}
   css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=3';
@@ -17,15 +55,30 @@
 
   function products(){
     try{
-      if(window.tcart&&Array.isArray(window.tcart.products))return window.tcart.products;
+      if(window.tcart&&Array.isArray(window.tcart.products))return window.tcart.products.filter(activeProduct);
       var saved=JSON.parse(localStorage.getItem('tcart')||'{}');
-      return Array.isArray(saved.products)?saved.products:[];
+      return Array.isArray(saved.products)?saved.products.filter(activeProduct):[];
     }catch(e){return[]}
+  }
+  function activeProduct(p){return p&&p.deleted!=='yes'&&(parseInt(p.quantity,10)||0)>0}
+  var refreshQueued=false;
+  function changed(){if(refreshQueued)return;refreshQueued=true;Promise.resolve().then(function(){refreshQueued=false;refresh()})}
+  // Tilda can load after us. Wrap notifications, not its quantity/remove logic.
+  function hookCart(){
+    ['tcart__addProduct','tcart__reDrawCartIcon','tcart__saveLocalObj','tcart__product__minus','tcart__product__plus','tcart__product__del','tcart__product__updateQuantity'].forEach(function(name){
+      var original=window[name];if(typeof original!=='function'||original.__mvCardSync)return;
+      var wrapped=function(){var result=original.apply(this,arguments);changed();return result};
+      wrapped.__mvCardSync=true;window[name]=wrapped;
+    });
   }
   function quantity(item){
     var n=0;
     products().forEach(function(p){if(String(p.lid)===String(item.uid))n+=parseInt(p.quantity,10)||0});
     return n;
+  }
+  function totals(){
+    var n=0,s=0;products().forEach(function(p){var q=Math.max(0,parseInt(p.quantity,10)||0);n+=q;s+=(parseFloat(p.price)||0)*q});
+    return{n:n,s:s};
   }
   function stock(item){
     var q=item&&item.eds&&item.eds[0]?item.eds[0].qty:item.qty;
@@ -113,7 +166,11 @@
       animation.onfinish=function(){dot.remove();if(done)done()};animation.oncancel=function(){dot.remove()};
     });
   }
-  window.MVProductCard={version:3,products:products,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh,notify:notify};
+  window.MVProductCard={version:4,products:products,totals:totals,quantity:quantity,stock:stock,control:control,markup:markup,minus:minus,replace:replace,bind:bind,feedback:feedback,watch:watch,refresh:refresh,notify:notify};
+  hookCart();
+  if(window.MVProductCartTimer)clearInterval(window.MVProductCartTimer);
+  var lastCart='';
+  window.MVProductCartTimer=setInterval(function(){hookCart();var next=JSON.stringify(products());if(next!==lastCart){lastCart=next;changed()}},700);
 })();
 
 (function(){
@@ -474,6 +531,7 @@
     return MVProductCard.markup(it,{layout:'grid',esc:esc,fmt:fmt,plus:PLUS,image:function(u){return thumb(u,520)},hover:!TOUCH,badges:badges(it),type:partName(it),index:k});
   }
   var grid=$('grid'),more=$('more'),curList=[];
+  MVProductCard.watch(grid,paintCards);
   function renderGrid(){
     curList=list();
     $('resCount').textContent=curList.length+' '+plural(curList.length,['товар','товара','товаров']);
@@ -636,7 +694,7 @@
 
   /* ---------- корзина Тильды ---------- */
   var cartEl=$('cart');
-  function updBadge(){var n=0;try{n=(window.tcart&&window.tcart.total)|0;if(!n){var l=JSON.parse(localStorage.getItem('tcart')||'{}');n=l.total|0}}catch(e){}if(cartEl){cartEl.textContent=n;cartEl.style.display=n?'':'none'}paintCards()}
+  function updBadge(){var n=MVProductCard.totals().n;if(cartEl){cartEl.textContent=n;cartEl.style.display=n?'':'none'}paintCards()}
   function bump(){updBadge();if(!cartEl)return;cartEl.classList.remove('bump');void cartEl.offsetWidth;cartEl.classList.add('bump')}
   function hookCart(){updBadge();if(window.tcart__reDrawCartIcon&&!window.tcart__reDrawCartIcon.__m){var o=window.tcart__reDrawCartIcon;window.tcart__reDrawCartIcon=function(){var r=o.apply(this,arguments);updBadge();return r};window.tcart__reDrawCartIcon.__m=1}}
   function afterLoad(){hookCart();setTimeout(hookCart,600);setTimeout(updBadge,1500)}
@@ -991,10 +1049,11 @@
     mini.classList.toggle('on',on);mini.setAttribute('aria-hidden',String(!on));if(on){mini.removeAttribute('inert');revealActive(true)}else mini.setAttribute('inert','');
   }
   var topEl=document.querySelector('.top'),bar=$('catBar');
+  window.MVViewportHeader.mount(topEl,true);
   var hdrNow=-1,hdrEdgeNow=-1;
   function hdr(){if(!topEl||!topEl.isConnected)return;var r=topEl.getBoundingClientRect();hdrNow=r.height;if(r.bottom!==hdrEdgeNow){hdrEdgeNow=r.bottom;document.documentElement.style.setProperty('--hdr',r.bottom+'px')}}
   var scrolledNow=null;
-  function onScroll(){if(!topEl.isConnected)return;hdr();var sc=window.scrollY>8,show=bar&&bar.getBoundingClientRect().bottom<=hdrNow;if(sc!==scrolledNow){scrolledNow=sc;topEl.classList.toggle('scrolled',sc)}showMini(show)}
+  function onScroll(){if(!topEl.isConnected)return;hdr();var sc=window.scrollY>8,show=bar&&bar.getBoundingClientRect().bottom<=hdrEdgeNow;if(sc!==scrolledNow){scrolledNow=sc;topEl.classList.toggle('scrolled',sc)}showMini(show)}
   var scrollFrame=0;window.addEventListener('scroll',function(){if(scrollFrame||!topEl.isConnected)return;scrollFrame=requestAnimationFrame(function(){scrollFrame=0;onScroll()})},{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
   /* шапка меняет высоту плавно (после класса scrolled), поэтому следим за её размером, а не измеряем один раз в момент переключения: иначе под шапкой оставалась щель */
   if(window.ResizeObserver&&topEl)new ResizeObserver(function(){hdr()}).observe(topEl,{box:'border-box'});
@@ -1207,9 +1266,10 @@
     document.body.appendChild(sf);
     sf.addEventListener('click',function(){var b=document.getElementById('searchBtn');if(b)b.click()});
     var last='';
-    function read(){var n=0,s=0;try{var t=window.tcart;if(!(t&&t.products)){t=JSON.parse(localStorage.getItem('tcart')||'{}')}n=+t.total||0;s=+t.prodamount||+t.amount||0}catch(e){}return{n:n,s:s}}
+    function read(){return MVProductCard.totals()}
     function paint(){
       var d=read(),key=d.n+'|'+d.s;
+      var badge=document.getElementById('cart');if(badge){badge.textContent=d.n;badge.style.display=d.n?'':'none'}
       fab.classList.toggle('on',d.n>0);
       sf.classList.toggle('left',d.n>0); // есть товары: поиск уезжает влево, справа корзина
       if(key===last)return;

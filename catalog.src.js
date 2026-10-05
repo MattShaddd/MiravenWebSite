@@ -157,6 +157,7 @@
     return MVProductCard.markup(it,{layout:'grid',esc:esc,fmt:fmt,plus:PLUS,image:function(u){return thumb(u,520)},hover:!TOUCH,badges:badges(it),type:partName(it),index:k});
   }
   var grid=$('grid'),more=$('more'),curList=[];
+  MVProductCard.watch(grid,paintCards);
   function renderGrid(){
     curList=list();
     $('resCount').textContent=curList.length+' '+plural(curList.length,['товар','товара','товаров']);
@@ -319,7 +320,7 @@
 
   /* ---------- корзина Тильды ---------- */
   var cartEl=$('cart');
-  function updBadge(){var n=0;try{n=(window.tcart&&window.tcart.total)|0;if(!n){var l=JSON.parse(localStorage.getItem('tcart')||'{}');n=l.total|0}}catch(e){}if(cartEl){cartEl.textContent=n;cartEl.style.display=n?'':'none'}paintCards()}
+  function updBadge(){var n=MVProductCard.totals().n;if(cartEl){cartEl.textContent=n;cartEl.style.display=n?'':'none'}paintCards()}
   function bump(){updBadge();if(!cartEl)return;cartEl.classList.remove('bump');void cartEl.offsetWidth;cartEl.classList.add('bump')}
   function hookCart(){updBadge();if(window.tcart__reDrawCartIcon&&!window.tcart__reDrawCartIcon.__m){var o=window.tcart__reDrawCartIcon;window.tcart__reDrawCartIcon=function(){var r=o.apply(this,arguments);updBadge();return r};window.tcart__reDrawCartIcon.__m=1}}
   function afterLoad(){hookCart();setTimeout(hookCart,600);setTimeout(updBadge,1500)}
@@ -674,10 +675,11 @@
     mini.classList.toggle('on',on);mini.setAttribute('aria-hidden',String(!on));if(on){mini.removeAttribute('inert');revealActive(true)}else mini.setAttribute('inert','');
   }
   var topEl=document.querySelector('.top'),bar=$('catBar');
+  window.MVViewportHeader.mount(topEl,true);
   var hdrNow=-1,hdrEdgeNow=-1;
   function hdr(){if(!topEl||!topEl.isConnected)return;var r=topEl.getBoundingClientRect();hdrNow=r.height;if(r.bottom!==hdrEdgeNow){hdrEdgeNow=r.bottom;document.documentElement.style.setProperty('--hdr',r.bottom+'px')}}
   var scrolledNow=null;
-  function onScroll(){if(!topEl.isConnected)return;hdr();var sc=window.scrollY>8,show=bar&&bar.getBoundingClientRect().bottom<=hdrNow;if(sc!==scrolledNow){scrolledNow=sc;topEl.classList.toggle('scrolled',sc)}showMini(show)}
+  function onScroll(){if(!topEl.isConnected)return;hdr();var sc=window.scrollY>8,show=bar&&bar.getBoundingClientRect().bottom<=hdrEdgeNow;if(sc!==scrolledNow){scrolledNow=sc;topEl.classList.toggle('scrolled',sc)}showMini(show)}
   var scrollFrame=0;window.addEventListener('scroll',function(){if(scrollFrame||!topEl.isConnected)return;scrollFrame=requestAnimationFrame(function(){scrollFrame=0;onScroll()})},{passive:true});window.addEventListener('resize',hdr);hdr();onScroll();
   /* шапка меняет высоту плавно (после класса scrolled), поэтому следим за её размером, а не измеряем один раз в момент переключения: иначе под шапкой оставалась щель */
   if(window.ResizeObserver&&topEl)new ResizeObserver(function(){hdr()}).observe(topEl,{box:'border-box'});

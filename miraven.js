@@ -1,3 +1,41 @@
+/* Начало общего закрепления шапки iOS. */
+(function(){
+  if(window.MVViewportHeader)return;
+  var current=null;
+  window.MVViewportHeader={mount:function(top,keepFlow){
+    if(current)current();if(!top)return;
+    var ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    if(!ios)return;
+    var mq=window.matchMedia('(max-width:760px)'),vp=window.visualViewport,frame=0,spacer=null,ro=null,reserved=0;
+    function sync(){
+      frame=0;if(!top.isConnected){destroy();return}
+      var active=mq.matches;
+      top.classList.toggle('mv-viewport-header',active);
+      var offset=active&&vp&&Math.abs(vp.scale-1)<.01?Math.max(0,vp.offsetTop):0;
+      top.style.setProperty('--mv-vtop',offset+'px');
+      if(active&&keepFlow){
+        if(!spacer){spacer=document.createElement('div');spacer.className='mv-header-space';spacer.setAttribute('aria-hidden','true');top.parentNode.insertBefore(spacer,top)}
+        reserved=Math.max(reserved,top.getBoundingClientRect().height);spacer.style.height=reserved+'px';
+      }else if(spacer){spacer.remove();spacer=null;reserved=0}
+      if(keepFlow)document.documentElement.style.setProperty('--hdr',top.getBoundingClientRect().bottom+'px');
+    }
+    function schedule(){if(!frame)frame=requestAnimationFrame(sync)}
+    function destroy(){
+      if(frame)cancelAnimationFrame(frame);frame=0;
+      window.removeEventListener('resize',schedule);window.removeEventListener('pageshow',schedule);
+      if(vp){vp.removeEventListener('resize',schedule);vp.removeEventListener('scroll',schedule)}
+      if(ro)ro.disconnect();if(spacer)spacer.remove();
+      top.classList.remove('mv-viewport-header');top.style.removeProperty('--mv-vtop');
+      if(current===destroy)current=null;
+    }
+    current=destroy;
+    window.addEventListener('resize',schedule,{passive:true});window.addEventListener('pageshow',schedule);
+    if(vp){vp.addEventListener('resize',schedule,{passive:true});vp.addEventListener('scroll',schedule,{passive:true})}
+    if(window.ResizeObserver){ro=new ResizeObserver(schedule);ro.observe(top,{box:'border-box'})}
+    sync();
+  }};
+})();
+/* Конец общего закрепления шапки iOS. */
 (function(){
   function start(){
   /* Бесшовный переход главная → каталог. Тестовые адреса меняются здесь после запуска новой структуры URL. */
@@ -120,7 +158,7 @@
   window.addEventListener('pointermove',function(e){if(dx===null)return;var d=e.clientX-dx;if(Math.abs(d)>4){moved=true;track.classList.add('drag')}if(moved)track.scrollLeft=sl-d});
   window.addEventListener('pointerup',function(){if(dx===null)return;dx=null;if(moved){track.classList.remove('drag');var c=track.querySelector('.prod'),w=c?c.getBoundingClientRect().width+16:220;track.scrollTo({left:Math.round(track.scrollLeft/w)*w,behavior:'smooth'})}});
   // корзина Тильды
-  function updBadge(){var n=0;try{n=(window.tcart&&window.tcart.total)|0;if(!n){var l=JSON.parse(localStorage.getItem('tcart')||'{}');n=l.total|0}}catch(e){}cart.textContent=n;cart.style.display=n?'':'none'}
+  function updBadge(){var n=MVProductCard.totals().n;cart.textContent=n;cart.style.display=n?'':'none'}
   function bump(){updBadge();cart.classList.remove('bump');void cart.offsetWidth;cart.classList.add('bump')}
   function hookCart(){
     updBadge();
@@ -658,9 +696,10 @@
     document.body.appendChild(sf);
     sf.addEventListener('click',function(){var b=document.getElementById('searchBtn');if(b)b.click()});
     var last='';
-    function read(){var n=0,s=0;try{var t=window.tcart;if(!(t&&t.products)){t=JSON.parse(localStorage.getItem('tcart')||'{}')}n=+t.total||0;s=+t.prodamount||+t.amount||0}catch(e){}return{n:n,s:s}}
+    function read(){return MVProductCard.totals()}
     function paint(){
       var d=read(),key=d.n+'|'+d.s;
+      var badge=document.getElementById('cart');if(badge){badge.textContent=d.n;badge.style.display=d.n?'':'none'}
       fab.classList.toggle('on',d.n>0);
       sf.classList.toggle('left',d.n>0); // есть товары: поиск уезжает влево, справа корзина
       if(key===last)return;
@@ -724,6 +763,7 @@
   // на главной шапка скрыта вверху страницы и выезжает, когда пролистали героя
   var heroEl=document.querySelector('.hero');
   if(heroEl){top.classList.add('slide');document.documentElement.style.setProperty('--hdrh',top.offsetHeight+'px')}
+  window.MVViewportHeader.mount(top,!heroEl);
   function onScroll(){
     if(!top.isConnected)return;
     top.classList.toggle('scrolled',window.scrollY>8);
@@ -847,7 +887,7 @@
     apply(saved,true);
   });
   }
-  if(window.MVProductCard&&MVProductCard.markup&&MVProductCard.notify)start();
+  if(window.MVProductCard&&MVProductCard.totals)start();
   else fetch('https://mattshaddd.github.io/MiravenWebSite/product-card.js',{cache:'no-cache'})
     .then(function(r){if(!r.ok)throw new Error('product-card.js');return r.text()})
     .then(function(code){var s=document.createElement('script');s.textContent=code;document.head.appendChild(s);s.remove();start()})
