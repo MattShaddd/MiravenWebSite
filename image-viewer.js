@@ -1,6 +1,9 @@
 (function(){
   'use strict';
   if(window.MVImageViewer)return;
+  if(!document.querySelector('link[data-mv-viewer-css]')){
+    var css=document.createElement('link');css.rel='stylesheet';css.href='https://mattshaddd.github.io/MiravenWebSite/image-viewer.css?v=shared-1';css.setAttribute('data-mv-viewer-css','');document.head.appendChild(css);
+  }
   var root,track,count,prev,next,closeBtn,items=[],index=0,from=null,onChange=null,oldOverflow='',site=null;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';

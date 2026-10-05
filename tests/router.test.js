@@ -29,4 +29,6 @@ assert.ok(requests.some(url=>url.endsWith('product-card.css')));
 
 // A directly opened catalog gets exactly the same route implementation.
 assert.ok(fs.readFileSync(require.resolve('../catalog.js'),'utf8').replace(/\r\n/g,'\n').includes(router));
+const viewer=fs.readFileSync(require.resolve('../image-viewer.js'),'utf8').replace(/\r\n/g,'\n');
+for(const bundle of ['../catalog.js','../qv.js'])assert.ok(fs.readFileSync(require.resolve(bundle),'utf8').replace(/\r\n/g,'\n').includes(viewer),'shared viewer missing in '+bundle);
 console.log('router: ok');

@@ -64,7 +64,7 @@ for blk in (sheet, cartsheet, fab):
     assert blk in auth
     auth = auth.replace(blk, '')
 router = home_js[home_js.index('  /* Бесшовный переход'):home_js.index('  // Production Tilda loader')]
-cjs = product_card_js + '\n(function(){\n' + router + '\n})();\n' + rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
+cjs = product_card_js + '\n' + viewer_js + '\n(function(){\n' + router + '\n})();\n' + rd('catalog.src.js').replace('/*@CARTSHEET@*/', cartsheet).replace('/*@SHEET@*/', sheet).replace('/*@FAB@*/', fab).replace('/*@AUTH@*/', auth).replace('/*@THEME@*/', theme)
 wr('catalog.js', cjs)
 
 # ---------- qv.js: просмотр товара для главной (те же куски кода, что и в каталоге) ----------
@@ -115,7 +115,7 @@ qv_post = """
 })();
 """
 # предобъявления нужны до кода, который их использует: curList и пр. кладём перед блоком корзины
-qv_js = qv_pre + qv_parts[0] + qv_mid + ''.join(qv_parts[1:]) + qv_post
+qv_js = viewer_js + '\n' + qv_pre + qv_parts[0] + qv_mid + ''.join(qv_parts[1:]) + qv_post
 wr('qv.js', qv_js)
 
 
