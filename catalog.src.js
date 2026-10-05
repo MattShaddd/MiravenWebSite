@@ -176,8 +176,12 @@
     more.hidden=curList.length<=S.shown;
   }
   function resetShown(toTop){
+    var pinned=mini&&mini.classList.contains('on'),mobile=window.matchMedia('(max-width:760px)').matches;
+    // Cancel an earlier smooth scroll before the filtered grid shrinks/clamps
+    // the scroll range. Otherwise iOS can rubber-band the whole document.
+    if(pinned&&mobile)window.scrollTo({top:Math.max(0,window.scrollY),behavior:'instant'});
     S.shown=PAGE;renderGrid();
-    if(mini&&mini.classList.contains('on')){var target=Math.max(bar.getBoundingClientRect().bottom+window.scrollY-topEl.offsetHeight+1,grid.getBoundingClientRect().top+window.scrollY-topEl.offsetHeight-mini.offsetHeight-12);window.scrollTo({top:toTop===true?0:Math.max(0,target),behavior:reduce?'auto':'smooth'})}
+    if(pinned){var target=Math.max(bar.getBoundingClientRect().bottom+window.scrollY-topEl.offsetHeight+1,grid.getBoundingClientRect().top+window.scrollY-topEl.offsetHeight-mini.offsetHeight-12);window.scrollTo({top:toTop===true?0:Math.max(0,target),behavior:mobile||reduce?'instant':'smooth'})}
   }
 
   /* ---------- вкладки ---------- */

@@ -21,6 +21,7 @@
       frame=0;if(!top.isConnected){destroy();return}
       var active=mq.matches;
       top.classList.toggle('mv-viewport-header',active);
+      document.documentElement.classList.toggle('mv-ios-catalog',active&&keepFlow);
       var offset=active&&vp&&Math.abs(vp.scale-1)<.01?Math.max(0,vp.offsetTop):0;
       top.style.setProperty('--mv-vtop',offset+'px');
       if(active&&keepFlow){
@@ -36,6 +37,7 @@
       if(vp){vp.removeEventListener('resize',schedule);vp.removeEventListener('scroll',schedule)}
       if(ro)ro.disconnect();if(spacer)spacer.remove();
       top.classList.remove('mv-viewport-header');top.style.removeProperty('--mv-vtop');
+      document.documentElement.classList.remove('mv-ios-catalog');
       if(current===destroy)current=null;
     }
     current=destroy;
@@ -560,8 +562,12 @@
     more.hidden=curList.length<=S.shown;
   }
   function resetShown(toTop){
+    var pinned=mini&&mini.classList.contains('on'),mobile=window.matchMedia('(max-width:760px)').matches;
+    // Cancel an earlier smooth scroll before the filtered grid shrinks/clamps
+    // the scroll range. Otherwise iOS can rubber-band the whole document.
+    if(pinned&&mobile)window.scrollTo({top:Math.max(0,window.scrollY),behavior:'instant'});
     S.shown=PAGE;renderGrid();
-    if(mini&&mini.classList.contains('on')){var target=Math.max(bar.getBoundingClientRect().bottom+window.scrollY-topEl.offsetHeight+1,grid.getBoundingClientRect().top+window.scrollY-topEl.offsetHeight-mini.offsetHeight-12);window.scrollTo({top:toTop===true?0:Math.max(0,target),behavior:reduce?'auto':'smooth'})}
+    if(pinned){var target=Math.max(bar.getBoundingClientRect().bottom+window.scrollY-topEl.offsetHeight+1,grid.getBoundingClientRect().top+window.scrollY-topEl.offsetHeight-mini.offsetHeight-12);window.scrollTo({top:toTop===true?0:Math.max(0,target),behavior:mobile||reduce?'instant':'smooth'})}
   }
 
   /* ---------- вкладки ---------- */

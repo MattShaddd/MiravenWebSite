@@ -21,6 +21,7 @@
       frame=0;if(!top.isConnected){destroy();return}
       var active=mq.matches;
       top.classList.toggle('mv-viewport-header',active);
+      document.documentElement.classList.toggle('mv-ios-catalog',active&&keepFlow);
       var offset=active&&vp&&Math.abs(vp.scale-1)<.01?Math.max(0,vp.offsetTop):0;
       top.style.setProperty('--mv-vtop',offset+'px');
       if(active&&keepFlow){
@@ -36,6 +37,7 @@
       if(vp){vp.removeEventListener('resize',schedule);vp.removeEventListener('scroll',schedule)}
       if(ro)ro.disconnect();if(spacer)spacer.remove();
       top.classList.remove('mv-viewport-header');top.style.removeProperty('--mv-vtop');
+      document.documentElement.classList.remove('mv-ios-catalog');
       if(current===destroy)current=null;
     }
     current=destroy;
