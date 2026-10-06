@@ -322,3 +322,17 @@ html:has(:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-
 ::selection{background:color-mix(in srgb,#C4913A 40%,transparent)}
 /* плавающий кружок профиля Тильды на юридических страницах не нужен */
 html:has(:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"])) .tlk-userbar{display:none!important}
+
+/* Единый скролл всего сайта: без стрелок, тонкий, со скруглением. Попадает в members.css (он подключён на всех страницах через «Вставка кода → HEAD»).
+   Важно: в Chrome 121+ любое значение scrollbar-color/scrollbar-width (кроме auto) отключает ::-webkit-scrollbar, поэтому для Chrome/Safari они здесь не задаются. */
+@supports selector(::-webkit-scrollbar){
+  *::-webkit-scrollbar{width:12px;height:12px}
+  *::-webkit-scrollbar-button{display:none!important;width:0!important;height:0!important}
+  *::-webkit-scrollbar-track{background:transparent}
+  *::-webkit-scrollbar-corner{background:transparent}
+  *::-webkit-scrollbar-thumb{min-height:40px;border:3px solid transparent;border-radius:999px;background:color-mix(in srgb,var(--muted,#8A8490) 60%,transparent);background-clip:content-box}
+  *::-webkit-scrollbar-thumb:hover{background:var(--muted,#8A8490);background-clip:content-box}
+}
+@supports not selector(::-webkit-scrollbar){
+  *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted,#8A8490) 60%,transparent) transparent}
+}

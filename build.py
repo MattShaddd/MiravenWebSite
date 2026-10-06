@@ -175,7 +175,7 @@ LEGAL_ALIASES = ['oferta', 'politika']
 _page = ':is(' + ','.join('#allrecords[data-tilda-page-alias="%s"]' % a for a in LEGAL_ALIASES) + ')'
 _html = ':has(' + _page + ')'
 legal_css = rd('legal.src.css').replace('@@PAGE@@', _page).replace('@@DARK@@', 'html[data-mv-theme="dark"]' + _html).replace('@@HTML@@', 'html' + _html)
-wr('members.css', scope_css(rd('members.src.css')) + '\n' + rd('dropdowns.css') + '\n' + legal_css)
+wr('members.css', scope_css(rd('members.src.css')) + '\n' + rd('dropdowns.css') + '\n' + legal_css + '\n' + rd('scrollbars.src.css'))
 
 # ---------- готовые блоки T123 ----------
 def inline(css_files, html, js, extra_head=''):
