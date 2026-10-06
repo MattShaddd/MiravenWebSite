@@ -882,6 +882,7 @@
       var next=cur<0?(down?0:items.length-1):Math.max(0,Math.min(items.length-1,cur+(down?1:-1)));
       clear();items[next].classList.add('mv-active');try{items[next].scrollIntoView({block:'nearest'})}catch(x){}
     }
+    // (обработчик на window, чтобы сработать раньше «Esc закрывает окно» у шторок и корзины)
     // какой список обслуживать: сначала уже открытый (фокус мог уйти внутрь списка или на страницу), затем тот, чья кнопка в фокусе
     function find(t){
       var a=document.querySelector('.tcart-select_open');
@@ -890,7 +891,7 @@
       for(var i=0;i<CFG.length;i++){var tr=t.closest(CFG[i].trigger);if(tr)return{cf:CFG[i],tr:tr,sc:tr.closest(CFG[i].scope)||document}}
       return null;
     }
-    document.addEventListener('keydown',function(e){
+    window.addEventListener('keydown',function(e){
       var k=e.key;if(k!=='ArrowDown'&&k!=='ArrowUp'&&k!=='Enter'&&k!==' '&&k!=='Escape')return;
       if(e.altKey||e.ctrlKey||e.metaKey)return;
       var t=e.target&&e.target.closest?e.target:null;if(!t)return;
