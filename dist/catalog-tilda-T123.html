@@ -1413,6 +1413,9 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 /* кнопка «в корзину» не двигается: обратная матрица к трансформации фото (в тех же координатах), плюс небольшой вынос вперёд, чтобы фото не перекрывало её */
 .prod .photo .add{transform-origin:calc(100% + 10px - 50cqw) calc(100% + 10px - 50cqh);transform:scale(calc(1 / var(--zm))) rotateY(calc(var(--ry) * -1)) rotateX(calc(var(--rx) * -1)) translateZ(30px) scale(.9625) matrix3d(1,0,0,0,0,1,0,0,0,0,1,.00125,0,0,0,1) !important;transition:background .25s,color .25s,box-shadow .25s !important}
 
+/* нажатие на «в корзину»: вдавливание внутренней тенью, кнопка не двигается */
+.prod .photo .add:active,.pc .pc-ph .add:active{box-shadow:inset 0 3px 9px rgba(0,0,0,.45),inset 0 0 0 1px rgba(0,0,0,.12)}
+
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :root{--hdr:68px}
