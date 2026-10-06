@@ -516,8 +516,9 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 }
 
 /* карточка товара: только приближение и лёгкий наклон к мыши; кнопка «в корзину» неподвижна (как на главной, см. miraven.css) */
-.pc-ph,.pc:hover .pc-ph{container-type:size;overflow:visible;isolation:auto;transform-style:preserve-3d;transform:perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--zm));box-shadow:var(--sh-1);transition:--rx .25s ease-out,--ry .25s ease-out,--zm .45s ease-out,box-shadow .5s;will-change:transform}
-.pc:hover .pc-ph{--zm:1.05}
+.pc:hover .pc-ph{transform:none;box-shadow:var(--sh-1)}
+.pc-ph.mv-t,.pc:hover .pc-ph.mv-t{container-type:size;overflow:visible;isolation:auto;transform-style:preserve-3d;transform:perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--zm));box-shadow:var(--sh-1);transition:--rx .25s ease-out,--ry .25s ease-out,--zm .45s ease-out,box-shadow .5s;will-change:transform}
+.pc:hover .pc-ph.mv-t{--zm:1.05}
 .pc-ph img{border-radius:inherit}
 .pc:hover .pc-ph img{transform:none}
-.pc .pc-ph .add{transform-origin:calc(100% + 10px - 50cqw) calc(100% + 10px - 50cqh);transform:scale(calc(1 / var(--zm))) rotateY(calc(var(--ry) * -1)) rotateX(calc(var(--rx) * -1)) translateZ(30px) scale(.9625) matrix3d(1,0,0,0,0,1,0,0,0,0,1,.00125,0,0,0,1) !important;transition:background .25s,color .25s,box-shadow .25s !important}
+.pc .pc-ph.mv-t .add{transform-origin:calc(100% + 10px - 50cqw) calc(100% + 10px - 50cqh);transform:scale(calc(1 / var(--zm))) rotateY(calc(var(--ry) * -1)) rotateX(calc(var(--rx) * -1)) translateZ(30px) scale(.9625) matrix3d(1,0,0,0,0,1,0,0,0,0,1,.00125,0,0,0,1) !important;transition:background .25s,color .25s,box-shadow .25s !important}

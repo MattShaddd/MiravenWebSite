@@ -185,22 +185,41 @@
   window.MVProductCartTimer=setInterval(function(){hookCart();var next=JSON.stringify(products());if(next!==lastCart){lastCart=next;changed()}},700);
 })();
 
-/* Лёгкий наклон фото карточки товара в сторону мыши (только мышь, без reduce-motion) */
+/* Лёгкий наклон фото карточки товара в сторону мыши (только мышь, без reduce-motion).
+   3D-режим (класс mv-t) включается только у карточки под курсором и снимается через 400 мс после ухода мыши: на остальных карточках лишних слоёв нет. */
 (function(){
   if(window.MVTilt)return;window.MVTilt=1;
   if(!window.matchMedia||!matchMedia('(hover:hover) and (pointer:fine)').matches||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  var cur=null,MAX=6;
-  function reset(el){if(el){el.style.removeProperty('--rx');el.style.removeProperty('--ry')}}
+  var SEL='.prod .photo,.pc .pc-ph',cur=null,MAX=6,raf=0,ex=0,ey=0;
+  function reset(el){el.style.removeProperty('--rx');el.style.removeProperty('--ry')}
+  function leave(el){
+    reset(el);
+    clearTimeout(el._mvT);
+    el._mvT=setTimeout(function(){if(el!==cur)el.classList.remove('mv-t')},400);
+  }
+  function enter(el){
+    clearTimeout(el._mvT);
+    el.classList.add('mv-t');
+  }
+  function apply(){
+    raf=0;
+    if(!cur)return;
+    var r=cur.getBoundingClientRect(),x=(ex-r.left)/r.width-.5,y=(ey-r.top)/r.height-.5;
+    cur.style.setProperty('--ry',(x*MAX*2).toFixed(2)+'deg');
+    cur.style.setProperty('--rx',(-y*MAX*2).toFixed(2)+'deg');
+  }
   document.addEventListener('pointermove',function(e){
-    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo,.pc .pc-ph'):null;
-    if(cur&&cur!==ph){reset(cur);cur=null}
-    if(!ph)return;
-    cur=ph;
-    var r=ph.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-    ph.style.setProperty('--ry',(x*MAX*2).toFixed(2)+'deg');
-    ph.style.setProperty('--rx',(-y*MAX*2).toFixed(2)+'deg');
+    var t=e.target,ph=t&&t.closest?t.closest(SEL):null;
+    if(ph!==cur){
+      if(cur)leave(cur);
+      cur=ph;
+      if(cur)enter(cur);
+    }
+    if(!cur)return;
+    ex=e.clientX;ey=e.clientY;
+    if(!raf)raf=requestAnimationFrame(apply);
   },{passive:true});
-  document.addEventListener('pointerleave',function(){reset(cur);cur=null});
+  document.documentElement.addEventListener('pointerleave',function(){if(cur){leave(cur);cur=null}});
 })();
 
 (function(){
