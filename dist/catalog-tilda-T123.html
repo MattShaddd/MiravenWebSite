@@ -1271,6 +1271,45 @@ html body .t706__cartpage .t-input-title,html body .t706__cartpage #customdelive
 /* провал перед «Доставка» (Тильда задаёт 60px) */
 .t706__cartpage .t-radio__wrapper-delivery,.t706__cartwin .t-radio__wrapper-delivery{margin-top:24px!important}
 
+/* ===== корзина: аккуратные строки товаров (миниатюра, название и вариант, степпер-пилюля, цена справа; артикул скрыт, название варианта остаётся) ===== */
+html body .t706__cartpage .t706__product{grid-template-columns:64px minmax(0,1fr) auto!important;grid-template-areas:"thumb title del" "thumb qty price"!important;gap:6px 14px!important;padding:16px 0!important;align-items:start!important}
+html body .t706__cartpage .t706__product-thumb{width:64px!important;height:64px!important}
+html body .t706__cartpage .t706__product-imgdiv{width:64px!important;height:64px!important;border-radius:14px!important;box-shadow:inset 0 0 0 1px var(--stone)}
+html body .t706__cartpage .t706__product-title{align-self:start!important;font-size:15px!important;line-height:1.3!important}
+html body .t706__cartpage .t706__product-title a{font-size:15px!important;line-height:1.3!important;font-weight:500!important}
+html body .t706__cartpage .t706__product-title__option{margin-top:3px!important;font-size:13px!important;line-height:1.3!important}
+html body .t706__cartpage .t706__product-title__option:not(:has(div)){display:none!important}
+html body .t706__cartpage .t706__product-plusminus{align-self:end!important;display:inline-flex!important;align-items:center;gap:0!important;width:max-content;padding:2px!important;border:1px solid var(--stone)!important;border-radius:999px!important}
+html body .t706__cartpage .t706__product-minus,html body .t706__cartpage .t706__product-plus{width:28px!important;height:28px!important;border:0!important;background:transparent!important}
+html body .t706__cartpage .t706__product-minus:hover,html body .t706__cartpage .t706__product-plus:hover{background:var(--mist)!important;color:var(--ink)!important;border-color:transparent!important}
+html body .t706__cartpage .t706__product-quantity{min-width:26px!important}
+html body .t706__cartpage .t706__product-del-wrapper{align-self:start!important}
+html body .t706__cartpage .t706__product-del{width:24px!important;height:24px!important;border:0!important;background:transparent!important;color:var(--muted)!important}
+html body .t706__cartpage .t706__product-del:hover{background:var(--mist)!important;color:var(--ink)!important;border-color:transparent!important}
+html body .t706__cartpage .t706__product-amount{align-self:end!important;font-size:15px!important;font-weight:600!important;color:var(--ink)!important}
+html body .t706__cartpage .t706__cartwin-prodamount-currency{color:var(--muted)!important;font-weight:400!important}
+
+html body .t706__cartwin .t706__product{grid-template-columns:64px minmax(0,1fr) auto!important;grid-template-areas:"thumb title del" "thumb qty price"!important;gap:6px 14px!important;padding:16px 0!important;align-items:start!important}
+html body .t706__cartwin .t706__product-thumb{width:64px!important;height:64px!important}
+html body .t706__cartwin .t706__product-imgdiv{width:64px!important;height:64px!important;border-radius:14px!important;box-shadow:inset 0 0 0 1px var(--stone)}
+html body .t706__cartwin .t706__product-title{align-self:start!important;font-size:15px!important;line-height:1.3!important}
+html body .t706__cartwin .t706__product-title a{font-size:15px!important;line-height:1.3!important;font-weight:500!important}
+html body .t706__cartwin .t706__product-title__option{margin-top:3px!important;font-size:13px!important;line-height:1.3!important}
+html body .t706__cartwin .t706__product-title__option:not(:has(div)){display:none!important}
+html body .t706__cartwin .t706__product-plusminus{align-self:end!important;display:inline-flex!important;align-items:center;gap:0!important;width:max-content;padding:2px!important;border:1px solid var(--stone)!important;border-radius:999px!important}
+html body .t706__cartwin .t706__product-minus,html body .t706__cartwin .t706__product-plus{width:28px!important;height:28px!important;border:0!important;background:transparent!important}
+html body .t706__cartwin .t706__product-minus:hover,html body .t706__cartwin .t706__product-plus:hover{background:var(--mist)!important;color:var(--ink)!important;border-color:transparent!important}
+html body .t706__cartwin .t706__product-quantity{min-width:26px!important}
+html body .t706__cartwin .t706__product-del-wrapper{align-self:start!important}
+html body .t706__cartwin .t706__product-del{width:24px!important;height:24px!important;border:0!important;background:transparent!important;color:var(--muted)!important}
+html body .t706__cartwin .t706__product-del:hover{background:var(--mist)!important;color:var(--ink)!important;border-color:transparent!important}
+html body .t706__cartwin .t706__product-amount{align-self:end!important;font-size:15px!important;font-weight:600!important;color:var(--ink)!important}
+html body .t706__cartwin .t706__cartwin-prodamount-currency{color:var(--muted)!important;font-weight:400!important}
+html body .t706__cartpage .t706__product-plusminus{width:max-content!important;justify-self:start!important}
+html body .t706__cartpage .t706__product-amount{justify-self:end!important}
+html body .t706__cartwin .t706__product-plusminus{width:max-content!important;justify-self:start!important}
+html body .t706__cartwin .t706__product-amount{justify-self:end!important}
+
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :root{--hdr:68px}
