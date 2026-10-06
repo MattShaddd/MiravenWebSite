@@ -3,7 +3,7 @@
   if(window.MVProductCard&&window.MVProductCard.version===4)return;
   var css=document.querySelector('link[data-mv-product-card-css]');
   if(!css){css=document.createElement('link');css.rel='stylesheet';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css)}
-  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=3';
+  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=4';
 
   var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   var watchers=[];

@@ -22,7 +22,7 @@ html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbo
   background:transparent!important;color:var(--mv-menu-text)!important;border-radius:10px!important;
   padding:10px 12px!important;box-sizing:border-box;white-space:normal;
 }
-html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbox-list-item,.tlk-select-custom__options li,.tlk-profile-dropdown-item):is(:hover,:focus-visible,.active,.selected,[aria-selected="true"],.tcart-select__option_selected){background:var(--mv-menu-hover)!important;color:var(--mv-menu-accent)!important}
+html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbox-list-item,.tlk-select-custom__options li,.tlk-profile-dropdown-item):is(:hover,:focus-visible,.active,.selected,[aria-selected="true"],.tcart-select__option_selected,.mv-active){background:var(--mv-menu-hover)!important;color:var(--mv-menu-accent)!important}
 html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbox-list-item,.tlk-select-custom__options li,.tlk-profile-dropdown-item) :is(span,b,strong,svg){color:inherit!important}
 html body :is(.tcart-address__subtext,.tcart-address__name,.searchbox-list-item-description){color:var(--mv-menu-muted)!important}
 html body :is(.tcart-select__selected,.tlk-select-custom__selected){background:var(--mv-menu-bg)!important;color:var(--mv-menu-text)!important;border:1px solid var(--mv-menu-line)!important;border-radius:14px!important}
@@ -30,6 +30,17 @@ html body :is(.tcart-select__option_disabled,[role="option"][aria-disabled="true
 html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option):focus-visible{outline:2px solid var(--mv-menu-accent);outline-offset:-2px}
 html body :is(.site,.tlk-form,[class*="tmst-"],.t706__cartpage,.mv-cp) select,
 html body :is(.site,.tlk-form,[class*="tmst-"],.t706__cartpage,.mv-cp) option{background-color:var(--mv-menu-bg)!important;color:var(--mv-menu-text)!important}
+
+/* список стран у телефона (Тильда рисует его отдельным окном поверх страницы) и общая подсветка активного пункта с клавиатуры */
+html body .t-input-phonemask__options-wrap{background:var(--mv-menu-bg)!important;color:var(--mv-menu-text)!important;border:1px solid var(--mv-menu-line)!important;border-radius:14px!important;box-shadow:0 16px 40px -18px rgba(0,0,0,.5)!important;padding:6px!important;box-sizing:border-box}
+html body .t-input-phonemask__options-item{background:transparent!important;color:var(--mv-menu-text)!important;border-radius:10px!important;padding:9px 12px!important;box-sizing:border-box}
+html body .t-input-phonemask__options-item:is(:hover,.mv-active,.t-input-phonemask__options-item_active){background:var(--mv-menu-hover)!important;color:var(--mv-menu-accent)!important}
+html body .t-input-phonemask__options-name{color:inherit!important}
+html body .t-input-phonemask__options-right{color:var(--mv-menu-muted)!important}
+html body .t-input-phonemask__options-item:is(:hover,.mv-active) .t-input-phonemask__options-right{color:inherit!important}
+html body :is(.tcart-select__selected,.t-input-phonemask__select,input.searchbox-input):focus-visible{outline:2px solid var(--mv-menu-accent);outline-offset:2px}
+/* стрелка списка адресов Тильды нарисована чёрной рамкой */
+html body .tcart-select__selected::after{border-top-color:var(--mv-menu-muted)!important}
 
 /* Layout: full-width storefront, content column max 1280px, media queries for tablet and phone. Deliberate single light look: white + cool greys, ink text, gold used only as a thin accent. */
 :root,.site{
@@ -635,8 +646,10 @@ html[data-mv-theme="dark"] .st-bad{color:#E58B82}
 html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 .co-chev svg{width:18px;height:18px;color:var(--muted);transition:transform .3s}
 .co.open .co-chev svg{transform:rotate(180deg)}
-.co-body{display:block;max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.8,.2,1)}
-.co-in{display:grid;gap:10px;padding:2px 14px 14px}
+.co-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}
+.co.open .co-body{grid-template-rows:1fr}
+.co-in{display:grid;gap:10px;padding:0 14px;min-height:0;overflow:hidden}
+.co-in>:first-child{margin-top:2px}.co-in>:last-child{margin-bottom:14px}
 .co-p{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;padding:6px;border-radius:12px;transition:background .2s}
 .co-p:hover{background:var(--mist)}
 .co-p img{width:52px;height:52px;border-radius:12px;object-fit:cover;background:var(--stone);flex:none}
@@ -1320,6 +1333,15 @@ html body .t706__cartwin .t706__product-amount{justify-self:end!important}
 .t706__cartpage .t-input-block svg,.t706__cartwin .t-input-block svg{fill:var(--muted)!important}
 .t706__cartpage .t-input-block svg path,.t706__cartwin .t-input-block svg path{fill:var(--muted)!important}
 
+/* ===== скролл модальных окон: внутри рамки, потолще, не заходит за скругления и без стрелок ===== */
+html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options){scrollbar-width:auto;scrollbar-color:color-mix(in srgb,var(--muted) 70%,transparent) transparent}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar{width:14px;height:14px}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-track{background:transparent;margin:22px 0}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-button{display:none;width:0;height:0}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-corner{background:transparent}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-thumb{min-height:48px;border:4px solid transparent;border-radius:999px;background:color-mix(in srgb,var(--muted) 70%,transparent);background-clip:content-box}
+:where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-thumb:hover{background:var(--muted);background-clip:content-box}
+
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :root{--hdr:68px}
@@ -1447,7 +1469,6 @@ html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background
 .qv-btn:active:not(:disabled){transform:scale(.94)}
 .qv-btn:disabled{opacity:.35;cursor:default}
 .qv-btn svg{width:19px;height:19px}
-.qv-pos{font-size:13px;color:var(--muted);padding:0 8px;font-variant-numeric:tabular-nums}
 
 /* галерея */
 .qv-gal{position:relative;display:grid;grid-template-columns:minmax(0,1fr);min-width:0;min-height:0;background:var(--mist)}
@@ -1467,7 +1488,7 @@ html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background
 /* информация */
 .qv-info{display:flex;flex-direction:column;min-width:0;min-height:0}
 .qv-scroll{flex:1;overflow:auto;padding:clamp(22px,3vw,40px);padding-top:clamp(22px,3vw,40px);display:grid;gap:18px;align-content:start;scrollbar-width:thin}
-.qv-crumb{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:13px;color:var(--muted);padding-right:150px}
+.qv-crumb{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:13px;color:var(--muted);padding-right:210px}
 .qv-crumb span+span::before{content:"·";margin-right:10px}
 .qv-title{font-family:var(--f-story);font-weight:600;letter-spacing:-.015em;line-height:1.1;font-size:clamp(28px,3vw,40px);color:var(--head)}
 .qv-sub{color:var(--muted);margin-top:-6px}
@@ -1864,6 +1885,10 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   .mv-product-card .add.stp button:hover{background:none}
   .mv-product-card .add.stp button:active{background:rgba(255,255,255,.16)}
 }
+/* «+» на миниатюре всегда круглая (без раскрывающейся подписи) */
+.mv-product-card .add:not(.stp){width:36px;min-width:36px;padding:0;gap:0;justify-content:center;border-radius:50%}
+.mv-product-card .add:not(.stp) span,.mv-product-card:hover .add:not(.stp) span,.mv-product-card .add:not(.stp):focus-visible span{display:none;max-width:0}
+@media (max-width:760px){.mv-product-card .add:not(.stp){width:32px;min-width:32px}}
 
 .mv-viewer{position:fixed!important;inset:0!important;z-index:2147483647!important;background:rgba(9,7,12,.96);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transition:opacity .22s ease-out;user-select:none;overscroll-behavior:contain}.mv-viewer[hidden]{display:none}.mv-viewer--open{opacity:1}
 .mv-viewer__track{position:absolute;inset:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x}.mv-viewer__track::-webkit-scrollbar{display:none}
@@ -2042,7 +2067,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   if(window.MVProductCard&&window.MVProductCard.version===4)return;
   var css=document.querySelector('link[data-mv-product-card-css]');
   if(!css){css=document.createElement('link');css.rel='stylesheet';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css)}
-  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=3';
+  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=4';
 
   var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   var watchers=[];
@@ -2774,7 +2799,6 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
     var descr=it.text?'<div class="qv-desc">'+clean(it.text)+'</div>':'';
     var chars=it.cl.length?'<div class="qv-h">Характеристики</div><dl class="qv-dl">'+it.cl.map(function(c){return '<dt>'+esc(c.title)+'</dt><dd>'+esc(c.value)+'</dd>'}).join('')+'</dl>':'';
     return '<i class="qv-grab" aria-hidden="true"></i><div class="qv-top">'+
-        '<span class="qv-pos">'+(idx>-1?(idx+1)+' / '+curList.length:'')+'</span>'+
         '<button class="qv-btn" type="button" data-qv="pp" aria-label="Предыдущий товар" title="Предыдущий товар (Shift+←)"'+(idx<1?' disabled':'')+'>'+CHEV_L+'</button>'+
         '<button class="qv-btn" type="button" data-qv="pn" aria-label="Следующий товар" title="Следующий товар (Shift+→)"'+(idx<0||idx>=curList.length-1?' disabled':'')+'>'+CHEV_R+'</button>'+
         '<button class="qv-btn" type="button" data-qv="share" aria-label="Поделиться" title="Скопировать ссылку">'+SHARE+'</button>'+
@@ -3327,6 +3351,60 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
     }
     document.addEventListener('click',gate,true);
   })();
+  // ОБЩЕЕ УПРАВЛЕНИЕ ВЫПАДАЮЩИМИ СПИСКАМИ С КЛАВИАТУРЫ (адреса, страны у телефона, подсказки города): ↓ ↑ Enter Пробел Esc.
+  // Тильда клавиатуру в этих списках не поддерживает, поэтому подключаем одну логику ко всем. Новый список добавляется строкой в CFG.
+  (function(){
+    function vis(list){var a=[];for(var i=0;i<list.length;i++)if(list[i].getClientRects().length)a.push(list[i]);return a}
+    var CFG=[
+      {name:'addr',trigger:'.tcart-select__selected',scope:'.tcart-select',
+        open:function(sc){return sc.classList.contains('tcart-select_open')},
+        items:function(sc){return vis(sc.querySelectorAll('.tcart-select__option:not(.tcart-select__option_unselectable):not(.tcart-select__option_disabled)'))},
+        selected:'.tcart-select__option_selected',toggle:function(tr){tr.click()}},
+      {name:'phone',trigger:'.t-input-phonemask__select',scope:'.t-input-phonemask__wrap',
+        open:function(){var w=document.querySelector('.t-input-phonemask__options-wrap_open');return !!w&&w.getClientRects().length>0},
+        items:function(){var w=document.querySelector('.t-input-phonemask__options-wrap_open');return w?vis(w.querySelectorAll('.t-input-phonemask__options-item')):[]},
+        selected:'.t-input-phonemask__options-item_active',toggle:function(tr){tr.click()}},
+      {name:'search',trigger:'input.searchbox-input',scope:'.searchbox-inner-wrapper',text:true,
+        open:function(sc){var l=sc.querySelector('.searchbox-list');return !!l&&getComputedStyle(l).display!=='none'&&!!l.querySelector('.searchbox-list-item')},
+        items:function(sc){return vis(sc.querySelectorAll('.searchbox-list-item'))},
+        selected:'',toggle:function(){}}
+    ];
+    function clear(){var a=document.querySelectorAll('.mv-active');for(var i=0;i<a.length;i++)a[i].classList.remove('mv-active')}
+    function move(cf,tr,sc,down){
+      var items=cf.items(sc);if(!items.length)return;
+      var cur=-1;for(var i=0;i<items.length;i++)if(items[i].classList.contains('mv-active')){cur=i;break}
+      if(cur<0&&cf.selected){for(var j=0;j<items.length;j++)if(items[j].matches(cf.selected)){cur=j;break}}
+      var next=cur<0?(down?0:items.length-1):Math.max(0,Math.min(items.length-1,cur+(down?1:-1)));
+      clear();items[next].classList.add('mv-active');try{items[next].scrollIntoView({block:'nearest'})}catch(x){}
+    }
+    document.addEventListener('keydown',function(e){
+      var k=e.key;if(k!=='ArrowDown'&&k!=='ArrowUp'&&k!=='Enter'&&k!==' '&&k!=='Escape')return;
+      if(e.altKey||e.ctrlKey||e.metaKey)return;
+      var t=e.target&&e.target.closest?e.target:null;if(!t)return;
+      for(var c=0;c<CFG.length;c++){
+        var cf=CFG[c],tr=t.closest(cf.trigger);if(!tr)continue;
+        var sc=tr.closest(cf.scope)||document,open=cf.open(sc),cur=document.querySelector('.mv-active');
+        if(k==='Escape'){if(!open)return;e.preventDefault();e.stopImmediatePropagation();clear();cf.toggle(tr);return}
+        if(k===' '&&cf.text)return; // в поле ввода пробел — это текст
+        if(k==='Enter'||k===' '){
+          if(open&&cur){e.preventDefault();e.stopImmediatePropagation();cur.click();clear();return}
+          if(!open&&!cf.text){e.preventDefault();cf.toggle(tr)}
+          return;
+        }
+        // стрелки
+        if(!open){if(cf.text)return;e.preventDefault();cf.toggle(tr);setTimeout(function(){move(cf,tr,tr.closest(cf.scope)||document,k==='ArrowDown')},80);return}
+        e.preventDefault();e.stopImmediatePropagation();move(cf,tr,sc,k==='ArrowDown');return;
+      }
+    },true);
+    document.addEventListener('click',clear,true);
+    // триггеры должны получать фокус с клавиатуры
+    function prep(){
+      var a=document.querySelectorAll('.tcart-select__selected:not([tabindex]),.t-input-phonemask__select:not([tabindex])');
+      for(var i=0;i<a.length;i++){a[i].setAttribute('tabindex','0');a[i].setAttribute('role','combobox');a[i].setAttribute('aria-haspopup','listbox')}
+    }
+    if(window.MutationObserver){var q=0;new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;prep()})}).observe(document.body,{childList:true,subtree:true})}
+    prep();
+  })();
   // тексты ошибок формы заказа приходят с английским «Error: » в начале: убираем и делаем первую букву заглавной
   (function(){
     if(!window.MutationObserver)return;
@@ -3618,10 +3696,9 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
             case 'x':cabClose();break;
             case 'tab':cs.tab=a.dataset.t;cabRender();break;
             case 'ord':{
-              var art=a.closest('.co'),bd=art.querySelector('.co-body'),on=!art.classList.contains('open');
+              // раскрытие чисто на CSS (grid 0fr → 1fr): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
+              var art=a.closest('.co'),on=!art.classList.contains('open');
               art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));
-              if(on){bd.style.maxHeight=bd.scrollHeight+'px';clearTimeout(bd._t);bd._t=setTimeout(function(){if(art.classList.contains('open'))bd.style.maxHeight='none'},450)}
-              else{bd.style.maxHeight=bd.scrollHeight+'px';void bd.offsetHeight;bd.style.maxHeight='0px';clearTimeout(bd._t)}
               break}
             case 'more':cabLoad(true);break;
             case 'out':{

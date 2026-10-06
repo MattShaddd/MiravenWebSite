@@ -19,7 +19,7 @@ html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbo
   background:transparent!important;color:var(--mv-menu-text)!important;border-radius:10px!important;
   padding:10px 12px!important;box-sizing:border-box;white-space:normal;
 }
-html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbox-list-item,.tlk-select-custom__options li,.tlk-profile-dropdown-item):is(:hover,:focus-visible,.active,.selected,[aria-selected="true"],.tcart-select__option_selected){background:var(--mv-menu-hover)!important;color:var(--mv-menu-accent)!important}
+html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbox-list-item,.tlk-select-custom__options li,.tlk-profile-dropdown-item):is(:hover,:focus-visible,.active,.selected,[aria-selected="true"],.tcart-select__option_selected,.mv-active){background:var(--mv-menu-hover)!important;color:var(--mv-menu-accent)!important}
 html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option,.searchbox-list-item,.tlk-select-custom__options li,.tlk-profile-dropdown-item) :is(span,b,strong,svg){color:inherit!important}
 html body :is(.tcart-address__subtext,.tcart-address__name,.searchbox-list-item-description){color:var(--mv-menu-muted)!important}
 html body :is(.tcart-select__selected,.tlk-select-custom__selected){background:var(--mv-menu-bg)!important;color:var(--mv-menu-text)!important;border:1px solid var(--mv-menu-line)!important;border-radius:14px!important}
@@ -27,3 +27,14 @@ html body :is(.tcart-select__option_disabled,[role="option"][aria-disabled="true
 html body :is(.mv-dropdown__item,[role="option"],.tcart-select__option):focus-visible{outline:2px solid var(--mv-menu-accent);outline-offset:-2px}
 html body :is(.site,.tlk-form,[class*="tmst-"],.t706__cartpage,.mv-cp) select,
 html body :is(.site,.tlk-form,[class*="tmst-"],.t706__cartpage,.mv-cp) option{background-color:var(--mv-menu-bg)!important;color:var(--mv-menu-text)!important}
+
+/* список стран у телефона (Тильда рисует его отдельным окном поверх страницы) и общая подсветка активного пункта с клавиатуры */
+html body .t-input-phonemask__options-wrap{background:var(--mv-menu-bg)!important;color:var(--mv-menu-text)!important;border:1px solid var(--mv-menu-line)!important;border-radius:14px!important;box-shadow:0 16px 40px -18px rgba(0,0,0,.5)!important;padding:6px!important;box-sizing:border-box}
+html body .t-input-phonemask__options-item{background:transparent!important;color:var(--mv-menu-text)!important;border-radius:10px!important;padding:9px 12px!important;box-sizing:border-box}
+html body .t-input-phonemask__options-item:is(:hover,.mv-active,.t-input-phonemask__options-item_active){background:var(--mv-menu-hover)!important;color:var(--mv-menu-accent)!important}
+html body .t-input-phonemask__options-name{color:inherit!important}
+html body .t-input-phonemask__options-right{color:var(--mv-menu-muted)!important}
+html body .t-input-phonemask__options-item:is(:hover,.mv-active) .t-input-phonemask__options-right{color:inherit!important}
+html body :is(.tcart-select__selected,.t-input-phonemask__select,input.searchbox-input):focus-visible{outline:2px solid var(--mv-menu-accent);outline-offset:2px}
+/* стрелка списка адресов Тильды нарисована чёрной рамкой */
+html body .tcart-select__selected::after{border-top-color:var(--mv-menu-muted)!important}

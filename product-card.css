@@ -24,3 +24,7 @@
   .mv-product-card .add.stp button:hover{background:none}
   .mv-product-card .add.stp button:active{background:rgba(255,255,255,.16)}
 }
+/* «+» на миниатюре всегда круглая (без раскрывающейся подписи) */
+.mv-product-card .add:not(.stp){width:36px;min-width:36px;padding:0;gap:0;justify-content:center;border-radius:50%}
+.mv-product-card .add:not(.stp) span,.mv-product-card:hover .add:not(.stp) span,.mv-product-card .add:not(.stp):focus-visible span{display:none;max-width:0}
+@media (max-width:760px){.mv-product-card .add:not(.stp){width:32px;min-width:32px}}

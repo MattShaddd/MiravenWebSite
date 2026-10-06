@@ -53,7 +53,7 @@
   if(window.MVProductCard&&window.MVProductCard.version===4)return;
   var css=document.querySelector('link[data-mv-product-card-css]');
   if(!css){css=document.createElement('link');css.rel='stylesheet';css.setAttribute('data-mv-product-card-css','');document.head.appendChild(css)}
-  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=3';
+  css.href='https://mattshaddd.github.io/MiravenWebSite/product-card.css?v=4';
 
   var STEPPER='<button type="button" data-s="m" aria-label="Убрать одну штуку">−</button><b></b><button type="button" data-s="p" aria-label="Добавить ещё одну штуку">+</button>';
   var watchers=[];
@@ -785,7 +785,6 @@
     var descr=it.text?'<div class="qv-desc">'+clean(it.text)+'</div>':'';
     var chars=it.cl.length?'<div class="qv-h">Характеристики</div><dl class="qv-dl">'+it.cl.map(function(c){return '<dt>'+esc(c.title)+'</dt><dd>'+esc(c.value)+'</dd>'}).join('')+'</dl>':'';
     return '<i class="qv-grab" aria-hidden="true"></i><div class="qv-top">'+
-        '<span class="qv-pos">'+(idx>-1?(idx+1)+' / '+curList.length:'')+'</span>'+
         '<button class="qv-btn" type="button" data-qv="pp" aria-label="Предыдущий товар" title="Предыдущий товар (Shift+←)"'+(idx<1?' disabled':'')+'>'+CHEV_L+'</button>'+
         '<button class="qv-btn" type="button" data-qv="pn" aria-label="Следующий товар" title="Следующий товар (Shift+→)"'+(idx<0||idx>=curList.length-1?' disabled':'')+'>'+CHEV_R+'</button>'+
         '<button class="qv-btn" type="button" data-qv="share" aria-label="Поделиться" title="Скопировать ссылку">'+SHARE+'</button>'+
@@ -1338,6 +1337,60 @@
     }
     document.addEventListener('click',gate,true);
   })();
+  // ОБЩЕЕ УПРАВЛЕНИЕ ВЫПАДАЮЩИМИ СПИСКАМИ С КЛАВИАТУРЫ (адреса, страны у телефона, подсказки города): ↓ ↑ Enter Пробел Esc.
+  // Тильда клавиатуру в этих списках не поддерживает, поэтому подключаем одну логику ко всем. Новый список добавляется строкой в CFG.
+  (function(){
+    function vis(list){var a=[];for(var i=0;i<list.length;i++)if(list[i].getClientRects().length)a.push(list[i]);return a}
+    var CFG=[
+      {name:'addr',trigger:'.tcart-select__selected',scope:'.tcart-select',
+        open:function(sc){return sc.classList.contains('tcart-select_open')},
+        items:function(sc){return vis(sc.querySelectorAll('.tcart-select__option:not(.tcart-select__option_unselectable):not(.tcart-select__option_disabled)'))},
+        selected:'.tcart-select__option_selected',toggle:function(tr){tr.click()}},
+      {name:'phone',trigger:'.t-input-phonemask__select',scope:'.t-input-phonemask__wrap',
+        open:function(){var w=document.querySelector('.t-input-phonemask__options-wrap_open');return !!w&&w.getClientRects().length>0},
+        items:function(){var w=document.querySelector('.t-input-phonemask__options-wrap_open');return w?vis(w.querySelectorAll('.t-input-phonemask__options-item')):[]},
+        selected:'.t-input-phonemask__options-item_active',toggle:function(tr){tr.click()}},
+      {name:'search',trigger:'input.searchbox-input',scope:'.searchbox-inner-wrapper',text:true,
+        open:function(sc){var l=sc.querySelector('.searchbox-list');return !!l&&getComputedStyle(l).display!=='none'&&!!l.querySelector('.searchbox-list-item')},
+        items:function(sc){return vis(sc.querySelectorAll('.searchbox-list-item'))},
+        selected:'',toggle:function(){}}
+    ];
+    function clear(){var a=document.querySelectorAll('.mv-active');for(var i=0;i<a.length;i++)a[i].classList.remove('mv-active')}
+    function move(cf,tr,sc,down){
+      var items=cf.items(sc);if(!items.length)return;
+      var cur=-1;for(var i=0;i<items.length;i++)if(items[i].classList.contains('mv-active')){cur=i;break}
+      if(cur<0&&cf.selected){for(var j=0;j<items.length;j++)if(items[j].matches(cf.selected)){cur=j;break}}
+      var next=cur<0?(down?0:items.length-1):Math.max(0,Math.min(items.length-1,cur+(down?1:-1)));
+      clear();items[next].classList.add('mv-active');try{items[next].scrollIntoView({block:'nearest'})}catch(x){}
+    }
+    document.addEventListener('keydown',function(e){
+      var k=e.key;if(k!=='ArrowDown'&&k!=='ArrowUp'&&k!=='Enter'&&k!==' '&&k!=='Escape')return;
+      if(e.altKey||e.ctrlKey||e.metaKey)return;
+      var t=e.target&&e.target.closest?e.target:null;if(!t)return;
+      for(var c=0;c<CFG.length;c++){
+        var cf=CFG[c],tr=t.closest(cf.trigger);if(!tr)continue;
+        var sc=tr.closest(cf.scope)||document,open=cf.open(sc),cur=document.querySelector('.mv-active');
+        if(k==='Escape'){if(!open)return;e.preventDefault();e.stopImmediatePropagation();clear();cf.toggle(tr);return}
+        if(k===' '&&cf.text)return; // в поле ввода пробел — это текст
+        if(k==='Enter'||k===' '){
+          if(open&&cur){e.preventDefault();e.stopImmediatePropagation();cur.click();clear();return}
+          if(!open&&!cf.text){e.preventDefault();cf.toggle(tr)}
+          return;
+        }
+        // стрелки
+        if(!open){if(cf.text)return;e.preventDefault();cf.toggle(tr);setTimeout(function(){move(cf,tr,tr.closest(cf.scope)||document,k==='ArrowDown')},80);return}
+        e.preventDefault();e.stopImmediatePropagation();move(cf,tr,sc,k==='ArrowDown');return;
+      }
+    },true);
+    document.addEventListener('click',clear,true);
+    // триггеры должны получать фокус с клавиатуры
+    function prep(){
+      var a=document.querySelectorAll('.tcart-select__selected:not([tabindex]),.t-input-phonemask__select:not([tabindex])');
+      for(var i=0;i<a.length;i++){a[i].setAttribute('tabindex','0');a[i].setAttribute('role','combobox');a[i].setAttribute('aria-haspopup','listbox')}
+    }
+    if(window.MutationObserver){var q=0;new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;prep()})}).observe(document.body,{childList:true,subtree:true})}
+    prep();
+  })();
   // тексты ошибок формы заказа приходят с английским «Error: » в начале: убираем и делаем первую букву заглавной
   (function(){
     if(!window.MutationObserver)return;
@@ -1629,10 +1682,9 @@
             case 'x':cabClose();break;
             case 'tab':cs.tab=a.dataset.t;cabRender();break;
             case 'ord':{
-              var art=a.closest('.co'),bd=art.querySelector('.co-body'),on=!art.classList.contains('open');
+              // раскрытие чисто на CSS (grid 0fr → 1fr): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
+              var art=a.closest('.co'),on=!art.classList.contains('open');
               art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));
-              if(on){bd.style.maxHeight=bd.scrollHeight+'px';clearTimeout(bd._t);bd._t=setTimeout(function(){if(art.classList.contains('open'))bd.style.maxHeight='none'},450)}
-              else{bd.style.maxHeight=bd.scrollHeight+'px';void bd.offsetHeight;bd.style.maxHeight='0px';clearTimeout(bd._t)}
               break}
             case 'more':cabLoad(true);break;
             case 'out':{
