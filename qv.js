@@ -150,7 +150,7 @@
     var T=window.tcart,n=0,a=0;T.products.forEach(function(p){n+=parseInt(p.quantity,10)||0;a+=(parseFloat(p.price)||0)*(parseInt(p.quantity,10)||0)});
     T.total=n;T.prodamount=a;T.amount=a;
     ['tcart__updateTotalProductsinCartObj','tcart__saveLocalObj','tcart__reDrawProducts','tcart__reDrawCartIcon','tcart__reDrawTotal'].forEach(function(fn){try{if(typeof window[fn]==='function')window[fn]()}catch(e){}});
-    updBadge();
+    updBadge();MVProductCard.refresh(); // счётчики: карточки каталога, шторка товара, плавающая корзина
   }
   function fly(b){
     MVProductCard.feedback(b,bump);
@@ -173,10 +173,10 @@
     var oa=window.alert;window.alert=function(m){toast(String(m||'Не удалось добавить товар'))};
     try{tcart__addProduct(Y)}finally{window.alert=oa}
     if(cartProducts().length&&lineQty(it,ed,sel)<=before){toast('Больше нет в наличии');return false}
-    fly(from);paintCards();return true;
+    fly(from);paintCards();MVProductCard.refresh();return true;
   }
   /* ---------- просмотрщик ---------- */
-  var qv=$('qv'),cur=null,sel={},qty=1,gi=0,pushed=false,lastFocus=null;
+  var qv=$('qv'),cur=null,sel={},gi=0,pushed=false,lastFocus=null;
   function selEd(it){
     if(!it.opts.length)return it.eds[0];
     return it.eds.filter(function(e){return it.opts.every(function(o){return e.raw[o.title]===sel[o.title]})})[0]||it.eds[0];
@@ -224,20 +224,26 @@
         descr+chars+
         (rel.length>2?'<div class="qv-rel"><div class="qv-h">Похожие товары</div><div class="qv-rel-track">'+rel.map(function(x){return '<button type="button" data-rel="'+x.uid+'"><span class="im"><img src="'+esc(thumb(x.img,260))+'" alt="" loading="lazy"></span><span>'+esc(x.n)+'</span><b>'+fmt(x.price)+' ₽</b></button>'}).join('')+'</div></div>':'')+
       '</div><div class="qv-foot">'+
-        '<div class="qv-buy"><div class="qv-qty"><button type="button" data-qv="qm" aria-label="Меньше">−</button><output id="qvQty">1</output><button type="button" data-qv="qp" aria-label="Больше">+</button></div><button class="btn btn-ink qv-add" type="button" data-qv="add" id="qvAdd"></button></div>'+
+        '<div class="qv-buy" id="qvBuy"></div>'+
         '<button class="qv-gocart" type="button" data-qv="cart" id="qvGo" hidden>Товар в корзине. Открыть корзину →</button>'+
       '</div></div>';
   }
+  /* кнопка покупки как у карточки в каталоге: «В корзину» → после нажатия степпер «− N +», каждый «+» добавляет одну штуку */
+  function paintAct(){
+    var box=$('qvBuy');if(!box||!cur)return;
+    var it=cur,ed=selEd(it),max=maxQty(ed),q=lineQty(it,ed,sel),sig=[it.uid,ed.uid,q,max].join('|');
+    if(box.dataset.sig===sig)return;box.dataset.sig=sig;
+    if(ed.qty===0)box.innerHTML='<button class="btn btn-ink qv-add" type="button" data-qv="add" disabled>Нет в наличии</button>';
+    else if(q>0)box.innerHTML='<div class="qv-step" role="group" aria-label="В корзине: '+esc(it.title)+'"><button type="button" data-qv="qm" aria-label="Убрать одну штуку">−</button><span class="qv-stq"><b>'+q+'</b> в корзине · '+fmt(ed.price*q)+' ₽</span><button type="button" data-qv="qp" aria-label="Добавить ещё одну штуку"'+(q>=max?' disabled':'')+'>+</button></div>';
+    else box.innerHTML='<button class="btn btn-ink qv-add" type="button" data-qv="add">'+PLUS+'<span>В корзину · '+fmt(ed.price)+' ₽</span></button>';
+    var go=$('qvGo');if(go)go.hidden=!q;
+  }
+  if(window.MVProductCard)MVProductCard.watch(qv,function(){if(cur&&!qv.hidden)paintAct()});
   function paintBuy(){
     var it=cur,ed=selEd(it);
     var off=ed.old>ed.price?Math.round((1-ed.price/ed.old)*100):0;
     $('qvPrice').innerHTML='<span class="qv-price">'+fmt(ed.price)+' ₽</span>'+(off?'<span class="qv-old">'+fmt(ed.old)+' ₽</span><span class="qv-off">−'+off+'%</span>':'')+stockHtml(ed);
-    var max=ed.qty==null?99:Math.max(ed.qty,0);if(qty>max)qty=Math.max(1,max);
-    $('qvQty').textContent=qty;
-    var box=qv.querySelector('.qv-qty');box.children[0].disabled=qty<=1;box.children[2].disabled=qty>=max;
-    var add=$('qvAdd');
-    if(ed.qty===0){add.disabled=true;add.classList.remove('done');add.innerHTML='Нет в наличии'}
-    else{add.disabled=false;add.classList.remove('done');add.innerHTML=PLUS+'<span>В корзину · '+fmt(ed.price*qty)+' ₽</span>'}
+    paintAct();
     it.opts.forEach(function(o,k){var e=$('optv-'+k);if(e)e.textContent=sel[o.title]||''});
   }
   function curIdx(){var s=$('qvSlides');return s?Math.round(s.scrollLeft/(s.clientWidth||1)):0}
@@ -254,7 +260,7 @@
   }
   function renderQV(it,keep){
     cur=it;
-    if(!keep){sel={};var first=it.eds.filter(function(e){return e.qty!==0})[0]||it.eds[0];it.opts.forEach(function(o){sel[o.title]=first.raw[o.title]!=null?first.raw[o.title]:o.values[0]});qty=1}
+    if(!keep){sel={};var first=it.eds.filter(function(e){return e.qty!==0})[0]||it.eds[0];it.opts.forEach(function(o){sel[o.title]=first.raw[o.title]!=null?first.raw[o.title]:o.values[0]})}
     gi=0;
     qv.innerHTML='<div class="qv-box">'+qvHtml(it)+'</div>';
     var s=$('qvSlides');s.addEventListener('scroll',function(){cancelAnimationFrame(renderQV.r);renderQV.r=requestAnimationFrame(syncGal)},{passive:true});
@@ -325,8 +331,8 @@
       case 'pn':stepAnim(1);break;
       case 'gp':slideTo(Math.max(0,curIdx()-1));break;
       case 'gn':slideTo(Math.min($('qvSlides').children.length-1,curIdx()+1));break;
-      case 'qm':qty=Math.max(1,qty-1);paintBuy();break;
-      case 'qp':qty++;paintBuy();break;
+      case 'qm':{var edm=selEd(cur);if(lineQty(cur,edm,sel)>0){cartMinus(cur,edm,sel);if(navigator.vibrate)try{navigator.vibrate(8)}catch(x){}}paintAct();break}
+      case 'qp':{var edp=selEd(cur);if(edp.qty!==0)addToCart(cur,edp,1,sel,a);paintAct();break}
       case 'cart':openCart();break;
       case 'share':{
         var u=location.origin+location.pathname+'#p-'+cur.uid;
@@ -337,10 +343,7 @@
       }
       case 'add':{
         var ed2=selEd(cur);if(ed2.qty===0)break;
-        if(addToCart(cur,ed2,qty,sel,a)){
-          a.classList.add('done');a.innerHTML=CHECK+'<span>Добавлено</span>';$('qvGo').hidden=false;
-          clearTimeout(a._t);a._t=setTimeout(function(){if(cur)paintBuy()},2200);
-        }
+        addToCart(cur,ed2,1,sel,a);paintAct();
         break;
       }
     }
@@ -399,7 +402,7 @@
         lbTap=Date.now();
         if(!e.target.closest('img')&&lbS<=1.02)lbClose(); // клик по тёмному фону
       });
-      // Масштабирование двойным кликом отключено: фотографии открываются общим MVImageViewer.
+      lb.addEventListener('dblclick',function(e){if(!e.target.closest('img'))return;lbZoomAt(e.clientX,e.clientY,lbS>1.02?1:2.6)});
       lb.addEventListener('wheel',function(e){if(!e.target.closest('img'))return;e.preventDefault();var to=Math.max(1,Math.min(5,lbS*(e.deltaY<0?1.2:1/1.2)));lbZoomAt(e.clientX,e.clientY,to)},{passive:false});
       // перетаскивание и щипок
       lb.addEventListener('pointerdown',function(e){
@@ -447,7 +450,7 @@
     var tx=0,ty=0,on=false,stage=false,canPrev=false,canNext=false;
     qv.addEventListener('touchstart',function(e){
       var t=e.touches[0];tx=t.clientX;ty=t.clientY;
-      on=e.touches.length===1&&!e.target.closest('.qv-rel-track,.qv-seg,.qv-qty,input,select,.qv-top');
+      on=e.touches.length===1&&!e.target.closest('.qv-rel-track,.qv-seg,.qv-step,input,select,.qv-top');
       stage=!!e.target.closest('.qv-stage');
       if(stage){var n=($('qvSlides')||{children:[]}).children.length,k=curIdx();canPrev=k===0;canNext=k>=n-1}
     },{passive:true});
