@@ -3,7 +3,7 @@
    а не на системную страницу входа Тильды. Выход тот же, что у Тильды: POST /api/logout/ и очистка localStorage. */
 (function(){
   if(window.__mvMembers)return;window.__mvMembers=1;
-  var HOME='/newmain';
+  var HOME='/';
   var ar=document.getElementById('allrecords'),pid=ar&&ar.getAttribute('data-tilda-project-id')||'';
   function ep(alt){
     var tm=window.tildaMembers||{},b=tm.endpoint||(typeof window.tma__getMembersEndpoint==='function'?window.tma__getMembersEndpoint():'https://members.tildaapi.'+(tm.rootZone||'com'));

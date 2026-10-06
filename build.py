@@ -47,8 +47,8 @@ header = re.sub(r'\s*<form class="srch".*?</form>', '', header, flags=re.S)
 mnav = re.search(r'<nav class="mnav".*?</nav>', home_html, re.S).group(0)
 
 def relink(s):
-    s = s.replace('href="#catalog" class="on"', 'href="/newstore" class="on"')
-    s = s.replace('href="#catalog"', 'href="/newstore"')
+    s = s.replace('href="#catalog" class="on"', 'href="/store" class="on"')
+    s = s.replace('href="#catalog"', 'href="/store"')
     for k in ('delivery', 'stores', 'about', 'reviews', 'faq'):
         s = s.replace('href="#%s"' % k, 'href="{{HOME}}#%s"' % k)
     s = s.replace('class="brand" href="#"', 'class="brand" href="{{HOME}}"')

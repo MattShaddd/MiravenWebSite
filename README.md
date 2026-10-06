@@ -12,7 +12,7 @@
 | `members.js` | скрипт страниц личного кабинета (/members/…): «Выйти» ведёт на сайт, а не на страницу входа Тильды. Подключается блоком T123 на этих страницах: `<script src="https://mattshaddd.github.io/MiravenWebSite/members.js"></script>` |
 | `loader.html` | загрузчик главной (блок T123 на главной) |
 | `preloader.snippet.js` | экран загрузки (логотип и полоса, которая заполняется по мере загрузки файлов). **Вшивается** `build.py` в `loader.html` и `loader-catalog.html` между метками `PRELOADER:BEGIN/END`, править нужно его, а не загрузчики. Логотип: `assets/preloader/logo.png` (оригинал) и `logo-280.webp` (вшивается) |
-| `loader-catalog.html` | загрузчик каталога (блок T123 на странице `/newstore`) |
+| `loader-catalog.html` | загрузчик каталога (блок T123 на странице `/store`) |
 | `footer.html` / `footer.css` | отдельный глобальный футер |
 | `loader-footer.html` | загрузчик для T123 на странице-футере Tilda |
 | `build.py` | сборка каталога и готовых блоков без загрузчика в `dist/` |

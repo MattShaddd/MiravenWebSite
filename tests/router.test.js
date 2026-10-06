@@ -4,7 +4,7 @@ const vm=require('node:vm');
 const source=fs.readFileSync(require.resolve('../miraven.js'),'utf8').replace(/\r\n/g,'\n');
 const router=source.slice(source.indexOf('  /* Бесшовный переход'),source.indexOf('  // Production Tilda loader'));
 const listeners={},requests=[];
-const location={pathname:'/newmain',hash:'',href:'https://miraven.ru/newmain',origin:'https://miraven.ru'};
+const location={pathname:'/',hash:'',href:'https://miraven.ru/',origin:'https://miraven.ru'};
 const context={URL,location,history:{},document:{
   addEventListener(name,fn){listeners[name]=fn},
   getElementById(){return{}},
@@ -20,10 +20,10 @@ function click(href,extra={}){
 // Product history must be handled by the product viewer, not rebuild the page.
 location.hash='#p-42';listeners.popstate();
 assert.equal(requests.length,0);
-assert.equal(click('https://miraven.ru/newstore#p-42'),false);
-assert.equal(click('https://miraven.ru/newmain#reviews'),false);
-assert.equal(click('https://miraven.ru/newstore',{ctrlKey:true}),false);
-assert.equal(click('https://miraven.ru/newstore'),true);
+assert.equal(click('https://miraven.ru/store#p-42'),false);
+assert.equal(click('https://miraven.ru/#reviews'),false);
+assert.equal(click('https://miraven.ru/store',{ctrlKey:true}),false);
+assert.equal(click('https://miraven.ru/store'),true);
 assert.equal(requests.length,7);
 assert.ok(requests.some(url=>url.endsWith('product-card.css')));
 

@@ -55,6 +55,10 @@
     if(!document.getElementById('toast')){var t=document.createElement('div');t.className='toast';t.id='toast';t.setAttribute('role','status');t.setAttribute('aria-live','polite');host.appendChild(t)}
   })();
   var API={part:'683137745982',rec:'1278450591'};
+  // страницы переехали: главная теперь «/», каталог «/store». Загрузчик, вставленный в Тильду раньше, мог подставить старые /newmain и /newstore:
+  // поправляем адрес и ссылки в уже вставленной разметке, чтобы не вести на 404
+  if(/^\/newmain\/?$/.test(window.MV_HOME||''))window.MV_HOME='/';
+  document.querySelectorAll('a[href^="/newmain"],a[href^="/newstore"]').forEach(function(a){a.setAttribute('href',a.getAttribute('href').replace(/^\/newmain/,'/').replace(/^\/newstore/,'/store'))});
   var HOME=window.MV_HOME||'/';
   var ORDER=['Открытки','Наборы открыток','Свечи','Наклейки на карты','Разное','Новинки','Распродажа'];
   var FGROUPS=['Фандом','Материал','Оборот','Формат'];

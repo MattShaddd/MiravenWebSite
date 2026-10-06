@@ -1789,7 +1789,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 
 <div class="site">
 <header class="top wrap">
-          <a class="brand" href="/newmain" aria-label="Миравен, на главную"><img src="https://mattshaddd.github.io/MiravenWebSite/logo-header.webp" width="1022" height="121" alt="Миравен"></a>
+          <a class="brand" href="/" aria-label="Миравен, на главную"><img src="https://mattshaddd.github.io/MiravenWebSite/logo-header.webp" width="1022" height="121" alt="Миравен"></a>
           <div class="top-actions">
             <button class="icon-btn theme-btn" id="themeBtn" aria-label="Тёмная тема" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 14.6A8.5 8.5 0 0 1 9.4 3.7a8.5 8.5 0 1 0 10.9 10.9Z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></button>
             <button class="icon-btn" id="searchBtn" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
@@ -1801,7 +1801,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 
 <main class="cat" id="cat">
   <section class="wrap cat-hero">
-    <nav class="crumbs" aria-label="Навигация"><a href="/newmain">Главная</a><span aria-hidden="true">/</span><span class="crumb-cur">Каталог</span></nav>
+    <nav class="crumbs" aria-label="Навигация"><a href="/">Главная</a><span aria-hidden="true">/</span><span class="crumb-cur">Каталог</span></nav>
     <div class="cat-title">
       <h1 class="h1">Каталог</h1>
       <p id="catSub">Авторские открытки, наборы, свечи и наклейки</p>
@@ -1847,7 +1847,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 </div>
 
 
-<script>window.MV_HOME='/newmain';
+<script>window.MV_HOME='/';
 (function(){
   'use strict';
   if(window.MVImageViewer)return;
@@ -2132,7 +2132,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   (function(){
     if(window.MVRouter)return;
     try{history.scrollRestoration='manual'}catch(e){}
-    var BASE='https://mattshaddd.github.io/MiravenWebSite/',HOME='/newmain',CATALOG='/newstore',busy=false,currentPath=routePath(location.pathname);
+    var BASE='https://mattshaddd.github.io/MiravenWebSite/',HOME='/',CATALOG='/store',busy=false,currentPath=routePath(location.pathname);
     function get(f){return fetch(BASE+f,{cache:'no-cache'}).then(function(r){if(!r.ok)throw Error(f);return r.text()})}
     function styles(css){var s=document.querySelector('style[data-mv-route-css]');if(!s){s=document.createElement('style');s.setAttribute('data-mv-route-css','');document.head.appendChild(s)}s.textContent=css}
     function run(code){var s=document.createElement('script');s.textContent=code;document.body.appendChild(s);s.remove()}
@@ -2287,6 +2287,10 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 
   /* Каталог Миравен. Исходник: catalog.src.js. Файл catalog.js собирается скриптом build.py (подтягивает вход и тему из miraven.js). */
   var API={part:'683137745982',rec:'1278450591'};
+  // страницы переехали: главная теперь «/», каталог «/store». Загрузчик, вставленный в Тильду раньше, мог подставить старые /newmain и /newstore:
+  // поправляем адрес и ссылки в уже вставленной разметке, чтобы не вести на 404
+  if(/^\/newmain\/?$/.test(window.MV_HOME||''))window.MV_HOME='/';
+  document.querySelectorAll('a[href^="/newmain"],a[href^="/newstore"]').forEach(function(a){a.setAttribute('href',a.getAttribute('href').replace(/^\/newmain/,'/').replace(/^\/newstore/,'/store'))});
   var HOME=window.MV_HOME||'/';
   var ORDER=['Открытки','Наборы открыток','Свечи','Наклейки на карты','Разное','Новинки','Распродажа'];
   var FGROUPS=['Фандом','Материал','Оборот','Формат'];
@@ -3431,7 +3435,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
         if(!a)return;var h=a.getAttribute('href')||'';if(/exit=y/.test(h))return;
         e.preventDefault();e.stopImmediatePropagation();auth.open(/signup/.test(h)?'signup':'login');
       },true);
-      // прямая ссылка на окно: …/newmain#login или …#signup
+      // прямая ссылка на окно: …/#login или …#signup
       var hashAuth=function(){var m=/^#(login|signup|register)$/.exec(location.hash);if(m)auth.open(m[1]==='login'?'login':'signup')};
       window.addEventListener('hashchange',hashAuth);setTimeout(hashAuth,0);
     }
@@ -3444,7 +3448,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
     function dt(s){var m=/(\d{4})-(\d\d)-(\d\d)/.exec(s||'');return m?m[3]+'.'+m[2]+'.'+m[1]:''}
     function plr(n,f){var a=n%100,b=a%10;return a>10&&a<20?f[2]:b>1&&b<5?f[1]:b===1?f[0]:f[2]}
     function prof(){try{return JSON.parse(localStorage.getItem('tilda_members_profile'+pid))||{}}catch(e){return{}}}
-    function pUrl(u){var m=/tproduct\/(\d+)/.exec(u||'');return m?'/newstore#p-'+m[1]:(u||'#')}
+    function pUrl(u){var m=/tproduct\/(\d+)/.exec(u||'');return m?'/store#p-'+m[1]:(u||'#')}
     var IC_X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     var IC_CH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
     function api(){return typeof window.tmst__fetchData==='function'}
@@ -3468,13 +3472,13 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
       if(t==='orders'){
         if(cs.err)return '<div class="cab-empty"><b>Не удалось загрузить заказы</b><span>Обновите страницу или откройте их на отдельной странице.</span><a class="btn btn-line" href="/members/orderlist">Мои заказы</a></div>';
         if(!cs.loaded)return '<div class="cab-load"><i></i></div>';
-        if(!cs.orders.length)return '<div class="cab-empty"><b>Заказов пока нет</b><span>Выберите открытки в каталоге, и заказ появится здесь.</span><a class="btn btn-ink" href="/newstore">В каталог</a></div>';
+        if(!cs.orders.length)return '<div class="cab-empty"><b>Заказов пока нет</b><span>Выберите открытки в каталоге, и заказ появится здесь.</span><a class="btn btn-ink" href="/store">В каталог</a></div>';
         return cs.orders.map(orderHtml).join('')+(cs.orders.length<cs.total?'<button class="btn btn-line cab-more" type="button" data-cab="more">'+(cs.busy?'Загружаем…':'Показать ещё')+'</button>':'');
       }
       if(t==='bought'){
         var L=(cs.dash&&cs.dash.last_purchases)||[];
         if(!cs.loaded)return '<div class="cab-load"><i></i></div>';
-        if(!L.length)return '<div class="cab-empty"><b>Покупок пока нет</b><span>Здесь появятся товары из ваших заказов.</span><a class="btn btn-ink" href="/newstore">В каталог</a></div>';
+        if(!L.length)return '<div class="cab-empty"><b>Покупок пока нет</b><span>Здесь появятся товары из ваших заказов.</span><a class="btn btn-ink" href="/store">В каталог</a></div>';
         return '<div class="cab-grid">'+L.map(function(p){return '<a class="cb" href="'+eh(pUrl(p.url))+'"><span class="cb-im"><img src="'+eh(p.image)+'" alt="" loading="lazy"></span><b>'+eh(dec(p.title))+'</b></a>'}).join('')+'</div>'+(cs.dash.purchases_count>L.length?'<p class="cab-note">Показаны последние покупки. Всего: '+cs.dash.purchases_count+'.</p>':'');
       }
       var p=prof(),phone=p.phone?String(p.phone).replace(/^\+?7(\d{3})(\d{3})(\d{2})(\d{2})$/,'+7 ($1) $2-$3-$4'):'';
