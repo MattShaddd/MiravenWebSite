@@ -1316,7 +1316,7 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 
 /* карточки товаров */
 .prod .photo img{transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s}
-.prod:hover .photo img{transform:scale(1.06)}
+
 .prod .photo{box-shadow:0 10px 26px -18px rgba(0,0,0,.4);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
 
 
@@ -1360,4 +1360,5 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 .sec-head .deliv-free{color:var(--ink);max-width:none;font-size:inherit;margin:0}
 
 /* карточка товара: только приближение и лёгкий наклон к мыши */
-.prod .photo{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out,box-shadow .5s;will-change:transform}
+.prod .photo img{transition:transform .25s ease-out,filter .5s;will-change:transform}
+.prod:hover .photo img{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(1.07)}
