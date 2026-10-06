@@ -32,3 +32,5 @@
 /* шапка Тильды на этих страницах, если она есть: в цветах темы */
 @@PAGE@@ :is(.t228,.t228__positionfixed,.t456,.t396){background-color:var(--lg-bg)!important}
 ::selection{background:color-mix(in srgb,#C4913A 40%,transparent)}
+/* плавающий кружок профиля Тильды на юридических страницах не нужен */
+@@HTML@@ .tlk-userbar{display:none!important}
