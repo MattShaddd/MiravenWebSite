@@ -1930,6 +1930,13 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   .qv-priceRow{margin-top:0}
 }
 
+/* карточка товара: только приближение и лёгкий наклон к мыши; кнопка «в корзину» неподвижна (как на главной, см. miraven.css) */
+.pc-ph,.pc:hover .pc-ph{overflow:visible;isolation:auto;transform-style:preserve-3d;transform:perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--zm));box-shadow:var(--sh-1);transition:--rx .25s ease-out,--ry .25s ease-out,--zm .45s ease-out,box-shadow .5s;will-change:transform}
+.pc:hover .pc-ph{--zm:1.05}
+.pc-ph img{border-radius:inherit}
+.pc:hover .pc-ph img{transform:none}
+.pc .pc-ph .add{transform-origin:calc(100% + 10px - var(--pw,0px) / 2) calc(100% + 10px - var(--ph,0px) / 2);transform:scale(calc(1 / var(--zm))) rotateY(calc(var(--ry) * -1)) rotateX(calc(var(--rx) * -1)) translateZ(30px) scale(.9625) matrix3d(1,0,0,0,0,1,0,0,0,0,1,.00125,0,0,0,1);transition:background .25s,color .25s,box-shadow .25s}
+
 .mv-product-card .add{position:absolute;z-index:4;right:10px;bottom:10px;height:36px;min-width:36px;padding:0 11px;border:0;border-radius:18px;background:var(--ink);color:var(--white);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;box-shadow:0 8px 18px -10px rgba(0,0,0,.55);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition-property:background,color,transform;transition-duration:.2s}
 .mv-product-card .add:hover{background:var(--ink);color:var(--white)}
 .mv-product-card .add:active{transform:scale(.96)}
@@ -2277,11 +2284,11 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   var cur=null,MAX=6;
   function reset(el){if(el){el.style.removeProperty('--rx');el.style.removeProperty('--ry')}}
   document.addEventListener('pointerover',function(e){
-    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo'):null;
+    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo,.pc .pc-ph'):null;
     if(ph){ph.style.setProperty('--pw',ph.offsetWidth+'px');ph.style.setProperty('--ph',ph.offsetHeight+'px')}
   },{passive:true});
   document.addEventListener('pointermove',function(e){
-    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo'):null;
+    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo,.pc .pc-ph'):null;
     if(cur&&cur!==ph){reset(cur);cur=null}
     if(!ph)return;
     cur=ph;

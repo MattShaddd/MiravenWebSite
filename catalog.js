@@ -192,11 +192,11 @@
   var cur=null,MAX=6;
   function reset(el){if(el){el.style.removeProperty('--rx');el.style.removeProperty('--ry')}}
   document.addEventListener('pointerover',function(e){
-    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo'):null;
+    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo,.pc .pc-ph'):null;
     if(ph){ph.style.setProperty('--pw',ph.offsetWidth+'px');ph.style.setProperty('--ph',ph.offsetHeight+'px')}
   },{passive:true});
   document.addEventListener('pointermove',function(e){
-    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo'):null;
+    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo,.pc .pc-ph'):null;
     if(cur&&cur!==ph){reset(cur);cur=null}
     if(!ph)return;
     cur=ph;
