@@ -17,7 +17,11 @@
 .pg-steps span{display:grid;gap:2px;font-size:15px;line-height:1.5;color:var(--muted)}
 .pg-steps strong{font-weight:600;color:var(--ink);font-size:16px}
 .pg-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.pg-lead,.pg-note{text-wrap:balance;hyphens:manual}
 .pg-note{margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.pg-legal{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 8px}
+.pg-legal span,.pg-legal a{white-space:nowrap}
+@media (max-width:520px){.pg-legal{flex-direction:column;align-items:center;gap:4px}.pg-legal .pg-dot{display:none}}
 .pg-note a{color:var(--gold-text);text-decoration:underline;text-underline-offset:3px}
 .pg-links{display:grid;gap:10px;width:100%}
 .pg-link{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;padding:0 22px;border:1px solid var(--stone);border-radius:999px;background:transparent;color:var(--ink);text-decoration:none;font-size:16px;font-weight:500;transition:border-color .25s,background .25s,color .25s}
