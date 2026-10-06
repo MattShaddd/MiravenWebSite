@@ -474,17 +474,27 @@
         cab=document.createElement('div');cab.className='cab';cab.setAttribute('role','dialog');cab.setAttribute('aria-modal','true');cab.setAttribute('aria-label','Личный кабинет');cab.hidden=true;
         cab.innerHTML='<div class="cab-box"></div>';(document.querySelector('.site')||document.body).appendChild(cab);
         if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:cab,box:function(){return cab.querySelector('.cab-box')},scroller:function(){return cab.querySelector('.cab-body')},handle:'.cab-top,.cab-tabs',close:cabClose});
+        // раскрытие чисто на CSS (display none → block): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
+        var tapAt=0,tapXY=null;
+        function ordToggle(a){
+          var art=a.closest('.co'),on=!art.classList.contains('open');
+          art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));tapAt=Date.now();
+        }
+        // запасной тап: на телефоне касание с дрожью пальца иногда не даёт click, тогда раскрываем по окончании касания
+        cab.addEventListener('touchstart',function(e){var t=e.touches[0];tapXY=e.touches.length===1&&t?{x:t.clientX,y:t.clientY,at:Date.now(),el:e.target}:null},{passive:true});
+        cab.addEventListener('touchend',function(e){
+          var s=tapXY;tapXY=null;if(!s)return;var t=e.changedTouches[0];
+          if(!t||Math.abs(t.clientX-s.x)>24||Math.abs(t.clientY-s.y)>24||Date.now()-s.at>600)return;
+          var h=s.el.closest&&s.el.closest('[data-cab="ord"]');if(!h)return;
+          setTimeout(function(){if(tapAt<s.at&&h.isConnected)ordToggle(h)},420);
+        },{passive:true});
         cab.addEventListener('click',function(e){
           if(e.target===cab){cabClose();return}
           var a=e.target.closest('[data-cab]');if(!a)return;
           switch(a.dataset.cab){
             case 'x':cabClose();break;
             case 'tab':cs.tab=a.dataset.t;cabRender();break;
-            case 'ord':{
-              // раскрытие чисто на CSS (display none → block): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
-              var art=a.closest('.co'),on=!art.classList.contains('open');
-              art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));
-              break}
+            case 'ord':ordToggle(a);break;
             case 'more':cabLoad(true);break;
             case 'out':{
               var fin=false,after=function(){if(fin)return;fin=true;location.reload()};
@@ -627,9 +637,9 @@
       el.addEventListener('touchmove',function(e){
         if(!st)return;var q=e.touches[0],dx=q.clientX-st.x,dy=q.clientY-st.y;
         if(!st.drag){
-          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>8){st=null;return}
-          if(dy<-8){if(st.grab&&o.expand&&!st.full){st.drag=true;st.mode='up';st.b.style.transition='none';st.b.style.maxHeight='none'}else{st=null;return}}
-          else if(dy>8){st.drag=true;st.mode='down';st.b.style.transition='none';el.style.transition='none'}
+          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>14){st=null;return}
+          if(dy<-14){if(st.grab&&o.expand&&!st.full){st.drag=true;st.mode='up';st.b.style.transition='none';st.b.style.maxHeight='none'}else{st=null;return}}
+          else if(dy>14){st.drag=true;st.mode='down';st.b.style.transition='none';el.style.transition='none'}
           else return;
         }
         if(e.cancelable)e.preventDefault();
