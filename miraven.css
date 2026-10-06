@@ -1367,3 +1367,7 @@ html{scrollbar-gutter:stable}
 
 /* телефон: окно ужимается до видимой области, когда открыта клавиатура (см. product-card.js) */
 [style*="--mv-vvh"] :is(.mv-cp,.t706__cartwin-content,.sh-box,.cab-box,.qv-box){max-height:calc(var(--mv-vvh) - 8px)!important}
+
+/* телефон, открыта клавиатура: закреплённая кнопка «Оформить заказ» перекрывала поле. Пока клавиатура открыта, кнопка встаёт в конец формы, а прокрутка учитывает липкие шапку и подвал */
+[style*="--mv-vvh"] .t706__cartpage .t-form__submit{position:static!important;border-top:0;padding-bottom:0!important}
+.mv-cp,.t706__cartwin-content{scroll-padding-top:72px;scroll-padding-bottom:110px}
