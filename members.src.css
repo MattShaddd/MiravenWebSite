@@ -119,6 +119,8 @@ body,#allrecords,.t-body{background:var(--m-bg)!important;color:var(--m-ink)!imp
 .tmst-main__card__link,#allrecords [data-field="tlk-link"]{color:var(--m-ink)!important;font-weight:500;text-decoration:none!important;transition:color .2s}
 .tmst-main__card__link:hover,#allrecords [data-field="tlk-link"]:hover{color:var(--m-gold-text)!important}
 .tmst-main__card__link_secondary{color:var(--m-muted)!important}
+/* «Выйти» в кабинете Тильды ведёт на её системную страницу входа без нашего оформления: кнопку скрываем, выйти можно из окна кабинета на сайте */
+.tmst-main__card__link_secondary{display:none!important}
 .tmst-main__card__link svg *{stroke:currentColor}
 .tmst-products__image{border-radius:12px!important}
 .tmst-products__image_more{background:var(--m-bg)!important;border:1px solid var(--m-stone);color:var(--m-muted)!important}

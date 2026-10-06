@@ -119,6 +119,8 @@
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-main__card__link, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords [data-field="tlk-link"]{color:var(--m-ink)!important;font-weight:500;text-decoration:none!important;transition:color .2s}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-main__card__link:hover, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) #allrecords [data-field="tlk-link"]:hover{color:var(--m-gold-text)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-main__card__link_secondary{color:var(--m-muted)!important}
+/* «Выйти» в кабинете Тильды ведёт на её системную страницу входа без нашего оформления: кнопку скрываем, выйти можно из окна кабинета на сайте */
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-main__card__link_secondary{display:none!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-main__card__link svg *{stroke:currentColor}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-products__image{border-radius:12px!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tmst-products__image_more{background:var(--m-bg)!important;border:1px solid var(--m-stone);color:var(--m-muted)!important}
