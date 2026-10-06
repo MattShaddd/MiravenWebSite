@@ -891,13 +891,16 @@
       for(var i=0;i<CFG.length;i++){var tr=t.closest(CFG[i].trigger);if(tr)return{cf:CFG[i],tr:tr,sc:tr.closest(CFG[i].scope)||document}}
       return null;
     }
+    // Тильда закрывает корзину по отпусканию Esc (keyup): если Esc ушёл на закрытие списка, глушим и keyup
+    var escUsed=false;
+    window.addEventListener('keyup',function(e){if(e.key==='Escape'&&escUsed){escUsed=false;e.stopImmediatePropagation();e.preventDefault()}},true);
     window.addEventListener('keydown',function(e){
       var k=e.key;if(k!=='ArrowDown'&&k!=='ArrowUp'&&k!=='Enter'&&k!==' '&&k!=='Escape')return;
       if(e.altKey||e.ctrlKey||e.metaKey)return;
       var t=e.target&&e.target.closest?e.target:null;if(!t)return;
       var f=find(t);if(!f||!f.tr)return;
       var cf=f.cf,tr=f.tr,sc=f.sc,open=cf.open(sc),cur=document.querySelector('.mv-active');
-      if(k==='Escape'){if(!open)return;e.preventDefault();e.stopImmediatePropagation();clear();cf.toggle(tr);return}
+      if(k==='Escape'){if(!open)return;e.preventDefault();e.stopImmediatePropagation();clear();cf.toggle(tr);escUsed=true;return}
       if(k===' '&&(cf.text||t.matches('input,textarea')))return; // в поле ввода пробел — это текст
       if(k==='Enter'||k===' '){
         if(open&&cur){e.preventDefault();e.stopImmediatePropagation();cur.click();clear();return}
