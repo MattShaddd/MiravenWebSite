@@ -10,6 +10,12 @@
 }
 @@HTML@@,@@HTML@@ body,@@PAGE@@{background:var(--lg-bg)!important;color:var(--lg-ink)}
 @@PAGE@@ .t-rec{background-color:transparent!important}
+/* текстовый блок T220 (плашка с текстом) и цвета, заданные внутри текста в редакторе Тильды */
+@@PAGE@@ .t-rec :is(div,p,span,li,td,th,strong,b,em,i,u,font){color:var(--lg-ink)!important}
+@@PAGE@@ .t220__textwrapper{background:var(--lg-surface)!important;border:1px solid var(--lg-line);border-radius:22px;padding:clamp(22px,4vw,44px)!important;box-sizing:border-box}
+@@PAGE@@ .t220__textwrapper :is(div,p,span,li){font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif;line-height:1.75}
+@@PAGE@@ .t220__textwrapper :is(b,strong){font-weight:600;color:var(--lg-head)!important}
+@@PAGE@@ .t220__textwrapper a{color:var(--lg-link)!important;text-decoration:underline;text-underline-offset:3px}
 /* заголовки */
 @@PAGE@@ :is(.t-title,.t-heading,.t-name,h1,h2,h3,h4){font-family:"Lora",Georgia,"Times New Roman",serif!important;font-weight:600!important;color:var(--lg-head)!important;letter-spacing:-.01em;line-height:1.2!important}
 @@PAGE@@ :is(.t-title_xxl,.t-title_xl,.t-title_lg,h1){font-size:clamp(30px,4vw,44px)!important}

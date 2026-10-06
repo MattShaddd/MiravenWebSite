@@ -298,6 +298,12 @@ html[data-mv-theme="dark"]:has(:is(#allrecords[data-tilda-page-alias="oferta"],#
 }
 html:has(:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"])),html:has(:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"])) body,:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]){background:var(--lg-bg)!important;color:var(--lg-ink)}
 :is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) .t-rec{background-color:transparent!important}
+/* текстовый блок T220 (плашка с текстом) и цвета, заданные внутри текста в редакторе Тильды */
+:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) .t-rec :is(div,p,span,li,td,th,strong,b,em,i,u,font){color:var(--lg-ink)!important}
+:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) .t220__textwrapper{background:var(--lg-surface)!important;border:1px solid var(--lg-line);border-radius:22px;padding:clamp(22px,4vw,44px)!important;box-sizing:border-box}
+:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) .t220__textwrapper :is(div,p,span,li){font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif;line-height:1.75}
+:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) .t220__textwrapper :is(b,strong){font-weight:600;color:var(--lg-head)!important}
+:is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) .t220__textwrapper a{color:var(--lg-link)!important;text-decoration:underline;text-underline-offset:3px}
 /* заголовки */
 :is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) :is(.t-title,.t-heading,.t-name,h1,h2,h3,h4){font-family:"Lora",Georgia,"Times New Roman",serif!important;font-weight:600!important;color:var(--lg-head)!important;letter-spacing:-.01em;line-height:1.2!important}
 :is(#allrecords[data-tilda-page-alias="oferta"],#allrecords[data-tilda-page-alias="politika"]) :is(.t-title_xxl,.t-title_xl,.t-title_lg,h1){font-size:clamp(30px,4vw,44px)!important}
