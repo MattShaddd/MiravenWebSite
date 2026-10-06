@@ -795,7 +795,7 @@
         '</div></div>'+
       '<div class="qv-info"><div class="qv-scroll qv-swap">'+
         '<div class="qv-crumb">'+crumb+'</div>'+
-        '<div class="qv-head">'+(it.t?'<div class="qv-sub">'+esc(it.t)+'</div>':'')+'<h2 class="qv-title" id="qvTitle">'+esc(it.n)+'</h2><div class="qv-priceRow" id="qvPrice"></div></div>'+
+        '<div class="qv-head"><h2 class="qv-title" id="qvTitle">'+esc(it.n)+'</h2><div class="qv-priceRow" id="qvPrice"></div></div>'+
         (it.descr?'<p class="qv-sub qv-short">'+clean(it.descr).replace(/<br\s*\/?>/g,' · ')+'</p>':'')+
         opts+
         '<div class="qv-ship">'+TRUCK+'<span>Отправляю в течение 3 рабочих дней после оплаты: Почтой России, Ozon-доставкой или СДЭК.</span></div>'+

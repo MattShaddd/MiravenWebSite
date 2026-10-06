@@ -507,3 +507,11 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 .cat-mini .tt-n{font-style:normal;font-size:12px}.cat-mini .tt-n[hidden]{display:none}
 .cat-mini :focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 @media(prefers-reduced-motion:reduce){.cat-mini{transition:none;transform:none}}
+
+/* шапка карточки товара: крошки на одной линии с кнопками (раньше строка шла ниже их центра), без дублирующей строки типа, воздух до названия */
+@media (min-width:981px){
+  .qv-scroll{padding-top:14px}
+  .qv-crumb{min-height:42px;align-items:center;align-content:center}
+  .qv-head{margin-top:8px;gap:10px}
+  .qv-priceRow{margin-top:0}
+}

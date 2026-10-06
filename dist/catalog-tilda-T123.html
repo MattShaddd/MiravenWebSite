@@ -1767,6 +1767,14 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 .cat-mini :focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 @media(prefers-reduced-motion:reduce){.cat-mini{transition:none;transform:none}}
 
+/* шапка карточки товара: крошки на одной линии с кнопками (раньше строка шла ниже их центра), без дублирующей строки типа, воздух до названия */
+@media (min-width:981px){
+  .qv-scroll{padding-top:14px}
+  .qv-crumb{min-height:42px;align-items:center;align-content:center}
+  .qv-head{margin-top:8px;gap:10px}
+  .qv-priceRow{margin-top:0}
+}
+
 .mv-product-card .add{position:absolute;z-index:4;right:10px;bottom:10px;height:36px;min-width:36px;padding:0 11px;border:0;border-radius:18px;background:var(--ink);color:var(--white);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;box-shadow:0 8px 18px -10px rgba(0,0,0,.55);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition-property:background,color,transform;transition-duration:.2s}
 .mv-product-card .add:hover{background:var(--ink);color:var(--white)}
 .mv-product-card .add:active{transform:scale(.96)}
@@ -2713,7 +2721,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
         '</div></div>'+
       '<div class="qv-info"><div class="qv-scroll qv-swap">'+
         '<div class="qv-crumb">'+crumb+'</div>'+
-        '<div class="qv-head">'+(it.t?'<div class="qv-sub">'+esc(it.t)+'</div>':'')+'<h2 class="qv-title" id="qvTitle">'+esc(it.n)+'</h2><div class="qv-priceRow" id="qvPrice"></div></div>'+
+        '<div class="qv-head"><h2 class="qv-title" id="qvTitle">'+esc(it.n)+'</h2><div class="qv-priceRow" id="qvPrice"></div></div>'+
         (it.descr?'<p class="qv-sub qv-short">'+clean(it.descr).replace(/<br\s*\/?>/g,' · ')+'</p>':'')+
         opts+
         '<div class="qv-ship">'+TRUCK+'<span>Отправляю в течение 3 рабочих дней после оплаты: Почтой России, Ozon-доставкой или СДЭК.</span></div>'+
