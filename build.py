@@ -23,10 +23,8 @@ base = sys.argv[1] if len(sys.argv) > 1 else re.search(r"BASE='([^']+)'", rd('lo
 home = re.search(r"HOME='([^']+)'", rd('loader-catalog.html')).group(1)
 
 # ---------- экран загрузки: preloader.snippet.js вшивается в загрузчики (между метками PRELOADER:BEGIN/END) ----------
-import base64
 def inject_preloader():
-    logo = base64.b64encode(open(os.path.join(here, 'assets/preloader/logo-280.webp'), 'rb').read()).decode()
-    snippet = rd('preloader.snippet.js').replace('{{LOGO}}', logo).replace('\r\n', '\n')
+    snippet = rd('preloader.snippet.js').replace('\r\n', '\n')  # логотип подгружается по BASE + assets/preloader/logo-280.webp
     if not snippet.endswith('\n'): snippet += '\n'
     for f in ('loader.html', 'loader-catalog.html'):
         t = rd(f).replace('\r\n', '\n')

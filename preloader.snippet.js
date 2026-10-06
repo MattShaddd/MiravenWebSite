@@ -17,7 +17,7 @@
       +'@media (prefers-reduced-motion:reduce){#mv-pre img{animation:none}#mv-pre{transition:none}}';
     document.head.appendChild(st);
     var el=document.createElement('div');el.id='mv-pre';el.setAttribute('data-t',theme);el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-label','Загрузка');
-    el.innerHTML='<div class="in"><img alt="" width="160" height="140" src="data:image/webp;base64,{{LOGO}}"><div class="bar"><i></i></div></div>';
+    el.innerHTML='<div class="in"><img alt="" width="160" height="140" src="'+BASE+'assets/preloader/logo-280.webp"><div class="bar"><i></i></div></div>';
     document.body.appendChild(el);
     var html=document.documentElement,prevOv=html.style.overflow;html.style.overflow='hidden';
     var bar=el.querySelector('.bar i'),MIN=600,t0=performance.now(),total=1,got=0,real=0,shown=0,finishing=false,gone=false;
