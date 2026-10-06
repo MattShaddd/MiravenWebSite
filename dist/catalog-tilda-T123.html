@@ -1315,6 +1315,11 @@ html body .t706__cartwin .t706__product-amount{justify-self:end!important}
 .t706__cartpage .t-form__errorbox-middle .t-form__errorbox-text,.t706__cartwin .t-form__errorbox-middle .t-form__errorbox-text{margin:0!important;padding:12px 14px!important;list-style:none!important;border:1px solid color-mix(in srgb,#B4443A 38%,transparent)!important;background:color-mix(in srgb,#B4443A 12%,transparent)!important;border-radius:12px!important;font-size:13px!important;line-height:1.45!important;text-align:center}
 .t706__cartpage .t-form__errorbox-item,.t706__cartwin .t-form__errorbox-item{margin:0!important;color:inherit!important}
 
+/* стрелки и иконки выпадающих списков в корзине: Тильда рисует их чёрными (на тёмном фоне не видны) */
+.t706__cartpage .tcart-select__selected::after,.t706__cartwin .tcart-select__selected::after{border-top-color:var(--muted)!important}
+.t706__cartpage .t-input-block svg,.t706__cartwin .t-input-block svg{fill:var(--muted)!important}
+.t706__cartpage .t-input-block svg path,.t706__cartwin .t-input-block svg path{fill:var(--muted)!important}
+
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :root{--hdr:68px}
