@@ -343,12 +343,23 @@ html.mv-theme-change .theme-btn svg{transition:transform .25s ease-out,opacity .
 .prod .soldtag{font-size:13px;font-weight:400;color:var(--muted)}
 .empty{grid-column:1/-1;color:var(--muted);padding:24px 0}
 .srch{position:absolute;inset:0;display:flex;align-items:center;gap:12px;padding-inline:max(20px,calc((100vw - 1280px) / 2));background:var(--white);z-index:2}
-.srch[hidden],.mnav[hidden]{display:none}
+.srch[hidden]{display:none}
 .srch svg{width:21px;height:21px;flex:none;color:var(--muted)}
 .srch input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:17px;color:var(--ink);outline:0;padding:8px 0}
-.mnav{position:absolute;top:100%;left:0;right:0;z-index:9;background:var(--white);border-bottom:1px solid var(--stone);display:grid;padding:8px max(20px,calc((100vw - 1280px) / 2)) 16px}
+/* мобильное меню: выезжает из-под шапки (top считает скрипт по реальной нижней границе шапки), закрывается касанием вне меню, прокруткой и Esc */
+.mnav{position:fixed;top:var(--mnav-top,64px);left:0;right:0;z-index:29;max-height:calc(100vh - var(--mnav-top,64px));max-height:calc(100dvh - var(--mnav-top,64px));overflow-y:auto;overscroll-behavior:contain;background:var(--white);border-bottom:1px solid var(--stone);box-shadow:0 28px 40px -30px rgba(0,0,0,.55);display:grid;padding:8px max(20px,calc((100vw - 1280px) / 2)) 16px;visibility:hidden;opacity:0;transform:translateY(-12px);clip-path:inset(0 0 100% 0);transition:opacity .25s ease,transform .45s cubic-bezier(.2,.8,.2,1),clip-path .45s cubic-bezier(.2,.8,.2,1),visibility 0s linear .45s}
+.mnav.open{visibility:visible;opacity:1;transform:none;clip-path:inset(0);transition-delay:0s}
+.mnav>*{opacity:0;transform:translateY(-8px);transition:opacity .3s ease,transform .45s cubic-bezier(.2,.8,.2,1)}
+.mnav.open>*{opacity:1;transform:none;transition-delay:calc(60ms + var(--i,0) * 40ms)}
+.mnav>:nth-child(1){--i:0}.mnav>:nth-child(2){--i:1}.mnav>:nth-child(3){--i:2}.mnav>:nth-child(4){--i:3}.mnav>:nth-child(5){--i:4}.mnav>:nth-child(6){--i:5}.mnav>:nth-child(7){--i:6}.mnav>:nth-child(8){--i:7}
+.mnav-scrim{position:fixed;inset:var(--mnav-top,64px) 0 0 0;z-index:28;background:rgba(5,6,8,.45);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s linear .3s}
+.mnav-scrim.open{opacity:1;visibility:visible;transition-delay:0s}
+.burger svg path{transform-box:fill-box;transform-origin:center;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.burger[aria-expanded="true"] svg path:first-child{transform:translateY(4px) rotate(45deg)}
+.burger[aria-expanded="true"] svg path:last-child{transform:translateY(-4px) rotate(-45deg)}
+@media (prefers-reduced-motion:reduce){.mnav,.mnav>*,.mnav-scrim,.burger svg path{transition:none!important}}
 .mnav a{padding:12px 0;text-decoration:none;font-size:17px;border-bottom:1px solid var(--stone)}
-@media (min-width:861px){.mnav{display:none!important}}
+@media (min-width:861px){.mnav,.mnav-scrim{display:none!important}}
 
 /* где купить */
 .stores{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -748,7 +759,6 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 /* ===== главная: шапка выезжает только после героя ===== */
 .top.slide{position:fixed!important;top:0;left:0;right:0;transform:translateY(-105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s,padding .35s;z-index:30}
 .top.slide.show{transform:none;box-shadow:0 10px 30px -24px rgba(0,0,0,.45)}
-.top.slide ~ .mnav{position:fixed;top:var(--hdrh,64px);left:0;right:0;z-index:29}
 
 /* ===== корзина-страница Тильды (режим «на весь экран») внутри шторки ===== */
 .t706__cartwin .t-btn,.t706__cartwin .t-btnflex{background:var(--ink)!important;color:var(--white)!important;border:0!important;border-radius:999px!important;height:50px!important;font-size:15px!important;font-weight:500!important;box-shadow:none!important;width:100%!important;transition:background .2s!important}
@@ -833,7 +843,6 @@ html[data-mv-theme="dark"] .t706__cartwin .t-form__errorbox-middle .t-form__erro
 /* ===== главная: шапка выезжает только после героя ===== */
 .top.slide{position:fixed!important;top:0;left:0;right:0;transform:translateY(-105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s,padding .35s;z-index:30}
 .top.slide.show{transform:none;box-shadow:0 10px 30px -24px rgba(0,0,0,.45)}
-.top.slide ~ .mnav{position:fixed;top:var(--hdrh,64px);left:0;right:0;z-index:29}
 
 /* ===== корзина-страница Тильды (режим «на весь экран») внутри шторки ===== */
 .t706__cartpage .t-btn,.t706__cartpage .t-btnflex{background:var(--ink)!important;color:var(--white)!important;border:0!important;border-radius:999px!important;height:50px!important;font-size:15px!important;font-weight:500!important;box-shadow:none!important;width:100%!important;transition:background .2s!important}

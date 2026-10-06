@@ -756,7 +756,30 @@
   /* шапка меняет высоту плавно (после класса scrolled), поэтому следим за её размером, а не измеряем один раз в момент переключения: иначе под шапкой оставалась щель */
   if(window.ResizeObserver&&topEl)new ResizeObserver(function(){hdr()}).observe(topEl,{box:'border-box'});
   if(topEl)topEl.addEventListener('transitionend',hdr);
-  var mn=$('mnav'),bg=$('burger');if(mn&&bg){bg.addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true})}
+  // мобильное меню: плавно выезжает под шапкой, без щели; закрывается касанием вне меню, прокруткой, Esc и выбором пункта
+  (function(){
+    var mn=document.getElementById('mnav'),bg=document.getElementById('burger'),hd=document.querySelector('.top');
+    if(!mn||!bg||!hd)return;
+    mn.hidden=false;bg.setAttribute('aria-expanded','false');bg.setAttribute('aria-controls','mnav');
+    var ic=bg.querySelector('svg');if(ic)ic.innerHTML='<path d="M4 8h16"/><path d="M4 16h16"/>';
+    var sc=document.createElement('div');sc.className='mnav-scrim';mn.parentNode.insertBefore(sc,mn);
+    var on=false,y0=0,raf=0,rs=document.documentElement.style;
+    function place(){rs.setProperty('--mnav-top',Math.max(0,Math.round(hd.getBoundingClientRect().bottom)-1)+'px')}
+    function track(){place();if(on)raf=requestAnimationFrame(track)}
+    function set(v){
+      if(v===on)return;on=v;
+      if(v){y0=window.scrollY;place();cancelAnimationFrame(raf);raf=requestAnimationFrame(track)}
+      mn.classList.toggle('open',v);sc.classList.toggle('open',v);bg.setAttribute('aria-expanded',String(v));
+    }
+    bg.addEventListener('click',function(e){e.stopPropagation();set(!on)});
+    mn.addEventListener('click',function(){set(false)});
+    sc.addEventListener('click',function(){set(false)});
+    document.addEventListener('click',function(e){if(on&&!mn.contains(e.target)&&!bg.contains(e.target))set(false)},true);
+    window.addEventListener('scroll',function(){if(on&&Math.abs(window.scrollY-y0)>40)set(false)},{passive:true});
+    window.addEventListener('resize',function(){if(on&&window.innerWidth>860)set(false)});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false)});
+  })();
+
   function searchOpen(on){
     bar.classList.toggle('searching',on);document.documentElement.classList.toggle('mv-searching',on);
     var q=$('q');
