@@ -13,6 +13,9 @@
 | `loader.html` | загрузчик главной (блок T123 на главной) |
 | `preloader.snippet.js` | экран загрузки (логотип и полоса, которая заполняется по мере загрузки файлов). **Вшивается** `build.py` в `loader.html` и `loader-catalog.html` между метками `PRELOADER:BEGIN/END`, править нужно его, а не загрузчики. Логотип: `assets/preloader/logo.png` (оригинал) и `logo-280.webp` (подгружается по `BASE`) |
 | `loader-catalog.html` | загрузчик каталога (блок T123 на странице `/store`) |
+| `site-common.js` | общий скрипт для **всех** страниц: ранняя тема и баннер cookies. Подключается один раз в Тильде: Настройки сайта → Вставка кода → HTML-код для HEAD: `<script src="https://mattshaddd.github.io/MiravenWebSite/site-common.js" defer></script>`. Выбор посетителя: `MVCookies.get()` (`all` / `necessary`), `MVCookies.allowed()`, событие `mv-cookies`; повторно показать баннер: `MVCookies.reset()` |
+| `legal.src.css` | оформление юридических страниц (`/oferta`, `/politika`) поверх блоков Тильды: **тексты остаются редактируемыми** в Тильде. Попадает в `members.css`. Новые такие страницы: добавить alias в `LEGAL_ALIASES` в `build.py` |
+| `successpage.html`, `quicklink.html`, `pages.css`, `loader-page.template.html` | отдельные страницы «Спасибо за заказ» (`/successpage`) и мультиссылка (`/quicklink`). Загрузчики `loader-successpage.html` и `loader-quicklink.html` собираются `build.py` из шаблона; вставляются в блок T123 одноимённых страниц Тильды |
 | `footer.html` / `footer.css` | отдельный глобальный футер |
 | `loader-footer.html` | загрузчик для T123 на странице-футере Tilda |
 | `build.py` | сборка каталога и готовых блоков без загрузчика в `dist/` |

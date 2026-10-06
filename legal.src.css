@@ -1,0 +1,28 @@
+/* Юридические страницы (публичная оферта /oferta и политика конфиденциальности /politika).
+   Оформление накладывается поверх обычных блоков Тильды, поэтому ТЕКСТЫ ОСТАЮТСЯ РЕДАКТИРУЕМЫМИ в редакторе Тильды как раньше.
+   Страницы определяются по data-tilda-page-alias. Добавить ещё одну такую страницу: дописать её alias в LEGAL_ALIASES в build.py.
+   Файл подключается в members.css (сборка build.py), а он уже стоит в «Вставка кода → HEAD». */
+@@HTML@@{
+  --lg-bg:#F6F1E8;--lg-surface:#EDE5D8;--lg-ink:#2B2330;--lg-head:#4A3E45;--lg-muted:#7B6F69;--lg-line:#DDD2C0;--lg-link:#8A6118;
+}
+@@DARK@@,html[data-mv-theme="dark"] @@PAGE@@{
+  --lg-bg:#0C0D10;--lg-surface:#131519;--lg-ink:#EFE9DF;--lg-head:#E8E1D4;--lg-muted:#9A9DA6;--lg-line:#24262C;--lg-link:#D8AD5E;
+}
+@@HTML@@,@@HTML@@ body,@@PAGE@@{background:var(--lg-bg)!important;color:var(--lg-ink)}
+@@PAGE@@ .t-rec{background-color:transparent!important}
+/* заголовки */
+@@PAGE@@ :is(.t-title,.t-heading,.t-name,h1,h2,h3,h4){font-family:"Lora",Georgia,"Times New Roman",serif!important;font-weight:600!important;color:var(--lg-head)!important;letter-spacing:-.01em;line-height:1.2!important}
+@@PAGE@@ :is(.t-title_xxl,.t-title_xl,.t-title_lg,h1){font-size:clamp(30px,4vw,44px)!important}
+@@PAGE@@ :is(.t-heading,.t-name_xl,.t-name_lg,h2,h3){font-size:clamp(20px,2.4vw,26px)!important;margin-top:1.6em}
+/* основной текст */
+@@PAGE@@ :is(.t-text,.t-descr,.t-text p,.t-text li,.t-text div,.t-descr p,.t-descr li){font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important;font-size:16px!important;line-height:1.75!important;color:var(--lg-ink)!important;font-weight:400}
+@@PAGE@@ :is(.t-text,.t-descr) :is(b,strong){font-weight:600;color:var(--lg-head)}
+@@PAGE@@ :is(.t-text,.t-descr) :is(ul,ol){padding-left:1.3em}
+@@PAGE@@ :is(.t-text,.t-descr) li{margin:.35em 0}
+@@PAGE@@ :is(.t-text,.t-descr) a{color:var(--lg-link)!important;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+@@PAGE@@ :is(.t-text,.t-descr) a:hover{text-decoration-thickness:2px}
+@@PAGE@@ :is(.t-text,.t-descr) :is(table,td,th){border-color:var(--lg-line)!important;color:var(--lg-ink)!important}
+@@PAGE@@ hr,@@PAGE@@ .t-divider{border-color:var(--lg-line)!important;background:var(--lg-line)!important}
+/* шапка Тильды на этих страницах, если она есть: в цветах темы */
+@@PAGE@@ :is(.t228,.t228__positionfixed,.t456,.t396){background-color:var(--lg-bg)!important}
+::selection{background:color-mix(in srgb,#C4913A 40%,transparent)}

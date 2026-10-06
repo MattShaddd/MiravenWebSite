@@ -26,7 +26,12 @@ home = re.search(r"HOME='([^']+)'", rd('loader-catalog.html')).group(1)
 def inject_preloader():
     snippet = rd('preloader.snippet.js').replace('\r\n', '\n')  # логотип подгружается по BASE + assets/preloader/logo-280.webp
     if not snippet.endswith('\n'): snippet += '\n'
-    for f in ('loader.html', 'loader-catalog.html'):
+    # загрузчики отдельных страниц собираются из шаблона
+    PAGES = [('successpage', 'Спасибо за заказ', '/successpage'), ('quicklink', 'Мультиссылка', '/quicklink')]
+    tpl = rd('loader-page.template.html').replace('\r\n', '\n')
+    for pg, title, url in PAGES:
+        wr('loader-%s.html' % pg, tpl.replace('{{PAGE}}', pg).replace('{{TITLE}}', title).replace('{{URL}}', url))
+    for f in ('loader.html', 'loader-catalog.html', 'loader-successpage.html', 'loader-quicklink.html'):
         t = rd(f).replace('\r\n', '\n')
         rx = re.compile(r'  /\* PRELOADER:BEGIN.*?/\* PRELOADER:END \*/\n', re.S)
         if rx.search(t): t = rx.sub(lambda m: snippet, t)
@@ -165,7 +170,12 @@ def scope_css(css):
             out.append(', '.join(scope_selector(s) for s in sels) + '{' + body + '}')
         i = k
     return ''.join(out)
-wr('members.css', scope_css(rd('members.src.css')) + '\n' + rd('dropdowns.css'))
+# оформление юридических страниц (оферта, политика): блоки Тильды остаются редактируемыми; в members.css без SCOPE
+LEGAL_ALIASES = ['oferta', 'politika']
+_page = ':is(' + ','.join('#allrecords[data-tilda-page-alias="%s"]' % a for a in LEGAL_ALIASES) + ')'
+_html = ':has(' + _page + ')'
+legal_css = rd('legal.src.css').replace('@@PAGE@@', _page).replace('@@DARK@@', 'html[data-mv-theme="dark"]' + _html).replace('@@HTML@@', 'html' + _html)
+wr('members.css', scope_css(rd('members.src.css')) + '\n' + rd('dropdowns.css') + '\n' + legal_css)
 
 # ---------- готовые блоки T123 ----------
 def inline(css_files, html, js, extra_head=''):

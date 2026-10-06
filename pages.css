@@ -1,0 +1,33 @@
+/* Отдельные страницы: «Спасибо за заказ» (/successpage) и мультиссылка (/quicklink).
+   Подключается поверх miraven.css (переменные темы, шрифты, кнопки). Плоский минимализм, как в магазине. */
+.pg{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:clamp(20px,5vw,56px) 16px;box-sizing:border-box}
+.pg *,.pg *::before,.pg *::after{box-sizing:border-box}
+.pg-card{width:min(640px,100%);display:grid;gap:22px;justify-items:center;text-align:center}
+.pg-ql{width:min(520px,100%)}
+.pg-logo{display:block;line-height:0}
+.pg-logo img{display:block;width:min(210px,56vw);height:auto}
+.pg-logo_lg img{width:min(380px,82vw)}
+.pg-mark{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold);color:var(--gold);margin-top:6px}
+.pg-mark svg{width:30px;height:30px}
+.pg-title{margin:0;font-family:var(--f-story);font-weight:600;font-size:clamp(30px,5vw,44px);line-height:1.12;letter-spacing:-.01em;color:var(--head)}
+.pg-lead{margin:0;max-width:46ch;font-size:clamp(16px,2vw,18px);line-height:1.6;color:var(--muted)}
+.pg-steps{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:10px;width:100%;text-align:left}
+.pg-steps li{display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;padding:16px 18px;border:1px solid var(--stone);border-radius:18px;background:var(--mist)}
+.pg-steps b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:14px;color:var(--gold-text);border:1px solid var(--gold)}
+.pg-steps span{display:grid;gap:2px;font-size:15px;line-height:1.5;color:var(--muted)}
+.pg-steps strong{font-weight:600;color:var(--ink);font-size:16px}
+.pg-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.pg-note{margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.pg-note a{color:var(--gold-text);text-decoration:underline;text-underline-offset:3px}
+.pg-links{display:grid;gap:10px;width:100%}
+.pg-link{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;padding:0 22px;border:1px solid var(--stone);border-radius:999px;background:transparent;color:var(--ink);text-decoration:none;font-size:16px;font-weight:500;transition:border-color .25s,background .25s,color .25s}
+.pg-link i{font-style:normal;color:var(--muted);transition:transform .35s cubic-bezier(.2,.8,.2,1),color .25s}
+.pg-link:hover{border-color:var(--ink)}
+.pg-link:hover i{color:var(--ink);transform:translateX(3px)}
+.pg-link_main{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.pg-link_main i{color:inherit}
+.pg-link_main:hover{background:var(--ink)}
+.pg-link:focus-visible,.pg-note a:focus-visible,.pg .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.pg-actions .btn{min-height:50px}
+@media (max-width:520px){.pg-actions{width:100%}.pg-actions .btn{flex:1 1 100%}.pg-steps li{padding:14px}}
+@media (prefers-reduced-motion:reduce){.pg-link,.pg-link i{transition:none}}
