@@ -1367,3 +1367,6 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 
 /* модалки ставят html{overflow:hidden}: полоса прокрутки исчезала и страница дёргалась на кадр. Резервируем место под неё всегда */
 html{scrollbar-gutter:stable}
+
+/* телефон: окно ужимается до видимой области, когда открыта клавиатура (см. product-card.js) */
+[style*="--mv-vvh"] :is(.mv-cp,.t706__cartwin-content,.sh-box,.cab-box,.qv-box){max-height:calc(var(--mv-vvh) - 8px)!important}

@@ -171,3 +171,40 @@
   },{passive:true});
   document.documentElement.addEventListener('pointerleave',function(){if(cur){leave(cur);cur=null}});
 })();
+
+/* Телефон: клавиатура в окнах (корзина, вход, шторки). Окно подгоняется под видимую область (visualViewport),
+   поэтому браузер не «уносит» страницу вверх, а поле просто прокручивается внутри окна. */
+(function(){
+  var vv=window.visualViewport;
+  if(!vv||window.MVKbd||!window.matchMedia||!matchMedia('(pointer:coarse)').matches)return;window.MVKbd=1;
+  var OV='.t706__cartpage,.t706__cartwin,.sh,.cab,.qv,.tlk-authModal',cur=null,raf=0,fld=null,tm=0;
+  function isField(el){return !!el&&/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)&&!/^(checkbox|radio|button|submit|range|file|image|reset)$/.test(el.type||'')}
+  function release(){
+    if(!cur)return;
+    ['top','height','bottom'].forEach(function(k){cur.style.removeProperty(k)});
+    cur.style.removeProperty('--mv-vvh');cur=null;
+  }
+  function fit(){
+    raf=0;
+    if(!cur)return;
+    var kb=window.innerHeight-vv.height-vv.offsetTop;
+    if(vv.scale>1.05||window.innerHeight-vv.height<120){release();return}
+    cur.style.setProperty('top',vv.offsetTop+'px','important');
+    cur.style.setProperty('height',vv.height+'px','important');
+    cur.style.setProperty('bottom','auto','important');
+    cur.style.setProperty('--mv-vvh',vv.height+'px');
+    clearTimeout(tm);
+    tm=setTimeout(function(){if(fld&&document.activeElement===fld)try{fld.scrollIntoView({block:'center'})}catch(e){}},80);
+  }
+  function sched(){if(!raf)raf=requestAnimationFrame(fit)}
+  document.addEventListener('focusin',function(e){
+    var t=e.target;if(!isField(t))return;
+    var ov=t.closest(OV);if(!ov)return;
+    if(cur&&cur!==ov)release();
+    cur=ov;fld=t;sched();
+  });
+  document.addEventListener('focusout',function(){
+    setTimeout(function(){if(!isField(document.activeElement)){release();fld=null}},120);
+  });
+  vv.addEventListener('resize',sched);vv.addEventListener('scroll',sched);
+})();
