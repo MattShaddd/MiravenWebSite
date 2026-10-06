@@ -1766,7 +1766,7 @@
             case 'x':cabClose();break;
             case 'tab':cs.tab=a.dataset.t;cabRender();break;
             case 'ord':{
-              // раскрытие чисто на CSS (grid 0fr → 1fr): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
+              // раскрытие чисто на CSS (display none → block): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
               var art=a.closest('.co'),on=!art.classList.contains('open');
               art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));
               break}
