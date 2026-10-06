@@ -803,7 +803,6 @@
         (rel.length>2?'<div class="qv-rel"><div class="qv-h">Похожие товары</div><div class="qv-rel-track">'+rel.map(function(x){return '<button type="button" data-rel="'+x.uid+'"><span class="im"><img src="'+esc(thumb(x.img,260))+'" alt="" loading="lazy"></span><span>'+esc(x.n)+'</span><b>'+fmt(x.price)+' ₽</b></button>'}).join('')+'</div></div>':'')+
       '</div><div class="qv-foot">'+
         '<div class="qv-buy" id="qvBuy"></div>'+
-        '<button class="qv-gocart" type="button" data-qv="cart" id="qvGo" hidden>Товар в корзине. Открыть корзину →</button>'+
       '</div></div>';
   }
   /* свечение кнопки покупки (по мотивам кнопки из Framer, но на лёгком 2D-канвасе): кайма светится и следует за курсором,
@@ -878,7 +877,6 @@
     if(ed.qty===0)box.innerHTML='<button class="btn btn-ink qv-add" type="button" data-qv="add" disabled>Нет в наличии</button>';
     else if(q>0)box.innerHTML='<div class="qv-step" role="group" aria-label="В корзине: '+esc(it.title)+'"><button type="button" data-qv="qm" aria-label="Убрать одну штуку">−</button><button type="button" class="qv-stq" data-qv="qp" aria-label="Добавить ещё одну штуку, сейчас в корзине '+q+'"'+(q>=max?' disabled':'')+'><span><b>'+q+'</b> в корзине · '+fmt(ed.price*q)+' ₽</span><i aria-hidden="true">+</i></button></div>';
     else box.innerHTML='<button class="btn btn-ink qv-add" type="button" data-qv="add">'+PLUS+'<span>В корзину · '+fmt(ed.price)+' ₽</span></button>';
-    var go=$('qvGo');if(go)go.hidden=!q;
     try{glow.mount(box)}catch(e){} // украшение не должно ломать покупку
   }
   if(window.MVProductCard)MVProductCard.watch(qv,function(){if(cur&&!qv.hidden)paintAct()});
@@ -976,7 +974,6 @@
       case 'gn':slideTo(Math.min($('qvSlides').children.length-1,curIdx()+1));break;
       case 'qm':{var edm=selEd(cur);if(lineQty(cur,edm,sel)>0){cartMinus(cur,edm,sel);if(navigator.vibrate)try{navigator.vibrate(8)}catch(x){}}paintAct();break}
       case 'qp':{var edp=selEd(cur);if(edp.qty!==0)addToCart(cur,edp,1,sel,a);paintAct();break}
-      case 'cart':openCart();break;
       case 'share':{
         var u=location.origin+location.pathname+'#p-'+cur.uid;
         if(navigator.share){navigator.share({title:cur.title+' — Миравен',url:u}).catch(function(){})}
