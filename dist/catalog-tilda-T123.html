@@ -1310,6 +1310,11 @@ html body .t706__cartpage .t706__product-amount{justify-self:end!important}
 html body .t706__cartwin .t706__product-plusminus{width:max-content!important;justify-self:start!important}
 html body .t706__cartwin .t706__product-amount{justify-self:end!important}
 
+/* ошибки формы заказа: плашка без ярко-красной подложки Тильды (раньше красный блок в красном блоке, текст не читался) */
+.t706__cartpage .t-form__errorbox-wrapper,.t706__cartwin .t-form__errorbox-wrapper{background:transparent!important;padding:0!important;border:0!important;box-shadow:none!important}
+.t706__cartpage .t-form__errorbox-middle .t-form__errorbox-text,.t706__cartwin .t-form__errorbox-middle .t-form__errorbox-text{margin:0!important;padding:12px 14px!important;list-style:none!important;border:1px solid color-mix(in srgb,#B4443A 38%,transparent)!important;background:color-mix(in srgb,#B4443A 12%,transparent)!important;border-radius:12px!important;font-size:13px!important;line-height:1.45!important;text-align:center}
+.t706__cartpage .t-form__errorbox-item,.t706__cartwin .t-form__errorbox-item{margin:0!important;color:inherit!important}
+
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :root{--hdr:68px}
@@ -3316,6 +3321,19 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
       if(ask(btn,f)){e.preventDefault();e.stopImmediatePropagation()}
     }
     document.addEventListener('click',gate,true);
+  })();
+  // тексты ошибок формы заказа приходят с английским «Error: » в начале: убираем и делаем первую букву заглавной
+  (function(){
+    if(!window.MutationObserver)return;
+    function fix(){
+      document.querySelectorAll('.t-form__errorbox-item').forEach(function(el){
+        var t=el.textContent;
+        if(!el.children.length&&/^\s*Error:\s*/i.test(t)){t=t.replace(/^\s*Error:\s*/i,'');el.textContent=t.charAt(0).toUpperCase()+t.slice(1)}
+      });
+    }
+    var q=0;
+    new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;fix()})}).observe(document.body,{childList:true,subtree:true,characterData:true});
+    fix();
   })();
 
     // ПЛАВАЮЩАЯ КОРЗИНА (телефон)

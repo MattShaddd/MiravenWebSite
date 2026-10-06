@@ -857,6 +857,19 @@
     }
     document.addEventListener('click',gate,true);
   })();
+  // тексты ошибок формы заказа приходят с английским «Error: » в начале: убираем и делаем первую букву заглавной
+  (function(){
+    if(!window.MutationObserver)return;
+    function fix(){
+      document.querySelectorAll('.t-form__errorbox-item').forEach(function(el){
+        var t=el.textContent;
+        if(!el.children.length&&/^\s*Error:\s*/i.test(t)){t=t.replace(/^\s*Error:\s*/i,'');el.textContent=t.charAt(0).toUpperCase()+t.slice(1)}
+      });
+    }
+    var q=0;
+    new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;fix()})}).observe(document.body,{childList:true,subtree:true,characterData:true});
+    fix();
+  })();
   // КОНЕЦ КОРЗИНЫ В ШТОРКЕ
   // ПЛАВАЮЩАЯ КОРЗИНА (телефон)
   (function(){
