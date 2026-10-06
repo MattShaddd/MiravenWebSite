@@ -802,6 +802,70 @@
         '<button class="qv-gocart" type="button" data-qv="cart" id="qvGo" hidden>Товар в корзине. Открыть корзину →</button>'+
       '</div></div>';
   }
+  /* свечение кнопки покупки (по мотивам кнопки из Framer, но на лёгком 2D-канвасе): кайма светится и следует за курсором,
+     внутри мерцают искры, по нажатию от места клика расходится вспышка. Без анимации при prefers-reduced-motion */
+  var glow=(function(){
+    var host=null,cv=null,ctx=null,raf=0,I=0,hover=false,boost=0,mx=0,my=0,pulses=[],sp=[],W=0,H=0,dpr=1,last=0;
+    function pos(e){var r=host.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top}
+    function pill(c,i){var h=H-2*i,r=h/2,x0=i,x1=W-i;c.beginPath();c.moveTo(x0+r,i);c.lineTo(x1-r,i);c.arc(x1-r,i+r,r,-Math.PI/2,Math.PI/2);c.lineTo(x0+r,i+h);c.arc(x0+r,i+r,r,Math.PI/2,Math.PI*1.5);c.closePath()}
+    function size(){
+      var r=host.getBoundingClientRect();if(!r.width||!r.height)return false;
+      dpr=Math.min(window.devicePixelRatio||1,2);
+      if(Math.abs(r.width-W)>.5||Math.abs(r.height-H)>.5){W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);sp=[];for(var k=0;k<16;k++)sp.push({x:Math.random()*W,y:Math.random()*H,r:.5+Math.random()*1.1,ph:Math.random()*6.28,f:.5+Math.random()*.9,vx:(Math.random()-.5)*7,vy:(Math.random()-.5)*7})}
+      return true;
+    }
+    function palette(){
+      var inner=host.firstElementChild,bg=inner&&inner!==cv?getComputedStyle(inner).backgroundColor:'rgb(0,0,0)',m=bg.match(/[\d.]+/g)||[0,0,0];
+      return (.299*m[0]+.587*m[1]+.114*m[2])/255>.5?{rim:'196,145,58',spark:'168,118,34'}:{rim:'255,236,200',spark:'255,255,255'};
+    }
+    function go(){if(!raf)raf=requestAnimationFrame(frame)}
+    function frame(t){
+      raf=0;if(!host||!host.isConnected||!cv||!size())return;
+      var dt=Math.min(.05,(t-(last||t))/1000);last=t;
+      var active=hover||t<boost;I+=((active?1:0)-I)*Math.min(1,dt*7);
+      pulses=pulses.filter(function(p){return t-p.t<1000});
+      ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+      if(host.querySelector('[disabled]')&&!host.querySelector('.qv-step')){I=0;pulses=[];last=0;return}
+      var pal=palette(),pb=0;
+      pulses.forEach(function(p){pb=Math.max(pb,Math.max(0,1-(t-p.t)/700))});
+      // вспышка от места клика
+      ctx.save();pill(ctx,0);ctx.clip();
+      pulses.forEach(function(p){
+        var k=(t-p.t)/900,r=Math.max(8,k*W*.9),g=ctx.createRadialGradient(p.x,p.y,r*.55,p.x,p.y,r*1.15);
+        g.addColorStop(0,'rgba('+pal.rim+',0)');g.addColorStop(.7,'rgba('+pal.rim+','+(.38*(1-k))+')');g.addColorStop(1,'rgba('+pal.rim+',0)');
+        ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+      });
+      // искры
+      sp.forEach(function(q){
+        q.x+=q.vx*dt;q.y+=q.vy*dt;if(q.x<0)q.x+=W;if(q.x>W)q.x-=W;if(q.y<0)q.y+=H;if(q.y>H)q.y-=H;
+        var a=I*(.5+.5*Math.sin(t/1000*q.f*3+q.ph))*.9;if(a<.02)return;
+        ctx.fillStyle='rgba('+pal.spark+','+a+')';ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,6.283);ctx.fill();
+      });
+      ctx.restore();
+      // кайма: ярче рядом с курсором
+      if(I>.01||pb>0){
+        ctx.save();pill(ctx,1);
+        var g2=ctx.createRadialGradient(mx,my,0,mx,my,W*.6);
+        g2.addColorStop(0,'rgba('+pal.rim+','+Math.min(1,.95*I+pb)+')');g2.addColorStop(1,'rgba('+pal.rim+','+Math.min(1,.22*I+pb*.6)+')');
+        ctx.lineWidth=1.5+pb*5;ctx.strokeStyle=g2;ctx.shadowColor='rgba('+pal.rim+','+Math.min(1,.7*I+pb*.5)+')';ctx.shadowBlur=10+pb*18;ctx.stroke();ctx.restore();
+      }
+      if(active||I>.01||pulses.length)go();else last=0;
+    }
+    function mount(el){
+      if(reduce||!el)return;
+      if(host!==el){
+        host=el;cv=document.createElement('canvas');cv.className='mv-glow';cv.setAttribute('aria-hidden','true');ctx=cv.getContext('2d');W=H=0;I=0;hover=false;pulses=[];
+        mx=0;my=0;
+        el.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hover=true;pos(e);go()}});
+        el.addEventListener('pointermove',function(e){if(e.pointerType==='mouse'){pos(e);go()}});
+        el.addEventListener('pointerleave',function(){hover=false;go()});
+        el.addEventListener('pointerdown',function(e){pos(e);var t=performance.now();pulses.push({t:t,x:mx,y:my});boost=t+1100;go()});
+      }
+      if(!el.contains(cv))el.appendChild(cv);
+      go();
+    }
+    return{mount:mount};
+  })();
   /* кнопка покупки как у карточки в каталоге: «В корзину» → после нажатия степпер «− N +»: левая часть «−», вся остальная кнопка «+» (по одной штуке) */
   function paintAct(){
     var box=$('qvBuy');if(!box||!cur)return;
@@ -811,6 +875,7 @@
     else if(q>0)box.innerHTML='<div class="qv-step" role="group" aria-label="В корзине: '+esc(it.title)+'"><button type="button" data-qv="qm" aria-label="Убрать одну штуку">−</button><button type="button" class="qv-stq" data-qv="qp" aria-label="Добавить ещё одну штуку, сейчас в корзине '+q+'"'+(q>=max?' disabled':'')+'><span><b>'+q+'</b> в корзине · '+fmt(ed.price*q)+' ₽</span><i aria-hidden="true">+</i></button></div>';
     else box.innerHTML='<button class="btn btn-ink qv-add" type="button" data-qv="add">'+PLUS+'<span>В корзину · '+fmt(ed.price)+' ₽</span></button>';
     var go=$('qvGo');if(go)go.hidden=!q;
+    try{glow.mount(box)}catch(e){} // украшение не должно ломать покупку
   }
   if(window.MVProductCard)MVProductCard.watch(qv,function(){if(cur&&!qv.hidden)paintAct()});
   function paintBuy(){
