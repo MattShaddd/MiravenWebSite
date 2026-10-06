@@ -1324,7 +1324,9 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 .hero-copy::before{content:"";position:absolute;z-index:-1;inset:-8% -10%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--gold) 34%,transparent),transparent 72%);opacity:.55;pointer-events:none}
 
 /* крупнее и нагляднее фокус с клавиатуры */
-:where(.site) :focus-visible{outline:2px solid var(--gold);outline-offset:3px;box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 22%,transparent)}
+:where(.site) :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+/* крестики окон получают фокус сами при открытии: обводка вокруг них не нужна */
+.sh-x:focus-visible,.cab-x:focus-visible,.lb-x:focus-visible,.qv-x:focus-visible,.mv-viewer__close:focus-visible,.qv-close:focus-visible{outline:none;box-shadow:none}
 
 /* отзывы: фото крупнее */
 .review-media-1{grid-auto-rows:min(480px,60vw)}
