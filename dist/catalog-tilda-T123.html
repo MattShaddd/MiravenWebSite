@@ -1199,6 +1199,37 @@ html[data-mv-theme="dark"],.site[data-theme="dark"]{--dialog-edge:rgba(255,255,2
 .sh-box,.cab-box,.mv-cp,.t706__cartwin-content{outline:1px solid var(--dialog-edge);outline-offset:-1px}
 @media(min-width:761px){.qv-box{outline:1px solid var(--dialog-edge)!important;outline-offset:-1px}}
 
+/* ===== свои окна входа и регистрации (MV.auth в miraven.js, оболочка — MV.sheet) ===== */
+.sh-auth .sh-body{padding:0 22px 22px}
+.au-form{display:grid;gap:14px}
+.au-f{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.au-in{position:relative;display:block}
+.au-i{width:100%;box-sizing:border-box;height:48px;padding:0 16px;border:1px solid var(--stone);border-radius:14px;background:var(--white);color:var(--ink);font:inherit;font-size:16px;transition:border-color .25s,box-shadow .25s}
+.au-in:has(.au-eye) .au-i{padding-right:46px}
+.au-i::placeholder{color:var(--muted);opacity:.7}
+.au-i:hover{border-color:var(--muted)}
+.au-i:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(196,145,58,.2)}
+.au-f.bad .au-i{border-color:#B4443A}
+.au-eye{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;background:transparent;color:var(--muted);display:grid;place-items:center;transition:color .2s}
+.au-eye:hover,.au-eye.on{color:var(--ink)}
+.au-eye svg{width:20px;height:20px}
+.au-e{font-style:normal;font-size:12px;color:#B4443A}
+.au-e:empty,.au-err:empty{display:none}
+.au-err{padding:11px 14px;border:1px solid color-mix(in srgb,#B4443A 40%,transparent);border-radius:12px;background:color-mix(in srgb,#B4443A 14%,transparent);color:#B4443A;font-size:13px;line-height:1.4;text-align:center}
+.site[data-theme="dark"] .au-e,.site[data-theme="dark"] .au-err{color:#E58B82}
+.au-go{width:100%;height:50px;padding:0 26px;margin-top:2px;cursor:pointer}
+.au-go[disabled]{opacity:.65;pointer-events:none}
+.au-go.load::after{content:"";width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:authspin .8s linear infinite}
+.au-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin-top:16px}
+.au-links button{padding:0 0 1px;border:0;border-bottom:1px solid var(--gold);background:transparent;color:var(--muted);font:inherit;font-size:14px;cursor:pointer;transition:color .2s}
+.au-links button:hover{color:var(--gold-text)}
+.au-lead,.au-ok{margin:0 0 4px;color:var(--muted);font-size:14px;line-height:1.5}
+.au-ok b{color:var(--ink);font-weight:500;word-break:break-all}
+.mv-cap{position:fixed;inset:0;z-index:2147483600;background:color-mix(in srgb,var(--white,#F6F1E8) 94%,transparent)}
+.mv-cap iframe{display:block;width:100%;height:100%;border:0}
+.mv-cap-x{position:absolute;right:16px;top:16px;z-index:1;width:42px;height:42px;border:0;border-radius:50%;background:transparent;color:var(--ink,#2B2330);display:grid;place-items:center;cursor:pointer}
+.mv-cap-x svg{width:22px;height:22px}
+
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :root{--hdr:68px}
@@ -3154,6 +3185,169 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
     // ссылка вида /members/login: её перехватывает Тильда и открывает попап (без неё остаётся переход на страницу)
     var url='/members/login?redirecturl='+encodeURIComponent(location.pathname.replace(/^\//,'')+location.search);
     if(!signed)document.querySelectorAll('a[href="#openmembersbar"]').forEach(function(a){a.href=url});
+    // ---- свои окна входа, регистрации и восстановления пароля (вместо страниц Тильды /members/login и /members/signup) ----
+    // Говорим напрямую с API Members, как штатная форма: /api/login/, /api/getprofile/, /api/registration/, /api/recoverpassword/.
+    // Капчу (регистрация, восстановление, иногда вход) показывает сама Тильда в iframe, мы только принимаем её ответ.
+    var auth=(function(){
+      var sh=null,busy=false,EYE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+      var TITLE={login:'Вход',signup:'Регистрация',recover:'Восстановление пароля'};
+      function ep(alt){
+        var tm=window.tildaMembers||{},b=tm.endpoint||(typeof window.tma__getMembersEndpoint==='function'?window.tma__getMembersEndpoint():'https://members.tildaapi.'+(tm.rootZone||'com'));
+        return alt?b.replace('https://members.tildaapi.','https://members2.tildacdn.'):b;
+      }
+      function req(path,data,alt){
+        var c=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(c)c.abort()},30000);
+        return fetch(ep(alt)+path,{method:'POST',headers:{'Content-Type':'application/json; charset=UTF-8'},body:JSON.stringify(data),signal:c?c.signal:undefined}).then(function(r){
+          clearTimeout(tm);if(r.status>=500&&!alt)return req(path,data,true);return r.json();
+        }).catch(function(e){clearTimeout(tm);if(!alt)return req(path,data,true);throw e});
+      }
+      function captcha(cb){
+        var ov=document.createElement('div'),nm='mvcap'+Date.now(),lang=(window.tildaMembers&&tildaMembers.userLang)||'RU';
+        ov.className='mv-cap';
+        ov.innerHTML='<button type="button" class="mv-cap-x" aria-label="Закрыть">'+IC_X+'</button><iframe name="'+nm+'" title="Проверка"></iframe><form method="post" target="'+nm+'" action="'+ep()+'/api/getcaptcha/"><input type="hidden" name="lang" value="'+eh(lang)+'"><input type="hidden" name="projectid" value="'+eh(pid)+'"></form>';
+        document.body.appendChild(ov);
+        function end(v){window.removeEventListener('message',on);ov.remove();cb(v)}
+        function on(e){
+          if(!/^https:\/\/members2?\.tilda(api|cdn)\./.test(e.origin)||typeof e.data!=='string'||!e.data)return;
+          try{ov.querySelector('iframe').contentWindow.postMessage('tilda-reset','*')}catch(x){}
+          end(e.data);
+        }
+        window.addEventListener('message',on);
+        ov.querySelector('.mv-cap-x').addEventListener('click',function(){end(null)});
+        ov.querySelector('form').submit();
+      }
+      function getProfile(token){
+        return req('/api/getprofile/',{projectid:pid,token:token,tzoffset:new Date().getTimezoneOffset()}).then(function(j){
+          if(!j||j.status!=='ok'||typeof j.data!=='object')throw new Error('profile');
+          var k='tilda_members_profile'+pid;j.data.token=token;j.data.projectid=pid;
+          localStorage.setItem(k,JSON.stringify(j.data));localStorage.setItem(k+'_timestamp',Math.floor(Date.now()/1000));
+        });
+      }
+      // сообщения об ошибках API (коды те же, что в словаре Тильды)
+      function why(kind,j){
+        var c=String(j&&j.code||''),m;
+        if(kind==='login'){
+          if(/so_quickly/.test(c))m='Слишком частые попытки входа. Подождите немного.';
+          else if(/disabled|not_active/.test(c))m='Профиль заблокирован. Обратитесь к владельцу сайта.';
+          else if(/blocked/.test(c))m='Вход временно закрыт из-за множества неудачных попыток. Повторите через '+(j.hours?j.hours+' ч.':(j.minutes||'несколько')+' мин.');
+          else if(/wrong_auth/.test(c))m='Ошибка входа. Обновите страницу и попробуйте снова.';
+          else if(c)m='Неверная почта или пароль.';
+          if(m&&j&&j.attemptsleft>0)m+=' Осталось попыток: '+j.attemptsleft+'.';
+        }else if(kind==='signup'){
+          if(/already_exist/.test(c))m='Эта почта уже зарегистрирована. Попробуйте войти.';
+          else if(/registration_off/.test(c))m='Регистрация сейчас закрыта.';
+          else if(/password_short/.test(c))m='Пароль слишком короткий: минимум 5 символов.';
+          else if(/password_long/.test(c))m='Пароль слишком длинный: максимум 72 символа.';
+          else if(/wrong_email/.test(c))m='Проверьте адрес почты.';
+          else if(/captcha/.test(c))m='Проверка не пройдена. Попробуйте ещё раз.';
+          else if(/wrong_auth/.test(c))m='Ошибка. Обновите страницу и попробуйте снова.';
+        }else{
+          if(/empty_data/.test(c))m='Такая почта не найдена.';
+          else if(/timeout/.test(c))m='Пароль уже восстанавливали меньше 5 минут назад. Попробуйте чуть позже.';
+          else if(/captcha/.test(c))m='Проверка не пройдена. Попробуйте ещё раз.';
+          else if(/wrong_auth/.test(c))m='Ошибка. Обновите страницу и попробуйте снова.';
+        }
+        return m||'Не получилось. Проверьте данные и попробуйте ещё раз.';
+      }
+      var NET='Нет связи с сервером. Проверьте интернет и попробуйте ещё раз.';
+      function fld(label,name,type,ph,ac){
+        var pw=type==='password';
+        return '<label class="au-f"><span>'+label+'</span><span class="au-in"><input class="au-i" name="'+name+'" type="'+type+'" placeholder="'+ph+'" autocomplete="'+ac+'"'+(type==='email'?' inputmode="email" autocapitalize="none" spellcheck="false"':'')+'>'+(pw?'<button type="button" class="au-eye" data-au="eye" aria-label="Показать пароль">'+EYE+'</button>':'')+'</span><em class="au-e" role="alert"></em></label>';
+      }
+      function lnk(a,t){return '<button type="button" data-au="'+a+'">'+t+'</button>'}
+      function view(m){
+        sh.setTitle(TITLE[m]);
+        var h='<form class="au-form" data-m="'+m+'" novalidate>';
+        if(m==='login')h+=fld('Эл. почта','login','email','Введите эл. почту','username')+fld('Пароль','password','password','Введите пароль','current-password');
+        else if(m==='signup')h+=fld('Имя','name','text','Как к вам обращаться','name')+fld('Эл. почта','login','email','Введите эл. почту','username')+fld('Пароль','password','password','Придумайте пароль (от 5 символов)','new-password');
+        else h+='<p class="au-lead">Укажите почту, с которой вы регистрировались. Мы отправим письмо с временным паролем.</p>'+fld('Эл. почта','login','email','Введите эл. почту','username');
+        h+='<div class="au-err" role="alert"></div><button type="submit" class="btn btn-ink au-go">'+(m==='login'?'Войти':m==='signup'?'Создать профиль':'Отправить письмо')+'</button></form><div class="au-links">';
+        h+=m==='login'?lnk('signup','Зарегистрироваться')+lnk('recover','Забыли пароль?'):m==='signup'?lnk('login','Уже есть профиль? Войти'):lnk('login','Вернуться ко входу');
+        sh.setBody(h+'</div>');
+      }
+      function fail(form,msg){var e=form.querySelector('.au-err');e.textContent=msg||''}
+      function bad(form,name,msg){var f=form.elements[name].closest('.au-f');f.classList.add('bad');f.querySelector('.au-e').textContent=msg}
+      function lock(form,on){busy=on;var b=form.querySelector('.au-go');b.disabled=on;b.classList.toggle('load',on)}
+      function check(form,m){
+        var v={},ok=true,x;
+        form.querySelectorAll('.au-f').forEach(function(f){f.classList.remove('bad');f.querySelector('.au-e').textContent=''});
+        fail(form,'');
+        for(var i=0;i<form.elements.length;i++){x=form.elements[i];if(x.name)v[x.name]=x.name==='password'?x.value:x.value.trim()}
+        if('name' in v&&(v.name.length<2||v.name.length>100)){bad(form,'name',v.name.length<2?'Введите имя (от 2 символов)':'Имя слишком длинное');ok=false}
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.login)||v.login.length>150){bad(form,'login',v.login?'Проверьте адрес почты':'Введите почту');ok=false}
+        if('password' in v){
+          if(!v.password){bad(form,'password','Введите пароль');ok=false}
+          else if(m==='signup'&&v.password.length<5){bad(form,'password','Минимум 5 символов');ok=false}
+          else if(v.password.length>72){bad(form,'password','Максимум 72 символа');ok=false}
+        }
+        if(!ok){var f=form.querySelector('.au-f.bad input');if(f)f.focus()}
+        return ok?v:null;
+      }
+      function finish(){
+        try{if(/^#(login|signup|register)$/.test(location.hash))history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+        location.reload();
+      }
+      function login(form,v,rkey){
+        var d={login:v.login,password:v.password,projectid:pid,pageurl:location.href};if(rkey)d.rkey=rkey;
+        return req('/api/login/',d).then(function(j){
+          if(j&&j.status==='ok'&&j.data&&typeof j.data==='object')return getProfile(j.data.token).then(finish);
+          if(j&&j.code==='need_captcha')return captcha(function(k){if(!k){lock(form,false);return}login(form,v,k).catch(function(){lock(form,false);fail(form,NET)})});
+          lock(form,false);fail(form,why('login',j));
+        });
+      }
+      function submit(form){
+        if(busy)return;var m=form.dataset.m,v=check(form,m);if(!v)return;
+        lock(form,true);
+        var bye=function(){lock(form,false);fail(form,NET)};
+        if(m==='login'){login(form,v).catch(bye);return}
+        captcha(function(k){
+          if(!k){lock(form,false);return}
+          if(m==='signup'){
+            var d={name:v.name,login:v.login,password:v.password,projectid:pid,rkey:k};
+            req('/api/registration/',d).then(function(j){
+              if(j&&j.status==='ok'&&typeof j.data==='object')return login(form,v);
+              lock(form,false);fail(form,why('signup',j));
+            }).catch(bye);
+          }else{
+            req('/api/recoverpassword/',{login:v.login,projectid:pid,rkey:k}).then(function(j){
+              lock(form,false);
+              if(j&&j.status==='ok'){sh.setBody('<p class="au-ok">Мы отправили письмо с временным паролем на <b>'+eh(v.login)+'</b>. Войдите с ним, а потом смените пароль в профиле. Если письма нет, загляните в «Спам».</p><div class="au-links">'+lnk('login','Вернуться ко входу')+'</div>')}
+              else fail(form,why('recover',j));
+            }).catch(bye);
+          }
+        });
+      }
+      function open(m){
+        if(!window.MV||!MV.sheet)return false;
+        if(!sh){
+          sh=MV.sheet({className:'sh-auth'});
+          sh.el.addEventListener('click',function(e){
+            var a=e.target.closest&&e.target.closest('[data-au]');if(!a)return;
+            var t=a.dataset.au;
+            if(t==='eye'){var i=a.parentNode.querySelector('input'),on=i.type==='password';i.type=on?'text':'password';a.setAttribute('aria-label',on?'Скрыть пароль':'Показать пароль');a.classList.toggle('on',on)}
+            else if(!busy)view(t);
+          });
+          sh.el.addEventListener('submit',function(e){e.preventDefault();submit(e.target)});
+        }
+        view(m||'login');sh.open();
+        if(window.matchMedia&&matchMedia('(hover:hover)').matches)setTimeout(function(){var i=sh.body.querySelector('input');if(i)i.focus({preventScroll:true})},140);
+        return true;
+      }
+      return {open:open};
+    })();
+    window.MV=window.MV||{};MV.auth=auth;
+    if(!signed){
+      // иконка профиля, пункты «Войти» и любые ссылки на страницы Тильды открывают наше окно
+      document.addEventListener('click',function(e){
+        if(e.defaultPrevented||e.button>0||e.metaKey||e.ctrlKey||e.shiftKey||!window.MV||!MV.sheet)return;
+        var a=e.target.closest&&e.target.closest('#accBtn,.acc-link,a[href="#openmembersbar"],a[href*="/members/login"],a[href*="/members/signup"]');
+        if(!a)return;var h=a.getAttribute('href')||'';if(/exit=y/.test(h))return;
+        e.preventDefault();e.stopImmediatePropagation();auth.open(/signup/.test(h)?'signup':'login');
+      },true);
+      // прямая ссылка на окно: …/newmain#login или …#signup
+      var hashAuth=function(){var m=/^#(login|signup|register)$/.exec(location.hash);if(m)auth.open(m[1]==='login'?'login':'signup')};
+      window.addEventListener('hashchange',hashAuth);setTimeout(hashAuth,0);
+    }
     // ---- свой личный кабинет в окне (данные берём из API Тильды) ----
     var cab,cs={tab:'orders',orders:[],total:0,next:1,dash:null,busy:false,err:false,loaded:false};
     var ST={cancelled:['Отменён','bad'],canceled:['Отменён','bad'],completed:['Выполнен','ok'],done:['Выполнен','ok'],sent:['Отправлен','ok'],shipped:['Отправлен','ok'],paid:['Оплачен','ok'],processing:['В обработке','mid'],new:['Новый','mid'],pending:['Ожидает оплаты','mid']};
