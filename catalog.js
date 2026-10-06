@@ -802,13 +802,13 @@
         '<button class="qv-gocart" type="button" data-qv="cart" id="qvGo" hidden>Товар в корзине. Открыть корзину →</button>'+
       '</div></div>';
   }
-  /* кнопка покупки как у карточки в каталоге: «В корзину» → после нажатия степпер «− N +», каждый «+» добавляет одну штуку */
+  /* кнопка покупки как у карточки в каталоге: «В корзину» → после нажатия степпер «− N +»: левая часть «−», вся остальная кнопка «+» (по одной штуке) */
   function paintAct(){
     var box=$('qvBuy');if(!box||!cur)return;
     var it=cur,ed=selEd(it),max=maxQty(ed),q=lineQty(it,ed,sel),sig=[it.uid,ed.uid,q,max].join('|');
     if(box.dataset.sig===sig)return;box.dataset.sig=sig;
     if(ed.qty===0)box.innerHTML='<button class="btn btn-ink qv-add" type="button" data-qv="add" disabled>Нет в наличии</button>';
-    else if(q>0)box.innerHTML='<div class="qv-step" role="group" aria-label="В корзине: '+esc(it.title)+'"><button type="button" data-qv="qm" aria-label="Убрать одну штуку">−</button><span class="qv-stq"><b>'+q+'</b> в корзине · '+fmt(ed.price*q)+' ₽</span><button type="button" data-qv="qp" aria-label="Добавить ещё одну штуку"'+(q>=max?' disabled':'')+'>+</button></div>';
+    else if(q>0)box.innerHTML='<div class="qv-step" role="group" aria-label="В корзине: '+esc(it.title)+'"><button type="button" data-qv="qm" aria-label="Убрать одну штуку">−</button><button type="button" class="qv-stq" data-qv="qp" aria-label="Добавить ещё одну штуку, сейчас в корзине '+q+'"'+(q>=max?' disabled':'')+'><span><b>'+q+'</b> в корзине · '+fmt(ed.price*q)+' ₽</span><i aria-hidden="true">+</i></button></div>';
     else box.innerHTML='<button class="btn btn-ink qv-add" type="button" data-qv="add">'+PLUS+'<span>В корзину · '+fmt(ed.price)+' ₽</span></button>';
     var go=$('qvGo');if(go)go.hidden=!q;
   }
