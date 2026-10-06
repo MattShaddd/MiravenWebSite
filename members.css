@@ -7,7 +7,7 @@
 }
 
 @media (prefers-color-scheme:dark){
-  :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)){--m-bg:#15131A;--m-mist:#1D1A24;--m-stone:#2F2B38;--m-ink:#EFE9DF;--m-head:#E8E1D4;--m-muted:#9D97A7;--m-gold:#CC9A3C;--m-gold-text:#D8AD5E;--m-err:#E07A70}
+  :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)){--m-bg:#0A0C12;--m-mist:#12161F;--m-stone:#252A36;--m-ink:#EFE9DF;--m-head:#E8E1D4;--m-muted:#99A0AF;--m-gold:#CC9A3C;--m-gold-text:#D8AD5E;--m-err:#E07A70}
 }
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)), :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) body{background:var(--m-bg)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) body, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-form, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__popup, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-menu, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-popup, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-switcher{font-family:"Golos Text","Segoe UI",Roboto,Arial,sans-serif!important;color:var(--m-ink);-webkit-font-smoothing:antialiased}
@@ -91,7 +91,7 @@
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__popup-logout, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__popup-edit-profile{color:var(--m-muted)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__popup-logout:hover, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__popup-edit-profile:hover{color:var(--m-gold-text)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__loyalty, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-userbar__popup-warning{background:var(--m-mist)!important;border-radius:14px!important;color:var(--m-ink)!important}
-:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-popup{background:rgba(23,19,28,.55)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+:where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-popup{background:rgba(6,8,13,.55)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-popup__container{border:1px solid var(--m-stone)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-popup__close{color:var(--m-ink)!important}
 :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-popup__button, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-btn_white, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-btn_black, :where(html:has([class*="tmst-"], .tlk-form, .tlk-resources__wrap)) .tlk-btn_accent{border-radius:999px!important;font-family:inherit!important}

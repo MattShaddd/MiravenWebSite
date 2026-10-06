@@ -13,7 +13,7 @@
     if(theme!=='dark'&&theme!=='beige')theme=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'beige';
     var st=document.createElement('style');
     st.textContent='#mv-pre{position:fixed;inset:0;z-index:2147483600;display:grid;place-items:center;background:#F6F1E8;transition:opacity .55s ease,visibility 0s .55s}'
-      +'#mv-pre[data-t="dark"]{background:#15131A}'
+      +'#mv-pre[data-t="dark"]{background:#0A0C12}'
       +'#mv-pre.off{opacity:0;visibility:hidden;pointer-events:none}'
       +'#mv-pre .in{display:grid;justify-items:center;gap:26px;transform:translateY(-4%)}'
       +'#mv-pre img{display:block;width:min(160px,42vw);height:auto;animation:mvpIn .8s cubic-bezier(.2,.8,.2,1) both,mvpB 3.4s ease-in-out .8s infinite}'
