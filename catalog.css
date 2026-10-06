@@ -183,7 +183,8 @@ html[data-mv-theme="dark"] .cat-bar,.site[data-theme="dark"] .cat-bar{background
 /* свечение и сжатие при нажатии (канвас рисует модуль glow в catalog.src.js) */
 .qv-buy{position:relative}
 .qv-add,.qv-step{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--white) 15%,transparent),0 10px 30px -12px rgba(0,0,0,.5);transition:transform .4s cubic-bezier(.16,1,.3,1),background .2s,color .2s}
-.qv-add.btn-ink:hover:not(:disabled),.qv-add.btn-ink:active:not(:disabled){background:var(--ink)}
+/* тема даёт .btn-ink градиентный фон и при наведении ярче/выше; фон не трогаем (смена градиента на цвет мигает), убираем только яркость и подъём */
+.qv-add.btn-ink:hover:not(:disabled):not(:active){filter:none;transform:none}
 .qv-add:active:not(:disabled){transform:scale(.96)}
 .qv-step:has(button:active:not(:disabled)){transform:scale(.97)}
 .mv-glow{position:absolute;inset:0;width:100%;height:100%;border-radius:999px;pointer-events:none;z-index:3}
