@@ -1360,10 +1360,13 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 .sec-head .deliv-free{color:var(--ink);max-width:none;font-size:inherit;margin:0}
 
 /* карточка товара: только приближение и лёгкий наклон к мыши */
-.prod .photo{overflow:visible;transform-style:preserve-3d;transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--zm,1));transition:transform .25s ease-out,box-shadow .5s;will-change:transform}
+@property --rx{syntax:"<angle>";inherits:true;initial-value:0deg}
+@property --ry{syntax:"<angle>";inherits:true;initial-value:0deg}
+@property --zm{syntax:"<number>";inherits:true;initial-value:1}
+.prod .photo{overflow:visible;transform-style:preserve-3d;transform:perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--zm));transition:--rx .25s ease-out,--ry .25s ease-out,--zm .45s ease-out,box-shadow .5s;will-change:transform}
 .prod:hover .photo{--zm:1.05}
 .prod .photo img.pimg{border-radius:inherit}
 .prod .photo img{transition:filter .5s}
 .prod:hover .photo img{transform:none}
-.prod .photo .add{transform:translateZ(34px) rotateY(calc(var(--ry,0deg) * -1)) rotateX(calc(var(--rx,0deg) * -1))}
-.prod .photo .add:active{transform:translateZ(34px) rotateY(calc(var(--ry,0deg) * -1)) rotateX(calc(var(--rx,0deg) * -1)) scale(.96)}
+/* кнопка «в корзину» не двигается: обратная матрица к трансформации фото (в тех же координатах), плюс небольшой вынос вперёд, чтобы фото не перекрывало её */
+.prod .photo .add{transform-origin:calc(100% + 10px - var(--pw,0px) / 2) calc(100% + 10px - var(--ph,0px) / 2);transform:scale(calc(1 / var(--zm))) rotateY(calc(var(--ry) * -1)) rotateX(calc(var(--rx) * -1)) translateZ(30px) scale(.9625) matrix3d(1,0,0,0,0,1,0,0,0,0,1,.00125,0,0,0,1);transition:background .25s,color .25s,box-shadow .25s}
