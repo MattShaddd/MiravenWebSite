@@ -1299,3 +1299,68 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-corner{background:transparent}
 :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-thumb{min-height:48px;border:4px solid transparent;border-radius:999px;background:color-mix(in srgb,var(--muted) 70%,transparent);background-clip:content-box}
 :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.mv-cp,.t706__cartpage .searchbox-list,.mv-dropdown,.tcart-select__options)::-webkit-scrollbar-thumb:hover{background:var(--muted);background-clip:content-box}
+
+/* ===== стиль v2: размытие и пункты улучшений ===== */
+
+/* воздух между секциями */
+.sec{padding-block:clamp(64px,10vw,136px)}
+
+/* метка над заголовком секции */
+.h2::before{display:block;margin-bottom:14px;font-family:var(--f-body);font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-text)}
+#catalog .h2::before{content:"01 · Коллекция"}
+#delivery .h2::before{content:"02 · Почта, Ozon, СДЭК"}
+#stores .h2::before{content:"03 · Офлайн"}
+#about .h2::before{content:"04 · Художница"}
+#reviews .h2::before{content:"05 · Читатели"}
+#faq .h2::before{content:"06 · Помощь"}
+
+/* единый заголовочный шрифт и чуть крупнее мелкий текст */
+.prod h3,.deliv h3{font-family:var(--f-story)}
+.prod h3{font-size:16px;font-weight:600}
+.deliv h3{font-size:15px}
+.prod small{font-size:13px}
+.price{font-size:16px}
+
+/* карточки товаров */
+.prod .photo img{transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s}
+.prod:hover .photo img{transform:scale(1.06)}
+.prod .photo{box-shadow:0 10px 26px -18px rgba(0,0,0,.4);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+.prod:hover .photo{box-shadow:0 22px 40px -20px rgba(0,0,0,.5)}
+
+/* появление блоков: из размытия */
+.rv{filter:blur(10px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1),filter .9s cubic-bezier(.2,.8,.2,1)}
+.rv.in{filter:none}
+.divider.rv{filter:none}
+@keyframes introUp{from{opacity:0;transform:translateY(16px);filter:blur(12px)}to{opacity:1;transform:none;filter:blur(0)}}
+
+/* мягкое золотое свечение за первым экраном */
+.hero-copy::before{content:"";position:absolute;z-index:-1;inset:-8% -10%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--gold) 34%,transparent),transparent 72%);filter:blur(48px);opacity:.55;pointer-events:none}
+.hero-card-5,.hero-card-8,.hero-card-9,.hero-card-10{--blur:3px}
+
+/* крупнее и нагляднее фокус с клавиатуры */
+:where(.site) :focus-visible{outline:2px solid var(--gold);outline-offset:3px;box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 22%,transparent)}
+
+/* отзывы: фото крупнее */
+.review-media-1{grid-auto-rows:min(480px,60vw)}
+.review-media-2{grid-auto-rows:300px}
+
+/* десктоп: стеклянные поверхности и размытие (на телефонах не включаем: дорого для слабых устройств) */
+@media (min-width:761px) and (hover:hover){
+  .top{background:color-mix(in srgb,var(--white) 68%,transparent);-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5)}
+  .add{background:color-mix(in srgb,var(--white) 62%,transparent);-webkit-backdrop-filter:blur(10px) saturate(1.4);backdrop-filter:blur(10px) saturate(1.4)}
+  .tabs{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .deliv-free,.reviews-cta{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  .prod.soldout .photo img.pimg{filter:blur(1.5px) grayscale(.4)}
+  *:has(>.prod:hover)>.prod:not(:hover){filter:blur(2px) saturate(.8);transition:filter .4s}
+  .prod{transition:filter .4s}
+}
+
+/* телефон: кнопка «в корзину» удобнее для пальца */
+@media (hover:none){
+  .add{height:44px;min-width:44px;border-radius:22px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .rv{filter:none!important}
+  .hero-copy::before{opacity:.35}
+}
