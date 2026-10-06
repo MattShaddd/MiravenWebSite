@@ -79,7 +79,6 @@ html{scroll-behavior:smooth}
 .icon-btn:hover{background:var(--mist)}
 .icon-btn svg{width:21px;height:21px}
 .badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--gold);color:#17151B;font-size:11px;font-weight:600;display:grid;place-items:center;padding:0 4px}
-.burger{display:none}
 
 /* hero */
 .hero{position:relative;z-index:1;display:grid;place-items:center;text-align:center;min-height:min(900px,92svh);padding-block:clamp(100px,12vw,170px);border-bottom:1px solid var(--stone);overflow:visible;isolation:isolate}
@@ -247,7 +246,6 @@ html{scroll-behavior:smooth}
 /* ---------- container queries ---------- */
 @media (max-width: 860px){
   .nav{display:none}
-  .burger{display:grid}
   .track{grid-auto-columns:min(44vw,200px);gap:12px}
   .cat-nav .arrow{display:none}
   .add span{display:none}
@@ -346,20 +344,6 @@ html.mv-theme-change .theme-btn svg{transition:transform .25s ease-out,opacity .
 .srch[hidden]{display:none}
 .srch svg{width:21px;height:21px;flex:none;color:var(--muted)}
 .srch input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:17px;color:var(--ink);outline:0;padding:8px 0}
-/* мобильное меню: выезжает из-под шапки (top считает скрипт по реальной нижней границе шапки), закрывается касанием вне меню, прокруткой и Esc */
-.mnav{position:fixed;top:var(--mnav-top,64px);left:0;right:0;z-index:29;max-height:calc(100vh - var(--mnav-top,64px));max-height:calc(100dvh - var(--mnav-top,64px));overflow-y:auto;overscroll-behavior:contain;background:var(--white);border-bottom:1px solid var(--stone);box-shadow:0 28px 40px -30px rgba(0,0,0,.55);display:grid;padding:8px max(20px,calc((100vw - 1280px) / 2)) 16px;visibility:hidden;opacity:0;transform:translateY(-12px);clip-path:inset(0 0 100% 0);transition:opacity .25s ease,transform .45s cubic-bezier(.2,.8,.2,1),clip-path .45s cubic-bezier(.2,.8,.2,1),visibility 0s linear .45s}
-.mnav.open{visibility:visible;opacity:1;transform:none;clip-path:inset(0);transition-delay:0s}
-.mnav>*{opacity:0;transform:translateY(-8px);transition:opacity .3s ease,transform .45s cubic-bezier(.2,.8,.2,1)}
-.mnav.open>*{opacity:1;transform:none;transition-delay:calc(60ms + var(--i,0) * 40ms)}
-.mnav>:nth-child(1){--i:0}.mnav>:nth-child(2){--i:1}.mnav>:nth-child(3){--i:2}.mnav>:nth-child(4){--i:3}.mnav>:nth-child(5){--i:4}.mnav>:nth-child(6){--i:5}.mnav>:nth-child(7){--i:6}.mnav>:nth-child(8){--i:7}
-.mnav-scrim{position:fixed;inset:var(--mnav-top,64px) 0 0 0;z-index:28;background:rgba(5,6,8,.45);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s linear .3s}
-.mnav-scrim.open{opacity:1;visibility:visible;transition-delay:0s}
-.burger svg path{transform-box:fill-box;transform-origin:center;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
-.burger[aria-expanded="true"] svg path:first-child{transform:translateY(4px) rotate(45deg)}
-.burger[aria-expanded="true"] svg path:last-child{transform:translateY(-4px) rotate(-45deg)}
-@media (prefers-reduced-motion:reduce){.mnav,.mnav>*,.mnav-scrim,.burger svg path{transition:none!important}}
-.mnav a{padding:12px 0;text-decoration:none;font-size:17px;border-bottom:1px solid var(--stone)}
-@media (min-width:861px){.mnav,.mnav-scrim{display:none!important}}
 
 /* где купить */
 .stores{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -488,7 +472,6 @@ a.icon-btn{text-decoration:none}
 .soc a:hover{background:var(--ink);color:var(--white);border-color:var(--ink);transform:translateY(-2px)}
 .soc-q{padding:0 16px 0 12px}
 .soc-nav{margin-top:14px;border:0}
-.mnav .soc a{padding-block:0;border-bottom:1px solid var(--stone);font-size:14px}
 @media (max-width:600px){.soc{margin-top:12px;gap:8px}.soc a{min-width:38px;height:38px}}
 
 /* об авторе: фото слева, текст справа */

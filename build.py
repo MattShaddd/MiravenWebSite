@@ -47,7 +47,6 @@ product_card_js = rd('product-card.js')
 # ---------- catalog.html ----------
 header = re.search(r'<header class="top wrap">.*?</header>', home_html, re.S).group(0)
 header = re.sub(r'\s*<form class="srch".*?</form>', '', header, flags=re.S)
-mnav = re.search(r'<nav class="mnav".*?</nav>', home_html, re.S).group(0)
 
 def relink(s):
     s = s.replace('href="#catalog" class="on"', 'href="/store" class="on"')
@@ -59,11 +58,9 @@ def relink(s):
 
 # в шапке каталога только ссылки, которые имеют смысл на этой странице (разделов главной здесь нет)
 header = re.sub(r'\s*<nav class="nav".*?</nav>', '', header, flags=re.S)
-header = re.sub(r'\s*<button class="icon-btn burger".*?</button>', '', header, flags=re.S)
-mnav = ''  # на странице каталога меню разделов не нужно
 
 # в мобильном меню «Каталог» — текущая страница
-catalog_html = '<div class="site">\n' + relink(header) + '\n' + relink(mnav) + '\n\n' + rd('catalog.main.html') + '\n</div>\n'
+catalog_html = '<div class="site">\n' + relink(header) + '\n\n' +rd('catalog.main.html') + '\n</div>\n'
 wr('catalog.html', catalog_html)
 
 # ---------- catalog.js ----------
