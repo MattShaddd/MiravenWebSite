@@ -882,24 +882,30 @@
       var next=cur<0?(down?0:items.length-1):Math.max(0,Math.min(items.length-1,cur+(down?1:-1)));
       clear();items[next].classList.add('mv-active');try{items[next].scrollIntoView({block:'nearest'})}catch(x){}
     }
+    // какой список обслуживать: сначала уже открытый (фокус мог уйти внутрь списка или на страницу), затем тот, чья кнопка в фокусе
+    function find(t){
+      var a=document.querySelector('.tcart-select_open');
+      if(a)return{cf:CFG[0],tr:a.querySelector(CFG[0].trigger),sc:a};
+      if(CFG[1].open())return{cf:CFG[1],tr:document.querySelector(CFG[1].trigger),sc:document};
+      for(var i=0;i<CFG.length;i++){var tr=t.closest(CFG[i].trigger);if(tr)return{cf:CFG[i],tr:tr,sc:tr.closest(CFG[i].scope)||document}}
+      return null;
+    }
     document.addEventListener('keydown',function(e){
       var k=e.key;if(k!=='ArrowDown'&&k!=='ArrowUp'&&k!=='Enter'&&k!==' '&&k!=='Escape')return;
       if(e.altKey||e.ctrlKey||e.metaKey)return;
       var t=e.target&&e.target.closest?e.target:null;if(!t)return;
-      for(var c=0;c<CFG.length;c++){
-        var cf=CFG[c],tr=t.closest(cf.trigger);if(!tr)continue;
-        var sc=tr.closest(cf.scope)||document,open=cf.open(sc),cur=document.querySelector('.mv-active');
-        if(k==='Escape'){if(!open)return;e.preventDefault();e.stopImmediatePropagation();clear();cf.toggle(tr);return}
-        if(k===' '&&cf.text)return; // в поле ввода пробел — это текст
-        if(k==='Enter'||k===' '){
-          if(open&&cur){e.preventDefault();e.stopImmediatePropagation();cur.click();clear();return}
-          if(!open&&!cf.text){e.preventDefault();cf.toggle(tr)}
-          return;
-        }
-        // стрелки
-        if(!open){if(cf.text)return;e.preventDefault();cf.toggle(tr);setTimeout(function(){move(cf,tr,tr.closest(cf.scope)||document,k==='ArrowDown')},80);return}
-        e.preventDefault();e.stopImmediatePropagation();move(cf,tr,sc,k==='ArrowDown');return;
+      var f=find(t);if(!f||!f.tr)return;
+      var cf=f.cf,tr=f.tr,sc=f.sc,open=cf.open(sc),cur=document.querySelector('.mv-active');
+      if(k==='Escape'){if(!open)return;e.preventDefault();e.stopImmediatePropagation();clear();cf.toggle(tr);return}
+      if(k===' '&&(cf.text||t.matches('input,textarea')))return; // в поле ввода пробел — это текст
+      if(k==='Enter'||k===' '){
+        if(open&&cur){e.preventDefault();e.stopImmediatePropagation();cur.click();clear();return}
+        if(!open&&!cf.text){e.preventDefault();cf.toggle(tr)}
+        return;
       }
+      // стрелки
+      if(!open){if(cf.text)return;e.preventDefault();cf.toggle(tr);setTimeout(function(){move(cf,tr,tr.closest(cf.scope)||document,k==='ArrowDown')},80);return}
+      e.preventDefault();e.stopImmediatePropagation();move(cf,tr,sc,k==='ArrowDown');
     },true);
     document.addEventListener('click',clear,true);
     // триггеры должны получать фокус с клавиатуры
