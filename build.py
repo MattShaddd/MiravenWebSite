@@ -9,6 +9,7 @@
   3. dist/miraven-tilda-T123.html   главная одним блоком (без загрузчика)
   4. dist/catalog-tilda-T123.html   каталог одним блоком (без загрузчика)
   5. dist/footer-tilda-T123.html    глобальный футер одним блоком (без загрузчика)
+  6. loader.html и loader-catalog.html: в них вшивается экран загрузки из preloader.snippet.js (логотип assets/preloader/logo-280.webp)
 """
 import os, re, sys
 
@@ -20,6 +21,20 @@ def wr(f, s):
 
 base = sys.argv[1] if len(sys.argv) > 1 else re.search(r"BASE='([^']+)'", rd('loader.html')).group(1)
 home = re.search(r"HOME='([^']+)'", rd('loader-catalog.html')).group(1)
+
+# ---------- экран загрузки: preloader.snippet.js вшивается в загрузчики (между метками PRELOADER:BEGIN/END) ----------
+import base64
+def inject_preloader():
+    logo = base64.b64encode(open(os.path.join(here, 'assets/preloader/logo-280.webp'), 'rb').read()).decode()
+    snippet = rd('preloader.snippet.js').replace('{{LOGO}}', logo).replace('\r\n', '\n')
+    if not snippet.endswith('\n'): snippet += '\n'
+    for f in ('loader.html', 'loader-catalog.html'):
+        t = rd(f).replace('\r\n', '\n')
+        rx = re.compile(r'  /\* PRELOADER:BEGIN.*?/\* PRELOADER:END \*/\n', re.S)
+        if rx.search(t): t = rx.sub(lambda m: snippet, t)
+        else: t = t.replace('  /*@PRELOADER@*/\n', snippet)
+        wr(f, t)
+inject_preloader()
 
 home_html = rd('miraven.html')
 home_js = rd('miraven.js')
