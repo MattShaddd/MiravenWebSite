@@ -134,3 +134,21 @@
   var lastCart='';
   window.MVProductCartTimer=setInterval(function(){hookCart();var next=JSON.stringify(products());if(next!==lastCart){lastCart=next;changed()}},700);
 })();
+
+/* Лёгкий наклон фото карточки товара в сторону мыши (только мышь, без reduce-motion) */
+(function(){
+  if(window.MVTilt)return;window.MVTilt=1;
+  if(!window.matchMedia||!matchMedia('(hover:hover) and (pointer:fine)').matches||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var cur=null,MAX=6;
+  function reset(el){if(el){el.style.removeProperty('--rx');el.style.removeProperty('--ry')}}
+  document.addEventListener('pointermove',function(e){
+    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo'):null;
+    if(cur&&cur!==ph){reset(cur);cur=null}
+    if(!ph)return;
+    cur=ph;
+    var r=ph.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    ph.style.setProperty('--ry',(x*MAX*2).toFixed(2)+'deg');
+    ph.style.setProperty('--rx',(-y*MAX*2).toFixed(2)+'deg');
+  },{passive:true});
+  document.addEventListener('pointerleave',function(){reset(cur);cur=null});
+})();

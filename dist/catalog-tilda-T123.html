@@ -181,9 +181,9 @@ html{scroll-behavior:smooth}
 @keyframes prodIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes prodOut{to{opacity:0;transform:translateY(-10px) scale(.98)}}
 .prod .photo{aspect-ratio:1;border-radius:var(--r);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-.prod .photo::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,color-mix(in srgb,var(--white) 45%,transparent) 50%,transparent 65%);transform:translateX(-120%);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
-.prod:hover .photo{transform:translateY(-4px)}
-.prod:hover .photo::before{transform:translateX(120%)}
+.prod .photo::before{display:none;content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,color-mix(in srgb,var(--white) 45%,transparent) 50%,transparent 65%);transform:translateX(-120%);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+
+
 .prod .meta{display:grid;gap:1px}
 .prod small{font-size:12px;color:var(--muted)}
 .prod h3{font-family:var(--f-body);font-weight:500;font-size:15px;line-height:1.3;letter-spacing:0}
@@ -1360,7 +1360,7 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 .prod .photo img{transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s}
 .prod:hover .photo img{transform:scale(1.06)}
 .prod .photo{box-shadow:0 10px 26px -18px rgba(0,0,0,.4);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
-.prod:hover .photo{box-shadow:0 22px 40px -20px rgba(0,0,0,.5)}
+
 
 /* появление блоков: из размытия */
 .rv{filter:blur(10px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1),filter .9s cubic-bezier(.2,.8,.2,1)}
@@ -1400,6 +1400,9 @@ html body :where(.qv-scroll,.qv-box,.sh-body,.cab-body,.t706__cartwin-content,.m
 #delivery .sec-head{margin-bottom:14px}
 #delivery .deliv-intro{margin-bottom:24px}
 .sec-head .deliv-free{color:var(--ink);max-width:none;font-size:inherit;margin:0}
+
+/* карточка товара: только приближение и лёгкий наклон к мыши */
+.prod .photo{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out,box-shadow .5s;will-change:transform}
 
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -2256,6 +2259,24 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   if(window.MVProductCartTimer)clearInterval(window.MVProductCartTimer);
   var lastCart='';
   window.MVProductCartTimer=setInterval(function(){hookCart();var next=JSON.stringify(products());if(next!==lastCart){lastCart=next;changed()}},700);
+})();
+
+/* Лёгкий наклон фото карточки товара в сторону мыши (только мышь, без reduce-motion) */
+(function(){
+  if(window.MVTilt)return;window.MVTilt=1;
+  if(!window.matchMedia||!matchMedia('(hover:hover) and (pointer:fine)').matches||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var cur=null,MAX=6;
+  function reset(el){if(el){el.style.removeProperty('--rx');el.style.removeProperty('--ry')}}
+  document.addEventListener('pointermove',function(e){
+    var ph=e.target&&e.target.closest?e.target.closest('.prod .photo'):null;
+    if(cur&&cur!==ph){reset(cur);cur=null}
+    if(!ph)return;
+    cur=ph;
+    var r=ph.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    ph.style.setProperty('--ry',(x*MAX*2).toFixed(2)+'deg');
+    ph.style.setProperty('--rx',(-y*MAX*2).toFixed(2)+'deg');
+  },{passive:true});
+  document.addEventListener('pointerleave',function(){reset(cur);cur=null});
 })();
 
 (function(){
