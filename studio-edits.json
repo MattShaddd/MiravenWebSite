@@ -991,6 +991,17 @@
       "desktop": {
         "background-color": "var(--white)"
       }
+    },
+    "#aboutPhoto": {
+      "desktop": {
+        "--studio-aura-enabled": "1",
+        "--studio-aura-x": "0px",
+        "--studio-aura-y": "95px",
+        "--studio-aura-blur": "30px",
+        "--studio-aura-scale": "0.83",
+        "--studio-aura-opacity": "0.5",
+        "--studio-aura-image": "url(\"/site-files/miraven/assets/author/arina.png\")"
+      }
     }
   },
   "texts": {

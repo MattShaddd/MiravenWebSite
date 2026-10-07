@@ -1472,6 +1472,8 @@ details:nth-child(1){opacity:1 !important;border-radius:0 !important;background-
 details:nth-child(2){background-color:var(--white) !important}
 details:nth-child(3){background-color:var(--white) !important}
 details:nth-child(4){background-color:var(--white) !important}
+#aboutPhoto{--studio-aura-enabled:1 !important;--studio-aura-x:0px !important;--studio-aura-y:95px !important;--studio-aura-blur:30px !important;--studio-aura-scale:0.83 !important;--studio-aura-opacity:0.5 !important;--studio-aura-image:url("/site-files/miraven/assets/author/arina.png") !important}
+#aboutPhoto{position:relative !important;isolation:isolate !important;overflow:visible !important}#aboutPhoto::before{content:"";position:absolute;z-index:0;inset:0;background:var(--studio-aura-image,inherit) center/cover no-repeat;border-radius:inherit;transform:translate(var(--studio-aura-x,0),var(--studio-aura-y,24px)) scale(var(--studio-aura-scale,.9));filter:blur(var(--studio-aura-blur,18px));opacity:var(--studio-aura-opacity,.75);pointer-events:none}#aboutPhoto>img{position:relative;z-index:1;border-radius:inherit}
 @media (max-width:860px){
   a.store.rv:nth-child(1) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
   a.store.rv:nth-child(2) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
