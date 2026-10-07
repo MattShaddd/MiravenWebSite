@@ -5,6 +5,39 @@
       "desktop": {
         "height": "855px"
       }
+    },
+    "div.qv-slide:nth-child(1)": {
+      "desktop": {
+        "--studio-aura-enabled": "1",
+        "--studio-aura-x": "0px",
+        "--studio-aura-y": "94px",
+        "--studio-aura-blur": "24px",
+        "--studio-aura-scale": "0.87",
+        "--studio-aura-opacity": "0.25",
+        "--studio-aura-image": "url(\"https://thb.tildacdn.com/stor3135-6364-4736-b364-376466356263/-/resize/1100x/570805faa2a75f8ef21fc023294e5ee2.jpg\")"
+      }
+    },
+    "div.qv-slide:nth-child(2)": {
+      "desktop": {
+        "--studio-aura-enabled": "1",
+        "--studio-aura-x": "0px",
+        "--studio-aura-y": "94px",
+        "--studio-aura-blur": "24px",
+        "--studio-aura-scale": "0.87",
+        "--studio-aura-opacity": "0.25",
+        "--studio-aura-image": "url(\"https://thb.tildacdn.com/stor6263-6265-4036-b265-373234356138/-/resize/1100x/e080bd3090e526366c92aba1f9da1769.jpg\")"
+      }
+    },
+    "div.qv-slide:nth-child(3)": {
+      "desktop": {
+        "--studio-aura-enabled": "1",
+        "--studio-aura-x": "0px",
+        "--studio-aura-y": "94px",
+        "--studio-aura-blur": "24px",
+        "--studio-aura-scale": "0.87",
+        "--studio-aura-opacity": "0.25",
+        "--studio-aura-image": "url(\"https://thb.tildacdn.com/stor6635-6135-4565-b633-303931626436/-/resize/1100x/ce804db4424d05937a9d4a71519bbc39.jpg\")"
+      }
     }
   },
   "texts": {},
