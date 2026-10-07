@@ -960,6 +960,11 @@
         "bottom": "024px",
         "top": "auto"
       }
+    },
+    "#reviewsMore": {
+      "desktop": {
+        "background-color": "var(--stone)"
+      }
     }
   },
   "texts": {
