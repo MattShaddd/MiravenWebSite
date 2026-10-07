@@ -866,6 +866,14 @@
     }
     document.addEventListener('click',gate,true);
   })();
+  // Оплата Robokassa идёт в iframe, который открывает Тильда. После оплаты Robokassa шлёт странице сообщение paymentSuccess,
+  // но её скрипт только закрывает окно, на Success URL не переводит. Переводим сами.
+  (function(){
+    window.addEventListener('message',function(e){
+      if(!/^https:\/\/auth\.robokassa\.(ru|kz)$/.test(e.origin)||!e.data||typeof e.data!=='object')return;
+      if(e.data.action==='paymentSuccess')location.href='/successpage';
+    });
+  })();
   // ОБЩЕЕ УПРАВЛЕНИЕ ВЫПАДАЮЩИМИ СПИСКАМИ С КЛАВИАТУРЫ (адреса, страны у телефона, подсказки города): ↓ ↑ Enter Пробел Esc.
   // Тильда клавиатуру в этих списках не поддерживает, поэтому подключаем одну логику ко всем. Новый список добавляется строкой в CFG.
   (function(){
