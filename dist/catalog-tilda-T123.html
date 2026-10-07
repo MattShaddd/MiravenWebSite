@@ -121,7 +121,6 @@ html{scroll-behavior:smooth}
 .icon-btn:hover{background:var(--mist)}
 .icon-btn svg{width:21px;height:21px}
 .badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--gold);color:#17151B;font-size:11px;font-weight:600;display:grid;place-items:center;padding:0 4px}
-.burger{display:none}
 
 /* hero */
 .hero{position:relative;z-index:1;display:grid;place-items:center;text-align:center;min-height:min(900px,92svh);padding-block:clamp(100px,12vw,170px);border-bottom:1px solid var(--stone);overflow:visible;isolation:isolate}
@@ -289,7 +288,6 @@ html{scroll-behavior:smooth}
 /* ---------- container queries ---------- */
 @media (max-width: 860px){
   .nav{display:none}
-  .burger{display:grid}
   .track{grid-auto-columns:min(44vw,200px);gap:12px}
   .cat-nav .arrow{display:none}
   .add span{display:none}
@@ -385,12 +383,9 @@ html.mv-theme-change .theme-btn svg{transition:transform .25s ease-out,opacity .
 .prod .soldtag{font-size:13px;font-weight:400;color:var(--muted)}
 .empty{grid-column:1/-1;color:var(--muted);padding:24px 0}
 .srch{position:absolute;inset:0;display:flex;align-items:center;gap:12px;padding-inline:max(20px,calc((100vw - 1280px) / 2));background:var(--white);z-index:2}
-.srch[hidden],.mnav[hidden]{display:none}
+.srch[hidden]{display:none}
 .srch svg{width:21px;height:21px;flex:none;color:var(--muted)}
 .srch input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:17px;color:var(--ink);outline:0;padding:8px 0}
-.mnav{position:absolute;top:100%;left:0;right:0;z-index:9;background:var(--white);border-bottom:1px solid var(--stone);display:grid;padding:8px max(20px,calc((100vw - 1280px) / 2)) 16px}
-.mnav a{padding:12px 0;text-decoration:none;font-size:17px;border-bottom:1px solid var(--stone)}
-@media (min-width:861px){.mnav{display:none!important}}
 
 /* где купить */
 .stores{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -519,7 +514,6 @@ a.icon-btn{text-decoration:none}
 .soc a:hover{background:var(--ink);color:var(--white);border-color:var(--ink);transform:translateY(-2px)}
 .soc-q{padding:0 16px 0 12px}
 .soc-nav{margin-top:14px;border:0}
-.mnav .soc a{padding-block:0;border-bottom:1px solid var(--stone);font-size:14px}
 @media (max-width:600px){.soc{margin-top:12px;gap:8px}.soc a{min-width:38px;height:38px}}
 
 /* об авторе: фото слева, текст справа */
@@ -625,7 +619,7 @@ html[data-mv-theme="dark"] .t706__product-minus img,html[data-mv-theme="dark"] .
 .cab-tabs button{flex:1;border:0;background:transparent;color:var(--ink);border-radius:999px;padding:9px 10px;font-size:14px;transition:background .3s,color .3s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .cab-tabs button[aria-selected="true"]{background:var(--ink);color:var(--white)}
 .cab-tabs i{font-style:normal;font-size:12px;opacity:.65}
-.cab-body{flex:1;overflow:auto;padding:18px 22px 28px;display:grid;gap:12px;align-content:start;overscroll-behavior:contain}
+.cab-body{flex:1;overflow:auto;padding:18px 22px 28px;display:grid;gap:12px;align-content:start;grid-auto-rows:max-content;overscroll-behavior:contain}
 .co{border:1px solid var(--stone);border-radius:18px;overflow:hidden;transition:border-color .25s}
 .co:hover,.co.open{border-color:var(--gold)}
 .co-head{width:100%;display:grid;grid-template-columns:auto 1fr auto 18px;align-items:center;gap:12px;padding:14px;border:0;background:transparent;color:var(--ink);text-align:left}
@@ -790,7 +784,6 @@ html[data-mv-theme="dark"] .st-ok{color:#8CC79A}
 /* ===== главная: шапка выезжает только после героя ===== */
 .top.slide{position:fixed!important;top:0;left:0;right:0;transform:translateY(-105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s,padding .35s;z-index:30}
 .top.slide.show{transform:none;box-shadow:0 10px 30px -24px rgba(0,0,0,.45)}
-.top.slide ~ .mnav{position:fixed;top:var(--hdrh,64px);left:0;right:0;z-index:29}
 
 /* ===== корзина-страница Тильды (режим «на весь экран») внутри шторки ===== */
 .t706__cartwin .t-btn,.t706__cartwin .t-btnflex{background:var(--ink)!important;color:var(--white)!important;border:0!important;border-radius:999px!important;height:50px!important;font-size:15px!important;font-weight:500!important;box-shadow:none!important;width:100%!important;transition:background .2s!important}
@@ -875,7 +868,6 @@ html[data-mv-theme="dark"] .t706__cartwin .t-form__errorbox-middle .t-form__erro
 /* ===== главная: шапка выезжает только после героя ===== */
 .top.slide{position:fixed!important;top:0;left:0;right:0;transform:translateY(-105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s,padding .35s;z-index:30}
 .top.slide.show{transform:none;box-shadow:0 10px 30px -24px rgba(0,0,0,.45)}
-.top.slide ~ .mnav{position:fixed;top:var(--hdrh,64px);left:0;right:0;z-index:29}
 
 /* ===== корзина-страница Тильды (режим «на весь экран») внутри шторки ===== */
 .t706__cartpage .t-btn,.t706__cartpage .t-btnflex{background:var(--ink)!important;color:var(--white)!important;border:0!important;border-radius:999px!important;height:50px!important;font-size:15px!important;font-weight:500!important;box-shadow:none!important;width:100%!important;transition:background .2s!important}
@@ -1416,6 +1408,110 @@ html{scrollbar-gutter:stable}
 /* телефон, открыта клавиатура: закреплённая кнопка «Оформить заказ» перекрывала поле. Пока клавиатура открыта, кнопка встаёт в конец формы, а прокрутка учитывает липкие шапку и подвал */
 [style*="--mv-vvh"] .t706__cartpage .t-form__submit{position:static!important;border-top:0;padding-bottom:0!important}
 .mv-cp,.t706__cartwin-content{scroll-padding-top:72px;scroll-padding-bottom:110px}
+/* STUDIO-EDITS:BEGIN — генерируется mattshadd Studio (Site editor). Не править руками: источник — studio-edits.json */
+a.store.rv:nth-child(1){justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;flex-wrap:nowrap !important;gap:auto !important;min-width:308px !important;height:233.594px !important;align-content:center !important}
+a.store.rv:nth-child(1) > span.st-go{min-height:fill !important;position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;max-width:fill !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+a.store.rv:nth-child(2) > span.st-go{position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;max-width:fill !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+a.store.rv:nth-child(3) > span.st-go{position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;max-width:fill !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+a.store.rv:nth-child(4) > span.st-go{position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;max-width:fill !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+a.store.rv:nth-child(7) > span.st-go{position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;max-width:fill !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+a.store.rv:nth-child(6) > span.st-go{position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;max-width:fill !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+a.store.rv:nth-child(5) > span.st-go{position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;max-width:fill !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+a.store.rv:nth-child(2){min-width:308px !important;height:233.594px !important;justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;align-content:center !important}
+a.store.rv:nth-child(3){min-width:308px !important;height:233.594px !important;justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;align-content:center !important}
+a.store.rv:nth-child(4){min-width:308px !important;height:233.594px !important;justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;align-content:center !important}
+a.store.rv:nth-child(7){min-width:308px !important;height:233.594px !important;justify-items:flex-start !important;align-items:center !important;flex-wrap:nowrap !important;justify-content:flex-start !important;order:0 !important;padding-top:24px !important;padding-left:24px !important;padding-right:24px !important;padding-bottom:24px !important;margin-top:0px !important;align-content:center !important}
+a.store.rv:nth-child(6){min-width:308px !important;height:233.594px !important;justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;align-content:center !important}
+a.store.rv:nth-child(5){min-width:308px !important;height:233.594px !important;justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;align-content:center !important}
+a.store.rv:nth-child(5) > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
+a.store.rv:nth-child(6) > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
+a.store.rv:nth-child(7) > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
+a.store.rv:nth-child(4) > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
+a.store.rv:nth-child(3) > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
+a.store.rv:nth-child(2) > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
+a.store.rv:nth-child(1) > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:88.9px !important;height:20.8px !important;text-align:right !important}
+a.store.rv:nth-child(5) > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(5) > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(6) > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(7) > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(4) > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(3) > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(2) > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(1) > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(6) > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(7) > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(4) > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(3) > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(2) > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+a.store.rv:nth-child(1) > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+div.about-copy.rv > p{color:var(--muted) !important}
+div.about-two > div:nth-child(1) > p{color:var(--muted) !important}
+div.about-two > div:nth-child(2) > p{color:var(--muted) !important}
+div.deliv-card.rv:nth-child(3) > img.deliv-logo{align-self:center !important;margin-top:auto !important;margin-bottom:auto !important;flex-grow:1 !important;flex-basis:0 !important;width:156px !important}
+div.deliv-card.rv:nth-child(2) > img.deliv-logo{align-self:center !important;margin-top:auto !important;margin-bottom:auto !important;flex-grow:1 !important;flex-basis:0 !important}
+div.deliv-card.rv:nth-child(1) > img.deliv-logo{align-self:center !important;margin-top:auto !important;margin-bottom:auto !important;flex-grow:1 !important;flex-basis:0 !important;width:280px !important}
+a.store.rv:nth-child(1) > span.st-addr{color:var(--muted) !important}
+a.store.rv:nth-child(2) > span.st-addr{color:var(--muted) !important}
+a.store.rv:nth-child(3) > span.st-addr{color:var(--muted) !important}
+a.store.rv:nth-child(4) > span.st-addr{color:var(--muted) !important}
+a.store.rv:nth-child(7) > span.st-addr{color:var(--muted) !important}
+a.store.rv:nth-child(6) > span.st-addr{color:var(--muted) !important}
+a.store.rv:nth-child(5) > span.st-addr{color:var(--muted) !important}
+a.store.rv:nth-child(2) > span.st-note{font-weight:300 !important}
+a.store.rv:nth-child(3) > span.st-note{font-weight:300 !important}
+div.ctas.intro > a.btn.btn-line{background-color:var(--stone) !important}
+div.cat-foot > a.btn.btn-line{background-color:var(--stone) !important}
+a.store.store-online.rv{height:233.594px !important;min-width:308px !important;justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;align-content:center !important}
+a.store.store-online.rv > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
+a.store.store-online.rv > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
+a.store.store-online.rv > span.pin{position:absolute !important;min-height:22px !important;min-width:22px !important;right:auto !important;bottom:auto !important;left:24px !important;top:24px !important;width:22px !important;height:22px !important}
+a.store.store-online.rv > span.st-addr{color:var(--muted) !important}
+a.store.store-online.rv > span.st-go{position:absolute !important;right:0 !important;bottom:18px !important;left:0 !important;top:auto !important;width:259px !important;height:22.4px !important;margin-left:auto !important;margin-right:auto !important;text-align:right !important}
+@media (max-width:860px){
+  a.store.rv:nth-child(1) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+  a.store.rv:nth-child(2) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+  a.store.rv:nth-child(3) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+  a.store.rv:nth-child(4) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+  a.store.rv:nth-child(7) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+  a.store.rv:nth-child(6) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+  a.store.rv:nth-child(5) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+  a.store.store-online.rv > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
+}
+@media (max-width:600px){
+  a.store.rv:nth-child(1){height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.rv:nth-child(2){height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.rv:nth-child(3){height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.rv:nth-child(4){height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.rv:nth-child(7){height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.rv:nth-child(6){height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.rv:nth-child(5){height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.rv:nth-child(5) > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.rv:nth-child(6) > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.rv:nth-child(7) > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.rv:nth-child(4) > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.rv:nth-child(3) > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.rv:nth-child(2) > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.rv:nth-child(1) > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.rv:nth-child(5) > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+  a.store.rv:nth-child(5) > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.rv:nth-child(6) > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.rv:nth-child(7) > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.rv:nth-child(4) > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.rv:nth-child(3) > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.rv:nth-child(2) > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.rv:nth-child(1) > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.rv:nth-child(6) > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+  a.store.rv:nth-child(7) > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+  a.store.rv:nth-child(4) > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+  a.store.rv:nth-child(3) > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+  a.store.rv:nth-child(2) > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+  a.store.rv:nth-child(1) > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+  a.store.store-online.rv{height:auto !important;min-width:0 !important;justify-items:stretch !important;justify-content:normal !important;align-items:start !important;align-content:start !important}
+  a.store.store-online.rv > span.st-city{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:auto !important;height:auto !important;text-align:left !important}
+  a.store.store-online.rv > span.pin > svg{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;width:100% !important;height:100% !important}
+  a.store.store-online.rv > span.pin{position:static !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;min-width:0 !important;min-height:0 !important;width:20px !important;height:20px !important}
+}
+/* STUDIO-EDITS:END */
 
 /* ===== Каталог ===== (поверх miraven.css: переменные, шапка, подвал, кнопки, табы) */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -1999,7 +2095,6 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
           </div>
         </header>
 
-
 <main class="cat" id="cat">
   <section class="wrap cat-hero">
     <nav class="crumbs" aria-label="Навигация"><a href="/">Главная</a><span aria-hidden="true">/</span><span class="crumb-cur">Каталог</span></nav>
@@ -2511,9 +2606,9 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
       el.addEventListener('touchmove',function(e){
         if(!st)return;var q=e.touches[0],dx=q.clientX-st.x,dy=q.clientY-st.y;
         if(!st.drag){
-          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>8){st=null;return}
-          if(dy<-8){if(st.grab&&o.expand&&!st.full){st.drag=true;st.mode='up';st.b.style.transition='none';st.b.style.maxHeight='none'}else{st=null;return}}
-          else if(dy>8){st.drag=true;st.mode='down';st.b.style.transition='none';el.style.transition='none'}
+          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>14){st=null;return}
+          if(dy<-14){if(st.grab&&o.expand&&!st.full){st.drag=true;st.mode='up';st.b.style.transition='none';st.b.style.maxHeight='none'}else{st=null;return}}
+          else if(dy>14){st.drag=true;st.mode='down';st.b.style.transition='none';el.style.transition='none'}
           else return;
         }
         if(e.cancelable)e.preventDefault();
@@ -3313,7 +3408,7 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
   /* шапка меняет высоту плавно (после класса scrolled), поэтому следим за её размером, а не измеряем один раз в момент переключения: иначе под шапкой оставалась щель */
   if(window.ResizeObserver&&topEl)new ResizeObserver(function(){hdr()}).observe(topEl,{box:'border-box'});
   if(topEl)topEl.addEventListener('transitionend',hdr);
-  var mn=$('mnav'),bg=$('burger');if(mn&&bg){bg.addEventListener('click',function(){mn.hidden=!mn.hidden});mn.addEventListener('click',function(){mn.hidden=true})}
+
   function searchOpen(on){
     bar.classList.toggle('searching',on);document.documentElement.classList.toggle('mv-searching',on);
     var q=$('q');
@@ -3856,17 +3951,27 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
         cab=document.createElement('div');cab.className='cab';cab.setAttribute('role','dialog');cab.setAttribute('aria-modal','true');cab.setAttribute('aria-label','Личный кабинет');cab.hidden=true;
         cab.innerHTML='<div class="cab-box"></div>';(document.querySelector('.site')||document.body).appendChild(cab);
         if(window.MV&&MV.swipeDismiss)MV.swipeDismiss({on:cab,box:function(){return cab.querySelector('.cab-box')},scroller:function(){return cab.querySelector('.cab-body')},handle:'.cab-top,.cab-tabs',close:cabClose});
+        // раскрытие чисто на CSS (display none → block): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
+        var tapAt=0,tapXY=null;
+        function ordToggle(a){
+          var art=a.closest('.co'),on=!art.classList.contains('open');
+          art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));tapAt=Date.now();
+        }
+        // запасной тап: на телефоне касание с дрожью пальца иногда не даёт click, тогда раскрываем по окончании касания
+        cab.addEventListener('touchstart',function(e){var t=e.touches[0];tapXY=e.touches.length===1&&t?{x:t.clientX,y:t.clientY,at:Date.now(),el:e.target}:null},{passive:true});
+        cab.addEventListener('touchend',function(e){
+          var s=tapXY;tapXY=null;if(!s)return;var t=e.changedTouches[0];
+          if(!t||Math.abs(t.clientX-s.x)>24||Math.abs(t.clientY-s.y)>24||Date.now()-s.at>600)return;
+          var h=s.el.closest&&s.el.closest('[data-cab="ord"]');if(!h)return;
+          setTimeout(function(){if(tapAt<s.at&&h.isConnected)ordToggle(h)},420);
+        },{passive:true});
         cab.addEventListener('click',function(e){
           if(e.target===cab){cabClose();return}
           var a=e.target.closest('[data-cab]');if(!a)return;
           switch(a.dataset.cab){
             case 'x':cabClose();break;
             case 'tab':cs.tab=a.dataset.t;cabRender();break;
-            case 'ord':{
-              // раскрытие чисто на CSS (display none → block): высота не измеряется скриптом, поэтому содержимое всегда открывается целиком
-              var art=a.closest('.co'),on=!art.classList.contains('open');
-              art.classList.toggle('open',on);a.setAttribute('aria-expanded',String(on));
-              break}
+            case 'ord':ordToggle(a);break;
             case 'more':cabLoad(true);break;
             case 'out':{
               var fin=false,after=function(){if(fin)return;fin=true;location.reload()};

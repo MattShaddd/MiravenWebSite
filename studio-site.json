@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "name": "Miraven",
+  "defaultPage": "home",
+  "pages": [
+    {
+      "id": "home",
+      "label": "Home",
+      "url": "/",
+      "html": "miraven.html",
+      "css": [
+        "miraven.css",
+        "product-card.css",
+        "image-viewer.css"
+      ],
+      "js": [
+        "product-card.js",
+        "image-viewer.js",
+        "miraven.js"
+      ],
+      "cssTarget": "miraven.css",
+      "textFiles": [
+        "miraven.html"
+      ],
+      "edits": "studio-edits.json"
+    },
+    {
+      "id": "store",
+      "label": "Catalog",
+      "url": "/store",
+      "html": "catalog.html",
+      "css": [
+        "miraven.css",
+        "catalog.css",
+        "product-card.css",
+        "image-viewer.css"
+      ],
+      "js": [
+        "image-viewer.js",
+        "catalog.js"
+      ],
+      "cssTarget": "catalog.css",
+      "textFiles": [
+        "catalog.main.html",
+        "miraven.html"
+      ],
+      "edits": "studio-edits.store.json"
+    },
+    {
+      "id": "successpage",
+      "label": "Order success",
+      "url": "/successpage",
+      "html": "successpage.html",
+      "css": [
+        "miraven.css",
+        "pages.css"
+      ],
+      "js": [],
+      "cssTarget": "pages.css",
+      "textFiles": [
+        "successpage.html"
+      ],
+      "edits": "studio-edits.successpage.json"
+    },
+    {
+      "id": "quicklink",
+      "label": "Quick links",
+      "url": "/quicklink",
+      "html": "quicklink.html",
+      "css": [
+        "miraven.css",
+        "pages.css"
+      ],
+      "js": [],
+      "cssTarget": "pages.css",
+      "textFiles": [
+        "quicklink.html"
+      ],
+      "edits": "studio-edits.quicklink.json"
+    },
+    {
+      "id": "footer",
+      "label": "Footer",
+      "url": "(global)",
+      "html": "footer.html",
+      "css": [
+        "miraven.css",
+        "footer.css"
+      ],
+      "js": [],
+      "cssTarget": "footer.css",
+      "textFiles": [
+        "footer.html"
+      ],
+      "edits": "studio-edits.footer.json"
+    }
+  ]
+}
