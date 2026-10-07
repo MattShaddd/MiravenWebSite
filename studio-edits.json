@@ -1090,6 +1090,11 @@
         "font-size": "20px",
         "line-height": "1"
       }
+    },
+    "span.hero-card.hero-card-logo > span.hero-card-face": {
+      "desktop": {
+        "translate": "-23.7px 15.8px"
+      }
     }
   },
   "texts": {

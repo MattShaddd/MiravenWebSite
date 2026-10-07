@@ -94,5 +94,24 @@
       ],
       "edits": "studio-edits.footer.json"
     }
-  ]
+  ],
+  "theme": {
+    "attrs": [
+      {
+        "selector": "html",
+        "name": "data-mv-theme",
+        "light": "beige",
+        "dark": "dark"
+      },
+      {
+        "selector": ".site",
+        "name": "data-theme",
+        "light": "beige",
+        "dark": "dark"
+      }
+    ],
+    "storageKey": "miraven-theme",
+    "storageLight": "beige",
+    "storageDark": "dark"
+  }
 }
