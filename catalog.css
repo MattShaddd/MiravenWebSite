@@ -522,3 +522,6 @@ html.mv-ios-catalog,html.mv-ios-catalog body{overscroll-behavior-y:none}
 .pc-ph img{border-radius:inherit}
 .pc:hover .pc-ph img{transform:none}
 .pc .pc-ph.mv-t .add{transform-origin:calc(100% + 10px - 50cqw) calc(100% + 10px - 50cqh);transform:scale(calc(1 / var(--zm))) rotateY(calc(var(--ry) * -1)) rotateX(calc(var(--rx) * -1)) translateZ(30px) scale(.9625) matrix3d(1,0,0,0,0,1,0,0,0,0,1,.00125,0,0,0,1) !important;transition:background .25s,color .25s,box-shadow .25s !important}
+/* STUDIO-EDITS:BEGIN — генерируется mattshadd Studio (Site editor). Не править руками: источник — studio-edits.json */
+div.qv-box{height:855px !important}
+/* STUDIO-EDITS:END */

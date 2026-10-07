@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "rules": {
+    "div.qv-box": {
+      "desktop": {
+        "height": "855px"
+      }
+    }
+  },
+  "texts": {},
+  "links": {},
+  "removed": {},
+  "moves": []
+}
