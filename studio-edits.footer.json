@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "rules": {
+    "#miraven-root": {
+      "desktop": {
+        "background-color": "var(--white)"
+      }
+    }
+  },
+  "texts": {},
+  "links": {},
+  "removed": {},
+  "moves": []
+}
