@@ -848,7 +848,9 @@
     },
     "div.cat-foot > a.btn.btn-line": {
       "desktop": {
-        "background-color": "var(--stone)"
+        "background-color": "var(--stone)",
+        "filter": "blur(0px)",
+        "box-shadow": "none"
       }
     },
     "a.store.store-online.rv": {
@@ -964,6 +966,28 @@
     "#reviewsMore": {
       "desktop": {
         "background-color": "var(--stone)"
+      }
+    },
+    "details:nth-child(1)": {
+      "desktop": {
+        "opacity": "1",
+        "border-radius": "0",
+        "background-color": "var(--white)"
+      }
+    },
+    "details:nth-child(2)": {
+      "desktop": {
+        "background-color": "var(--white)"
+      }
+    },
+    "details:nth-child(3)": {
+      "desktop": {
+        "background-color": "var(--white)"
+      }
+    },
+    "details:nth-child(4)": {
+      "desktop": {
+        "background-color": "var(--white)"
       }
     }
   },
