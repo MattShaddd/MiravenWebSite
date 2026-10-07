@@ -1002,6 +1002,94 @@
         "--studio-aura-opacity": "0.25",
         "--studio-aura-image": "url(\"https://mattshaddd.github.io/MiravenWebSite/assets/author/arina.png\")"
       }
+    },
+    "div.stores": {
+      "mobile": {
+        "gap": "10px"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n)": {
+      "mobile": {
+        "grid-template-columns": "24px 1fr 24px",
+        "column-gap": "14px",
+        "row-gap": "0px",
+        "min-height": "124px",
+        "padding-top": "16px",
+        "padding-bottom": "16px",
+        "padding-left": "16px",
+        "padding-right": "16px",
+        "align-content": "center",
+        "align-items": "start"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n) > span.pin": {
+      "mobile": {
+        "grid-column": "1",
+        "grid-row": "1 / span 4",
+        "width": "24px",
+        "height": "24px",
+        "margin-top": "0px",
+        "margin-bottom": "0px"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n) > span.st-city": {
+      "mobile": {
+        "font-size": "11px",
+        "letter-spacing": "0.08em",
+        "text-transform": "uppercase",
+        "color": "var(--muted)",
+        "margin-bottom": "4px",
+        "line-height": "1.3"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n) > b.st-name": {
+      "mobile": {
+        "font-size": "18px",
+        "line-height": "1.25"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n) > span.st-addr": {
+      "mobile": {
+        "font-size": "14px",
+        "line-height": "1.35",
+        "margin-top": "6px",
+        "color": "var(--ink)"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n) > span.st-note": {
+      "mobile": {
+        "font-size": "12px",
+        "line-height": "1.3",
+        "margin-top": "2px",
+        "color": "var(--muted)"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n) > span.st-go": {
+      "mobile": {
+        "display": "block",
+        "position": "static",
+        "width": "auto",
+        "height": "auto",
+        "top": "auto",
+        "right": "auto",
+        "bottom": "auto",
+        "left": "auto",
+        "margin-top": "0px",
+        "margin-left": "0px",
+        "margin-right": "0px",
+        "grid-column": "3",
+        "grid-row": "1 / span 4",
+        "align-self": "center",
+        "justify-self": "end",
+        "font-size": "0px",
+        "text-align": "right"
+      }
+    },
+    "div.stores > a.store.rv:nth-child(n) > span.st-go > span.ar": {
+      "mobile": {
+        "font-size": "20px",
+        "line-height": "1"
+      }
     }
   },
   "texts": {
