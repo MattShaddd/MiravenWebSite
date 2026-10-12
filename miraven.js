@@ -1089,6 +1089,17 @@
     });
   })();
 
+  // на телефоне сначала показываем только три точки, остальные раскрываются по кнопке
+  (function(){
+    var grid=document.querySelector('.stores-by-city'),button=document.querySelector('.stores-more');
+    if(!grid||!button)return;
+    button.addEventListener('click',function(){
+      var expanded=grid.classList.toggle('is-expanded');
+      button.setAttribute('aria-expanded',String(expanded));
+      button.textContent=expanded?'Свернуть':'Показать ещё';
+    });
+  })();
+
   // плавное раскрытие вопросов
   document.querySelectorAll('.faq details').forEach(function(d){
     var sum=d.querySelector('summary'),ans=d.querySelector('.ans');
