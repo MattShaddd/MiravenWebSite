@@ -848,9 +848,11 @@
     },
     "div.cat-foot > a.btn.btn-line": {
       "desktop": {
-        "background-color": "var(--stone)",
+        "background-color": "var(--ink)",
         "filter": "blur(0px)",
-        "box-shadow": "none"
+        "box-shadow": "inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.25),0 10px 22px -10px rgba(40,25,10,.6)",
+        "background-image": "linear-gradient(180deg,color-mix(in srgb,var(--ink) 88%,#fff),var(--ink))",
+        "color": "var(--white)"
       }
     },
     "a.store.store-online.rv": {
@@ -1095,6 +1097,123 @@
       "desktop": {
         "translate": "-32.9px 15.8px"
       }
+    },
+    "div.cat-head > a.link": {
+      "desktop": {
+        "display": "none"
+      }
+    },
+    "#catalog article.prod": {
+      "desktop": {
+        "display": "grid",
+        "grid-template-columns": "minmax(0,1fr) auto",
+        "column-gap": "12px",
+        "align-content": "start"
+      },
+      "mobile": {
+        "grid-template-columns": "minmax(0,1fr)"
+      }
+    },
+    "button.sfab": {
+      "mobile": {
+        "inset": "auto auto calc(14px + env(safe-area-inset-bottom,0px)) 14px",
+        "translate": "0px"
+      }
+    },
+    "button.sfab > span": {
+      "mobile": {
+        "display": "none"
+      }
+    },
+    "#catalog article.prod > div.photo": {
+      "desktop": {
+        "grid-column": "1 / -1"
+      }
+    },
+    "#catalog article.prod > div.meta": {
+      "desktop": {
+        "grid-column": "1",
+        "grid-row": "2",
+        "min-width": "0",
+        "align-self": "last baseline"
+      },
+      "mobile": {
+        "align-self": "start"
+      }
+    },
+    "#catalog article.prod > span.price": {
+      "desktop": {
+        "grid-column": "2",
+        "grid-row": "2",
+        "align-self": "last baseline",
+        "white-space": "nowrap",
+        "text-align": "right",
+        "font-weight": "400"
+      },
+      "mobile": {
+        "grid-column": "1",
+        "grid-row": "3",
+        "align-self": "start",
+        "text-align": "left",
+        "margin-top": "0px",
+        "line-height": "1.3"
+      }
+    },
+    "html:not([data-mv-theme=\"dark\"]), .site:not([data-theme=\"dark\"])": {
+      "desktop": {
+        "--muted": "#6A5F5A",
+        "--gold-text": "#7A5413"
+      }
+    },
+    ".sh-auth input": {
+      "desktop": {
+        "border-color": "var(--muted)"
+      }
+    },
+    "div.faq > details": {
+      "desktop": {
+        "padding-left": "16px",
+        "padding-right": "16px",
+        "background-color": "transparent"
+      }
+    },
+    "button.review-expand": {
+      "desktop": {
+        "padding-top": "4px",
+        "padding-bottom": "2px",
+        "min-height": "24px"
+      }
+    },
+    "div.faq": {
+      "desktop": {
+        "border-radius": "16px",
+        "border-width": "1px",
+        "border-style": "solid",
+        "border-color": "var(--stone)",
+        "background-image": "linear-gradient(155deg,var(--card-a),var(--card-b))",
+        "overflow": "hidden"
+      }
+    },
+    "div.faq > details:last-child": {
+      "desktop": {
+        "border-width": "0"
+      }
+    },
+    "div.cat-foot > a.btn.btn-line:hover": {
+      "desktop": {
+        "filter": "brightness(1.06)"
+      }
+    },
+    ".site[data-theme=\"dark\"] div.cat-foot > a.btn.btn-line": {
+      "desktop": {
+        "background-image": "none",
+        "box-shadow": "none"
+      }
+    },
+    "#faq a.soc-q": {
+      "desktop": {
+        "display": "none"
+      }
     }
   },
   "texts": {
@@ -1111,5 +1230,26 @@
   },
   "links": {},
   "removed": {},
-  "moves": []
+  "moves": [],
+  "inserts": {
+    "divider-faq": {
+      "label": "Разделитель · перед «Вопросами»",
+      "html": "<div class=\"wrap\"><div class=\"divider rv in\" aria-hidden=\"true\"><i class=\"spk-inline\"><svg viewBox=\"0 0 24 24\"><path d=\"M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0Z\"></path></svg></i></div></div>",
+      "anchor": {
+        "ctx": {
+          "tag": "section",
+          "id": "faq",
+          "classes": [
+            "sec",
+            "wrap"
+          ],
+          "href": null
+        },
+        "index": 0,
+        "total": 1,
+        "text": "ВопросыНе нашли ответ? Напишите Арине:Telegram @arovivevk.com/iamiraven@arovive"
+      },
+      "position": "before"
+    }
+  }
 }

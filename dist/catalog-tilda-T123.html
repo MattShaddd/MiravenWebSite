@@ -1487,7 +1487,7 @@ a.store.rv:nth-child(5) > span.st-addr{color:var(--muted) !important}
 a.store.rv:nth-child(2) > span.st-note{font-weight:300 !important}
 a.store.rv:nth-child(3) > span.st-note{font-weight:300 !important}
 div.ctas.intro > a.btn.btn-line{background-color:var(--stone) !important}
-div.cat-foot > a.btn.btn-line{background-color:var(--stone) !important;filter:blur(0px) !important;box-shadow:none !important}
+div.cat-foot > a.btn.btn-line{background-color:var(--ink) !important;filter:blur(0px) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.25),0 10px 22px -10px rgba(40,25,10,.6) !important;background-image:linear-gradient(180deg,color-mix(in srgb,var(--ink) 88%,#fff),var(--ink)) !important;color:var(--white) !important}
 a.store.store-online.rv{height:233.594px !important;min-width:308px !important;justify-items:flex-start !important;align-items:center !important;justify-content:flex-start !important;align-content:center !important;background-image:linear-gradient(155deg,var(--card-a),var(--card-b)) !important;border-style:solid !important}
 a.store.store-online.rv > span.st-city{position:absolute !important;right:24px !important;bottom:auto !important;left:auto !important;top:24px !important;width:128px !important;height:20.8px !important;text-align:right !important;text-transform:none !important}
 a.store.store-online.rv > span.pin > svg{position:absolute !important;right:auto !important;bottom:auto !important;left:0 !important;top:0 !important;width:22px !important;height:22px !important}
@@ -1502,6 +1502,20 @@ details:nth-child(4){background-color:var(--white) !important}
 #aboutPhoto{--studio-aura-enabled:1 !important;--studio-aura-x:0px !important;--studio-aura-y:47px !important;--studio-aura-blur:20px !important;--studio-aura-scale:0.99 !important;--studio-aura-opacity:0.25 !important;--studio-aura-image:url("https://mattshaddd.github.io/MiravenWebSite/assets/author/arina.png") !important}
 #aboutPhoto{position:relative !important;isolation:isolate !important;overflow:visible !important}#aboutPhoto::before{content:"";position:absolute;z-index:0;inset:0;background:var(--studio-aura-image,inherit) center/cover no-repeat;border-radius:inherit;transform:translate(var(--studio-aura-x,0),var(--studio-aura-y,24px)) scale(var(--studio-aura-scale,.9));filter:blur(var(--studio-aura-blur,18px));opacity:var(--studio-aura-opacity,.75);pointer-events:none}#aboutPhoto>img{position:relative;z-index:1;border-radius:inherit}
 span.hero-card.hero-card-logo > span.hero-card-face{translate:-32.9px 15.8px !important}
+div.cat-head > a.link{display:none !important}
+#catalog article.prod{display:grid !important;grid-template-columns:minmax(0,1fr) auto !important;column-gap:12px !important;align-content:start !important}
+#catalog article.prod > div.photo{grid-column:1 / -1 !important}
+#catalog article.prod > div.meta{grid-column:1 !important;grid-row:2 !important;min-width:0 !important;align-self:last baseline !important}
+#catalog article.prod > span.price{grid-column:2 !important;grid-row:2 !important;align-self:last baseline !important;white-space:nowrap !important;text-align:right !important;font-weight:400 !important}
+html:not([data-mv-theme="dark"]), .site:not([data-theme="dark"]){--muted:#6A5F5A !important;--gold-text:#7A5413 !important}
+.sh-auth input{border-color:var(--muted) !important}
+div.faq > details{padding-left:16px !important;padding-right:16px !important;background-color:transparent !important}
+button.review-expand{padding-top:4px !important;padding-bottom:2px !important;min-height:24px !important}
+div.faq{border-radius:16px !important;border-width:1px !important;border-style:solid !important;border-color:var(--stone) !important;background-image:linear-gradient(155deg,var(--card-a),var(--card-b)) !important;overflow:hidden !important}
+div.faq > details:last-child{border-width:0 !important}
+div.cat-foot > a.btn.btn-line:hover{filter:brightness(1.06) !important}
+.site[data-theme="dark"] div.cat-foot > a.btn.btn-line{background-image:none !important;box-shadow:none !important}
+#faq a.soc-q{display:none !important}
 @media (max-width:860px){
   a.store.rv:nth-child(1) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
   a.store.rv:nth-child(2) > span.st-go{right:24px !important;left:auto !important;bottom:024px !important;top:auto !important}
@@ -1554,6 +1568,11 @@ span.hero-card.hero-card-logo > span.hero-card-face{translate:-32.9px 15.8px !im
   div.stores > a.store.rv:nth-child(n) > span.st-note{font-size:12px !important;line-height:1.3 !important;margin-top:2px !important;color:var(--muted) !important}
   div.stores > a.store.rv:nth-child(n) > span.st-go{display:block !important;position:static !important;width:auto !important;height:auto !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;margin-top:0px !important;margin-left:0px !important;margin-right:0px !important;grid-column:3 !important;grid-row:1 / span 4 !important;align-self:center !important;justify-self:end !important;font-size:0px !important;text-align:right !important}
   div.stores > a.store.rv:nth-child(n) > span.st-go > span.ar{font-size:20px !important;line-height:1 !important}
+  #catalog article.prod{grid-template-columns:minmax(0,1fr) !important}
+  button.sfab{inset:auto auto calc(14px + env(safe-area-inset-bottom,0px)) 14px !important;translate:0px !important}
+  button.sfab > span{display:none !important}
+  #catalog article.prod > div.meta{align-self:start !important}
+  #catalog article.prod > span.price{grid-column:1 !important;grid-row:3 !important;align-self:start !important;text-align:left !important;margin-top:0px !important;line-height:1.3 !important}
 }
 /* STUDIO-EDITS:END */
 
@@ -2089,6 +2108,18 @@ div.qv-slide:nth-child(2){--studio-aura-enabled:1 !important;--studio-aura-x:0px
 div.qv-slide:nth-child(2){position:relative !important;isolation:isolate !important;overflow:visible !important}div.qv-slide:nth-child(2)::before{content:"";position:absolute;z-index:0;inset:0;background:var(--studio-aura-image,inherit) center/cover no-repeat;border-radius:inherit;transform:translate(var(--studio-aura-x,0),var(--studio-aura-y,24px)) scale(var(--studio-aura-scale,.9));filter:blur(var(--studio-aura-blur,18px));opacity:var(--studio-aura-opacity,.75);pointer-events:none}div.qv-slide:nth-child(2)>img{position:relative;z-index:1;border-radius:inherit}
 div.qv-slide:nth-child(3){--studio-aura-enabled:1 !important;--studio-aura-x:0px !important;--studio-aura-y:94px !important;--studio-aura-blur:24px !important;--studio-aura-scale:0.87 !important;--studio-aura-opacity:0.25 !important;--studio-aura-image:url("https://thb.tildacdn.com/stor6635-6135-4565-b633-303931626436/-/resize/1100x/ce804db4424d05937a9d4a71519bbc39.jpg") !important}
 div.qv-slide:nth-child(3){position:relative !important;isolation:isolate !important;overflow:visible !important}div.qv-slide:nth-child(3)::before{content:"";position:absolute;z-index:0;inset:0;background:var(--studio-aura-image,inherit) center/cover no-repeat;border-radius:inherit;transform:translate(var(--studio-aura-x,0),var(--studio-aura-y,24px)) scale(var(--studio-aura-scale,.9));filter:blur(var(--studio-aura-blur,18px));opacity:var(--studio-aura-opacity,.75);pointer-events:none}div.qv-slide:nth-child(3)>img{position:relative;z-index:1;border-radius:inherit}
+#catSub{display:none !important}
+div.cat-bar-in{align-items:flex-start !important}
+article.pc{display:grid !important;grid-template-columns:minmax(0,1fr) auto !important;column-gap:12px !important;align-content:start !important}
+article.pc > div.pc-ph{grid-column:1 / -1 !important}
+article.pc > div.pc-meta{grid-column:1 !important;grid-row:2 !important;min-width:0 !important;align-self:last baseline !important}
+article.pc > span.price{grid-column:2 !important;grid-row:2 !important;align-self:last baseline !important;white-space:nowrap !important;text-align:right !important;font-weight:400 !important}
+@media (max-width:600px){
+  article.pc{grid-template-columns:minmax(0,1fr) !important}
+  article.pc > div.pc-meta{align-self:start !important}
+  article.pc > span.price{grid-column:1 !important;grid-row:3 !important;align-self:start !important;text-align:left !important;margin-top:0px !important;line-height:1.3 !important}
+  section.cat-layout{padding-bottom:88px !important}
+}
 /* STUDIO-EDITS:END */
 
 .mv-product-card .add{position:absolute;z-index:4;right:10px;bottom:10px;height:36px;min-width:36px;padding:0 11px;border:0;border-radius:18px;background:var(--ink);color:var(--white);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;box-shadow:0 8px 18px -10px rgba(0,0,0,.55);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition-property:background,color,transform;transition-duration:.2s}
