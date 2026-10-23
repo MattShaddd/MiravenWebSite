@@ -1002,7 +1002,7 @@
         "--studio-aura-blur": "20px",
         "--studio-aura-scale": "0.99",
         "--studio-aura-opacity": "0.25",
-        "--studio-aura-image": "url(\"https://mattshaddd.github.io/MiravenWebSite/assets/author/arina.png\")"
+        "--studio-aura-image": "url(\"https://mattshaddd.github.io/MiravenWebSite/assets/author/arina-aura.webp\")"
       }
     },
     "div.stores": {
